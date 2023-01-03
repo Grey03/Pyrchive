@@ -18,24 +18,28 @@ class DataBaseEntry:
     def sort_tags(self):
         self.tags.sort()
 
+    def refresh_alltag(self):
+        for tag in self.tags:
+            if tag not in alltags:
+                alltags.append(tag)
+                alltags.sort
+
     def add_tag(self, newtag):
         newtag = str(newtag).lower()
         if newtag not in self.tags:
             self.tags.append(newtag)
             self.sort_tags()
-            for tag in self.tags:
-                if tag not in alltags:
-                    alltags.append(newtag)
-                    alltags.sort()
+            self.refresh_alltag()
 
     def remove_tag(self, tag):
         tag = str(tag)
         if tag in self.tags:
             self.tags.remove(tag)
 
-    def set_tags(self, newtags):
-        for tag in newtags:
-            self.add_tag(tag)
+    #Just do this in main code
+    #def set_tags(self, newtags):
+    #    for tag in newtags:
+    #        self.add_tag(tag)
 
     def filter(self, filterList):
         positiveTerms = []
