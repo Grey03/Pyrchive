@@ -8,6 +8,7 @@ class DataBaseEntry:
         self.ID = int(ID)
         self.name = str
         self.tags = []
+        self.location = str
         #Saving the upload dat from least timespan to largest timespan but also with the time time of the day
         self.uploadDate = datetime.now()
 
