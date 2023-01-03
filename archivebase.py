@@ -1,17 +1,31 @@
 from datetime import datetime
 
 class DataBaseEntry:
-    def __init__(self, ID, name):
-        self.ID = ID
-        self.name = name
+    global alltags
+    alltags = []
+
+    def __init__(self, ID):
+        self.ID = int(ID)
+        self.name = str
         self.tags = []
         #Saving the upload dat from least timespan to largest timespan but also with the time time of the day
-        self.uploadDate = datetime.now().strftime("%d/%m/%Y, %H:%M:%S:%f")
+        self.uploadDate = datetime.now()
+
+    def get_all_tags():
+        return alltags
+
+    def sort_tags(self):
+        self.tags.sort()
 
     def add_tag(self, newtag):
-        newtag = str(newtag)
+        newtag = str(newtag).lower()
         if newtag not in self.tags:
             self.tags.append(newtag)
+            self.sort_tags()
+            for tag in self.tags:
+                if tag not in alltags:
+                    alltags.append(newtag)
+                    alltags.sort()
 
     def remove_tag(self, tag):
         tag = str(tag)
@@ -19,14 +33,15 @@ class DataBaseEntry:
             self.tags.remove(tag)
 
     def set_tags(self, newtags):
-        self.tags = list(newtags)
+        for tag in newtags:
+            self.add_tag(tag)
 
     def filter(self, filterList):
         positiveTerms = []
         negativeTerms = []
         for term in filterList:
             if str(term).find("-", 0, 1) != -1:
-                negativeTerms.append(term)
+                negativeTerms.append(term.replace("-",""))
             else:
                 positiveTerms.append(term)
 
@@ -37,5 +52,5 @@ class DataBaseEntry:
         if(len(positiveTerms) > 0):
             for posTerm in positiveTerms:
                 if posTerm not in self.tags:
-                    return False     
+                    return False
         return True
