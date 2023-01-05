@@ -1,4 +1,6 @@
 from datetime import datetime
+import random
+import time
 
 class DataBaseEntry:
     global alltags
@@ -29,6 +31,7 @@ class DataBaseEntry:
         if newtag not in self.tags:
             self.tags.append(newtag)
             self.sort_tags()
+            
             self.refresh_alltag()
 
     def remove_tag(self, tag):
@@ -59,3 +62,24 @@ class DataBaseEntry:
                 if posTerm not in self.tags:
                     return False
         return True
+
+creationTimeStart = time.time()
+files = []
+for i in range(100000):
+    temp = DataBaseEntry(i)
+    temp.add_tag(random.choice(["Cameron","Grey","Christian","Ian"]))
+    temp.add_tag(random.choice(["Cameron","Grey","Christian","Ian"]))
+    temp.add_tag(random.randrange(2006,2023))
+    temp.add_tag(random.choice(["Spring","Summer","Winter","Autumn"]))
+    files.append(temp)
+creationTimeEnd = time.time()
+
+filter = ["grey","ian","autumn","2006"]
+
+sortTimeStart = time.time()
+for file in files:
+    if file.filter(filter):
+        print(f"ID: {file.ID} | Contains tags: {file.tags}")
+sortTimeEnd = time.time()
+
+print (f"Created files in {creationTimeEnd-creationTimeStart} seconds. | Sorted in {sortTimeEnd-sortTimeStart} seconds.")
