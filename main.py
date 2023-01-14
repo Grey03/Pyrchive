@@ -16,21 +16,15 @@ class App(customtkinter.CTk):
 
         #Top Buttons Frame
         self.optionButtonsFrame=customtkinter.CTkFrame(self)
-        self.closeAppFrame=customtkinter.CTkFrame(self.optionButtonsFrame)
-        self.closeAppButton=customtkinter.CTkButton(self.closeAppFrame, text="X",width=30, command=self.closeApp,fg_color="red" ,hover_color="darkred")
-        self.closeAppButton.pack()
-        self.closeAppFrame.pack(side="right",padx=5,pady=5)
         #-+-+-+-+-+-
-        self.mainbuttonsFrame=customtkinter.CTkFrame(self.optionButtonsFrame)
-        self.settingsButton=customtkinter.CTkButton(self.mainbuttonsFrame, text="Settings")
+        self.settingsButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Settings")
         self.settingsButton.pack(side="left", padx=5,pady=5)
-        self.uploadButton=customtkinter.CTkButton(self.mainbuttonsFrame,text="Upload")
+        self.uploadButton=customtkinter.CTkButton(self.optionButtonsFrame,text="Upload")
         self.uploadButton.pack(side="left", padx=5,pady=5)
-        self.savedsearchesButton=customtkinter.CTkButton(self.mainbuttonsFrame, text="Saved Searches")
+        self.savedsearchesButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Saved Searches")
         self.savedsearchesButton.pack(side="left", padx=5,pady=5)
-        self.randomButton=customtkinter.CTkButton(self.mainbuttonsFrame, text= "Random")
+        self.randomButton=customtkinter.CTkButton(self.optionButtonsFrame, text= "Random")
         self.randomButton.pack(side="left",padx=5,pady=5)
-        self.mainbuttonsFrame.pack(side="left")
         self.optionButtonsFrame.pack(padx=10, pady=5, fill="x")
 
         #Search Frame
@@ -45,16 +39,26 @@ class App(customtkinter.CTk):
 
         #Bottom Frame
         self.bottomFrame=customtkinter.CTkFrame(self, fg_color="transparent")
-        self.tagFrame=customtkinter.CTkFrame(self.bottomFrame)
-        self.tagLabel=customtkinter.CTkLabel(self.tagFrame, text="Tags", width=200)
-        self.tagLabel.pack(padx=5,pady=10)
+        self.tagFrame=customtkinter.CTkFrame(self.bottomFrame, width=200)
+        self.tagLabel=customtkinter.CTkLabel(self.tagFrame, text="Tags", font=("Roboto", 13, "bold"))
+        self.tagLabel.pack(padx=5,pady=0)
+        self.tagList = customtkinter.CTkFrame(self.tagFrame)
+        self.tagList.pack(padx=5,pady=5, expand=True, fill="both")
         self.tagFrame.pack(side="left", fill="y")
         self.imageFrame=customtkinter.CTkFrame(self.bottomFrame, fg_color="transparent")
         self.imageFrame.pack(side="left",fill="both", expand=True)
         self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
-        
-    def closeApp(self):
-        self.destroy()
+
+    def refreshTags(self, tagsToShow):
+        self.tagList.destroy()
+        #when ready, make it get tag.name for the tag and the tag.group.color for the color
+        for tag in tagsToShow:
+            tagname = tag
+            tagcolor = "darkgrey"
+            customtkinter.CTkButton(master=self.tagFrame, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
 
 app = App()
+tags=["tag1","tag2","tag3","tag4","tag5","tag6","tag7"]
+app.refreshTags(tags)
 app.mainloop()
+
