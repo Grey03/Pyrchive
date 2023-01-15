@@ -1,5 +1,6 @@
 #from archivebase import DataBaseEntry
-import customtkinter
+import customtkinter, os, random
+from Pyrchive import ArchiveManager
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -49,16 +50,80 @@ class App(customtkinter.CTk):
         self.imageFrame.pack(side="left",fill="both", expand=True)
         self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
 
-    def refreshTags(self, tagsToShow):
+    #42 tags fit
+    def refreshTags(self, archive, tagsToShow, maxTags):
+        
         self.tagList.destroy()
+        foundTags = 0
         #when ready, make it get tag.name for the tag and the tag.group.color for the color
         for tag in tagsToShow:
             tagname = tag
             tagcolor = "darkgrey"
-            customtkinter.CTkButton(master=self.tagFrame, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
+            if foundTags < maxTags:
+                for tagGroup in archive.tagGroupList:
+                    if str(tag) in tagGroup.tags:
+                        tagcolor = tagGroup.color
+                
+                customtkinter.CTkButton(master=self.tagFrame, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
+            foundTags+=1
+    def averageTags(self, files, maxTags):
+
+        if maxTags == 0:
+            maxTags=30
+        tagsToShow = []
+        for file in files:
+            for tag in file.tags:
+                tagsToShow.append(tag)
+        tagsToShow.sort()
+        individualTags = [*set(tagsToShow)]
+
+        tagCountList = []
+        for tag in individualTags:
+            tagCountList.append([tagsToShow.count(tag),tag])
+
+        tagCountList.sort()
+        tagCountList.reverse()
+        lastList=[]
+        for tag in tagCountList:
+            lastList.append(tag[1])
+            if len(lastList) > maxTags:
+                return lastList
+        return lastList
+    def search():
+        print ("This should take in the filter and search also the tags should activate a search with just their tag")
+
+
+            
+            
+
+        #for tag in tagsToShow:
 
 app = App()
-tags=["tag1","tag2","tag3","tag4","tag5","tag6","tag7"]
-app.refreshTags(tags)
+the_archive = ArchiveManager()
+#tags=["tag1","tag2","tag3","tag4","tag5","tag6","tag7"]
+for i in range(1000):
+    tempfile = ArchiveManager.ArchiveEntry()
+    id = len(the_archive.archiveList)    
+    tempfile.ID = id
+    tempfile.title = "title " + str(id)
+    tempfile.creator = "creator" + str(id)
+    tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
+    tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
+    tempfile.addTag(random.randint(2006,2023))
+    tempfile.addTag(random.choice(["summer","autumn","winter","spring"]))
+    tempfile.data = "data" + str(id)
+    tempfile.misc_notes = "misc_notes" + str(id)
+
+    the_archive.archiveList.append(tempfile)
+
+tempTagGroup = ArchiveManager.tagGroup()
+tempTagGroup.name = "The Boys"
+tempTagGroup.color = "darkgreen"
+tempTagGroup.tags = ["christian","cameron","grey","ian"]
+
+the_archive.tagGroupList.append(tempTagGroup)
+
+
+app.refreshTags(the_archive, app.averageTags(the_archive.archiveList, 42), 42)
 app.mainloop()
 
