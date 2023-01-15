@@ -13,7 +13,8 @@ class App(customtkinter.CTk):
 
         self.title("Tarchive")
         self.geometry(f"{900}x{500}")
-        #self.attributes("-fullscreen", True)
+        
+        self.Archive = ArchiveManager()
 
         #Top Buttons Frame
         self.optionButtonsFrame=customtkinter.CTkFrame(self)
@@ -26,6 +27,8 @@ class App(customtkinter.CTk):
         self.savedsearchesButton.pack(side="left", padx=5,pady=5)
         self.randomButton=customtkinter.CTkButton(self.optionButtonsFrame, text= "Random")
         self.randomButton.pack(side="left",padx=5,pady=5)
+        self.refreshButton=customtkinter.CTkButton(self.optionButtonsFrame, text=r"↻", command=self.reloadpage, width=10, height=10)
+        self.refreshButton.pack(side="right",padx=5,pady=5)
         self.optionButtonsFrame.pack(padx=10, pady=5, fill="x")
 
         #Search Frame
@@ -34,7 +37,7 @@ class App(customtkinter.CTk):
         self.favoriteButton.pack(side="left")
         self.searchBar= customtkinter.CTkEntry(self.searchFrame,placeholder_text="Search")
         self.searchBar.pack(padx=5,side="left", fill="x",expand=True)
-        self.searchButton = customtkinter.CTkButton(self.searchFrame, text="Search", width=80)
+        self.searchButton = customtkinter.CTkButton(self.searchFrame, text="Search", width=80, command=self.get_search)
         self.searchButton.pack(side="left")
         self.searchFrame.pack(padx=10, pady=5,fill="x")
 
@@ -52,8 +55,8 @@ class App(customtkinter.CTk):
 
     #42 tags fit
     def refreshTags(self, archive, tagsToShow, maxTags):
-        
-        self.tagList.destroy()
+        for widgets in self.tagList.winfo_children():
+            widgets.destroy()
         foundTags = 0
         #when ready, make it get tag.name for the tag and the tag.group.color for the color
         for tag in tagsToShow:
@@ -64,7 +67,7 @@ class App(customtkinter.CTk):
                     if str(tag) in tagGroup.tags:
                         tagcolor = tagGroup.color
                 
-                customtkinter.CTkButton(master=self.tagFrame, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
+                customtkinter.CTkButton(master=self.tagList, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
             foundTags+=1
     def averageTags(self, files, maxTags):
 
@@ -89,15 +92,52 @@ class App(customtkinter.CTk):
             if len(lastList) > maxTags:
                 return lastList
         return lastList
-    def search():
-        print ("This should take in the filter and search also the tags should activate a search with just their tag")
+
+    def refreshImages(self, fileIDs):
+        for widgets in self.imageFrame.winfo_children():
+            widgets.destroy()
+        y = 0
+        x=0
+        for fileID in fileIDs:
+            temp = customtkinter.CTkButton(master=self.imageFrame, text=str(fileID), width=50, height=50)
+            temp.grid(row=y, column=x, padx=5, pady=5)
+            x+=1
+            if x >= 10:
+                x = 0
+                y+=1
+            
 
 
+
+    def get_search(self):
+        return self.Archive.filterFiles(self.searchBar.get().split(" "), 30)
+
+    def reloadpage(self):
+        currentfiles = (self.Archive.filterFiles(filterList=self.get_search(), requestedFileCount=30))
+        self.refreshTags(self.Archive, self.averageTags(self.Archive.archiveList, 42), 42)
+        App.refreshImages(self,currentfiles)
+
+    def fakeArchive(self):
+        for i in range(1000):
+            tempfile = ArchiveManager.ArchiveEntry()
+            id = len(self.Archive.archiveList)    
+            tempfile.ID = id
+            tempfile.title = "title " + str(id)
+            tempfile.creator = "creator" + str(id)
+            tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
+            tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
+            tempfile.addTag(random.randint(2006,2023))
+            tempfile.addTag(random.choice(["summer","autumn","winter","spring"]))
+            tempfile.data = "data" + str(id)
+            tempfile.misc_notes = "misc_notes" + str(id)
+
+            self.Archive.archiveList.append(tempfile)
             
             
 
         #for tag in tagsToShow:
 
+"""
 app = App()
 the_archive = ArchiveManager()
 #tags=["tag1","tag2","tag3","tag4","tag5","tag6","tag7"]
@@ -116,9 +156,9 @@ for i in range(1000):
 
     the_archive.archiveList.append(tempfile)
 
-tempTagGroup = ArchiveManager.tagGroup()
+tempTagGroup = ArchiveManager.TagGroup()
 tempTagGroup.name = "The Boys"
-tempTagGroup.color = "darkgreen"
+tempTagGroup.color = "teal"
 tempTagGroup.tags = ["christian","cameron","grey","ian"]
 
 the_archive.tagGroupList.append(tempTagGroup)
@@ -127,3 +167,8 @@ the_archive.tagGroupList.append(tempTagGroup)
 app.refreshTags(the_archive, app.averageTags(the_archive.archiveList, 42), 42)
 app.mainloop()
 
+"""
+app=App()
+app.fakeArchive()
+app.reloadpage()
+app.mainloop()

@@ -4,7 +4,7 @@ class ArchiveManager:
     def __init__(self):
         self.archiveList = []
         self.tagGroupList = []
-    class tagGroup:
+    class TagGroup:
         def __init__(self):
             self.name = ""
             self.tags = []
