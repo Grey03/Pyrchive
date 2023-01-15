@@ -12,7 +12,7 @@ class App(customtkinter.CTk):
 
 
         self.title("Tarchive")
-        self.geometry(f"{900}x{500}")
+        #self.geometry(f"{900}x{500}")
         
         self.Archive = ArchiveManager()
 
@@ -27,7 +27,7 @@ class App(customtkinter.CTk):
         self.savedsearchesButton.pack(side="left", padx=5,pady=5)
         self.randomButton=customtkinter.CTkButton(self.optionButtonsFrame, text= "Random")
         self.randomButton.pack(side="left",padx=5,pady=5)
-        self.refreshButton=customtkinter.CTkButton(self.optionButtonsFrame, text=r"↻", command=self.reloadpage, width=10, height=10)
+        self.refreshButton=customtkinter.CTkButton(self.optionButtonsFrame, text=r"↻", width=10, height=10, command=self.search_click)
         self.refreshButton.pack(side="right",padx=5,pady=5)
         self.optionButtonsFrame.pack(padx=10, pady=5, fill="x")
 
@@ -37,7 +37,7 @@ class App(customtkinter.CTk):
         self.favoriteButton.pack(side="left")
         self.searchBar= customtkinter.CTkEntry(self.searchFrame,placeholder_text="Search")
         self.searchBar.pack(padx=5,side="left", fill="x",expand=True)
-        self.searchButton = customtkinter.CTkButton(self.searchFrame, text="Search", width=80, command=self.get_search)
+        self.searchButton = customtkinter.CTkButton(self.searchFrame, text="Search", width=80, command=self.search_click)
         self.searchButton.pack(side="left")
         self.searchFrame.pack(padx=10, pady=5,fill="x")
 
@@ -53,22 +53,37 @@ class App(customtkinter.CTk):
         self.imageFrame.pack(side="left",fill="both", expand=True)
         self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
 
+        self.pageButtonFrame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.pageLeft = customtkinter.CTkButton(self.pageButtonFrame, text="Previous")
+        self.pageLeft.pack(side="left")
+        self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next")
+        self.pageRight.pack(side="right")
+        self.pageButtonFrame.pack(fill="both")
+
+
+
     #42 tags fit
     def refreshTags(self, archive, tagsToShow, maxTags):
         for widgets in self.tagList.winfo_children():
             widgets.destroy()
         foundTags = 0
+        widget = {}
         #when ready, make it get tag.name for the tag and the tag.group.color for the color
-        for tag in tagsToShow:
-            tagname = tag
+        for i in range(len(tagsToShow)):
+            tag = tagsToShow[i]
+            tagname = tag[1] 
             tagcolor = "darkgrey"
             if foundTags < maxTags:
                 for tagGroup in archive.tagGroupList:
-                    if str(tag) in tagGroup.tags:
+                    if str(tagname) in tagGroup.tags:
                         tagcolor = tagGroup.color
-                
-                customtkinter.CTkButton(master=self.tagList, text=tagname, font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0).pack(fill="x")
-            foundTags+=1
+                try:
+                    widget[i]= customtkinter.CTkButton(master=self.tagList, text=(tagname + f"({tag[0]})"), font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0, command=lambda e = i: self.tag_click(tagsToShow[e][1]))
+                    widget[i].pack(fill="x")
+                    foundTags = foundTags + 1
+                except:
+                    print ("FAILED")
+                    pass
     def averageTags(self, files, maxTags):
 
         if maxTags == 0:
@@ -86,37 +101,37 @@ class App(customtkinter.CTk):
 
         tagCountList.sort()
         tagCountList.reverse()
-        lastList=[]
-        for tag in tagCountList:
-            lastList.append(tag[1])
-            if len(lastList) > maxTags:
-                return lastList
-        return lastList
-
+        return tagCountList
     def refreshImages(self, fileIDs):
         for widgets in self.imageFrame.winfo_children():
             widgets.destroy()
         y = 0
         x=0
-        for fileID in fileIDs:
-            temp = customtkinter.CTkButton(master=self.imageFrame, text=str(fileID), width=50, height=50)
-            temp.grid(row=y, column=x, padx=5, pady=5)
+        images = {}
+        for i in range(len(fileIDs)):
+            images[i] = customtkinter.CTkButton(master=self.imageFrame, text=str(fileIDs[i]), width=100, height=100, command=lambda e = i: self.openImage(e))
+            images[i].grid(row=y, column=x, padx=10, pady=10)
             x+=1
-            if x >= 10:
+            if x >= 6:
                 x = 0
                 y+=1
-            
 
-
-
+    def openImage(self, fileID):
+        os.startfile(self.Archive.archiveList[fileID].data)
+  
+    def tag_click(self, tag):
+        self.searchBar.insert("end", tag+" ")
+    def search_click(self):
+        self.reloadpage(0)
     def get_search(self):
-        return self.Archive.filterFiles(self.searchBar.get().split(" "), 30)
-
-    def reloadpage(self):
-        currentfiles = (self.Archive.filterFiles(filterList=self.get_search(), requestedFileCount=30))
-        self.refreshTags(self.Archive, self.averageTags(self.Archive.archiveList, 42), 42)
-        App.refreshImages(self,currentfiles)
-
+        return self.searchBar.get().split(" ")
+    def reloadpage(self, startFrom):
+        try:
+            currentfiles = (self.Archive.filterFiles(filterList=self.get_search(), start=startFrom, requestedFileCount=30))
+            self.refreshTags(self.Archive, self.averageTags(self.Archive.archiveList, 42), 42)
+            App.refreshImages(self,currentfiles)
+        except:
+            pass
     def fakeArchive(self):
         for i in range(1000):
             tempfile = ArchiveManager.ArchiveEntry()
@@ -168,7 +183,18 @@ app.refreshTags(the_archive, app.averageTags(the_archive.archiveList, 42), 42)
 app.mainloop()
 
 """
+
 app=App()
-app.fakeArchive()
-app.reloadpage()
+app.Archive.loadArchiveFromJson()
+app.Archive.loadTagGroupsFromJson()
+App.reloadpage(app, 0)
+
+"""x = ArchiveManager.TagGroup()
+x.name = "The Boys"
+x.color = "teal"
+x.tags = ["christian","cameron","grey","ian"]
+app.Archive.tagGroupList.append(x)
+app.Archive.saveTagGroupsToJson()"""
+
+
 app.mainloop()

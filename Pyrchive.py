@@ -1,4 +1,5 @@
-import datetime,random
+import datetime,random,json
+from pathlib import Path
 class ArchiveManager:
 
     def __init__(self):
@@ -12,15 +13,21 @@ class ArchiveManager:
             self.color = "cyan"
         def is_in_group(self, tag):
             return tag.lower() in self.tags
+        def __str__(self):
+            return json.dumps(self.__dict__(), indent=4)
+        def __dict__(self):
+            return {"name":self.name, "tags":self.tags, "description":self.description, "color":self.color}
+        def toJSON(self):
+            return json.dumps((self.__dict__()), ensure_ascii=False, indent=4)
     class ArchiveEntry:
         def __init__(self):
-            self.ID = int
-            self.title = str
-            self.creator = str 
+            self.ID = -1
+            self.title = ""
+            self.creator = "" 
             self.tags = []
-            self.data = str
-            self.misc_notes = str
-            self.upload_date = datetime.datetime.now()       
+            self.data = ""
+            self.misc_notes = ""
+            self.upload_date = (datetime.datetime.now().__str__())       
         def addTag(self, tags):
             if type(tags) != list:
                 tags = [tags]
@@ -47,12 +54,33 @@ class ArchiveManager:
                     if str(posTerm) not in self.tags:
                         return False
             return True
-    def filterFiles(self, filterList, requestedFileCount):
+        def __str__(self):
+            return json.dumps(self.__dict__(), indent=4)
+        def __dict__(self):
+            return {
+                "ID": self.ID,
+                "title": self.title,
+                "creator": self.creator,
+                "tags": self.tags,
+                "data": r"{}".format(self.data),
+                "misc_notes": self.misc_notes,
+                "upload_date": self.upload_date
+            }
+        def toJSON(self):
+            return json.dumps((self.__dict__()), ensure_ascii=False, indent=4)
+            
+            #return json.dumps(dictToBytes, indent=4)
+            #return json.dumps(dictionary, sort_keys=True, indent=4)
+
+    def filterFiles(self, filterList, start, requestedFileCount):
+        filterList = [*set(filterList)]
+        try:
+            filterList.remove("")
+        except:
+            pass
         finalFiles = []
-        if requestedFileCount == 0:
-            #Default setting
-            requestedFileCount = 30
         for file in self.archiveList:
+            if file.ID < start: pass
             if ArchiveManager.ArchiveEntry.filter(file, filterList):
                 finalFiles.append(file.ID)
                 if len(finalFiles) == requestedFileCount:
@@ -91,9 +119,6 @@ class ArchiveManager:
                 self.tagGroupList.pop(group.name)
         self.tagGroupList.append(TagGroup)
         self.tagGroupList.sort()
-
-
-
     def archiveTest(self, fileCount):
         for i in range(fileCount):
             tempfile = ArchiveManager.ArchiveEntry()
@@ -113,11 +138,54 @@ class ArchiveManager:
         print (len(self.archiveList))
         print (self.archiveList[0].title)
         print (self.archiveList[0].tags)
-        
+    def loadArchiveFromJson(self):
+        fileLocation = str(Path.cwd())
+        with open(fileLocation + '\ArchiveSave.json', 'r') as f:
+            data = json.load(f)
+            for item in data:
+                loadedFile = ArchiveManager.ArchiveEntry()
+                loadedFile.ID = item['ID']
+                loadedFile.title = item['title']
+                loadedFile.creator = item['creator']
+                loadedFile.addTag(item['tags'])
+                loadedFile.data = r"{}".format(item['data'])
+                loadedFile.misc_notes = item['misc_notes']
+                loadedFile.upload_date = item['upload_date']
+                self.archiveList.append(loadedFile)
+            #self.tagGroupList = data['tagGroupList']
+            f.close
+    def saveArchiveToJson(self):
+        fileLocation = str(Path.cwd())
+        json_string = json.dumps([ob.__dict__() for ob in self.archiveList], indent=4, ensure_ascii=False)
+        with open(fileLocation + '\ArchiveSave.json', 'w') as f:   
+            f.write(json_string)
+            f.close()
+    def loadTagGroupsFromJson(self):
+        fileLocation = str(Path.cwd())
+        with open(fileLocation + '\TagGroups.json', 'r') as f:
+            data = json.load(f)
+            for item in data:
+                loadedTagGroup = ArchiveManager.TagGroup()
+                loadedTagGroup.name = item['name']
+                loadedTagGroup.tags = item['tags']
+                loadedTagGroup.description = item['description']
+                loadedTagGroup.color = item['color']
+                self.tagGroupList.append(loadedTagGroup)
+            f.close
+    def saveTagGroupsToJson(self):
+        fileLocation = str(Path.cwd())
+        json_string = json.dumps([ob.__dict__() for ob in self.tagGroupList], indent=4, ensure_ascii=False)
+        with open(fileLocation + '\TagGroups.json', 'w') as f:
+            f.write(json_string)
+            f.close()
+                
+                
 
 
 #Archive = ArchiveManager()
-#ArchiveManager.archiveTest(self=Archive,fileCount=1000)
+#ArchiveManager.archiveTest(self=Archive,fileCount=100000)
+#Archive.saveArchiveToJson()
+#Archive.loadArchiveFromJson()
 #x = ArchiveManager.ArchiveEntry()
 #x.tags = ["cat"]
-#print (ArchiveManager.ArchiveEntry.filter(x, ["cat",""]))
+#print (ArchiveManager.filterFiles(Archive, ["cat"], 3))

@@ -1,0 +1,24 @@
+[
+    {
+        "name": "The Boys",
+        "tags": [
+            "christian",
+            "cameron",
+            "grey",
+            "ian"
+        ],
+        "description": "",
+        "color": "teal"
+    },
+    {
+        "name": "The Seasons",
+        "tags": [
+            "summer",
+            "winter",
+            "autumn",
+            "spring"
+        ],
+        "description": "",
+        "color": "green"
+    }
+]
