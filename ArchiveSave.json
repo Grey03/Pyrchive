@@ -1,27 +1,459 @@
 [
     {
         "ID": 0,
-        "title": "Alone",
+        "title": "Sad Boy",
         "creator": "Grey",
         "tags": [
             "1boy",
-            "alone",
+            "anime",
+            "lonely",
             "rubble",
+            "ruins",
             "sad"
         ],
         "data": "C:/Users/Grey/Downloads/00005.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 00:18:48.438074"
+        "upload_date": "2023-01-16 01:27:34.500852"
     },
     {
         "ID": 1,
-        "title": "Video Test",
+        "title": "Miata AI1",
         "creator": "Grey",
         "tags": [
-            "cat"
+            "anime",
+            "mazda",
+            "miata"
         ],
-        "data": "G:/Memes/Normal Junk/Videos/Really Good/wholesome/Cats/3HrRcBBiB5.mp4",
+        "data": "C:/Users/Grey/Downloads/00278-2703256667-tunnel, night___.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 00:21:35.238892"
+        "upload_date": "2023-01-16 01:28:11.165425"
+    },
+    {
+        "ID": 2,
+        "title": "Miata AI 2",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "mazda",
+            "miata"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmpaecmf241.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:28:47.110999"
+    },
+    {
+        "ID": 3,
+        "title": "End of the world",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "alone",
+            "anime"
+        ],
+        "data": "C:/Users/Grey/Downloads/00277-98437983-the end of time___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:29:06.962594"
+    },
+    {
+        "ID": 4,
+        "title": "Another Sad boy",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "alone",
+            "anime",
+            "forest",
+            "sad"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmpa2kvklh2.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:29:26.776046"
+    },
+    {
+        "ID": 5,
+        "title": "Another Sad boy",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "alone",
+            "anime",
+            "forest",
+            "sad"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmpnhizonj8.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:29:31.964354"
+    },
+    {
+        "ID": 6,
+        "title": "Fantasy",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "fantasy",
+            "scenery"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmprh27d393.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:15.209224"
+    },
+    {
+        "ID": 7,
+        "title": "Fantasy",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "fantasy",
+            "scenery"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmpglgz725s.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:18.297288"
+    },
+    {
+        "ID": 8,
+        "title": "Fantasy",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "fantasy",
+            "scenery"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmp3v1utqx4.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:20.945555"
+    },
+    {
+        "ID": 9,
+        "title": "Fantasy",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "fantasy",
+            "scenery"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmp60acn81i.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:25.584944"
+    },
+    {
+        "ID": 10,
+        "title": "Fantasy",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "cat",
+            "fantasy",
+            "scenery"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmpr5alsjt9.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:31.776337"
+    },
+    {
+        "ID": 11,
+        "title": "Another sad boy",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "anime",
+            "lonely",
+            "rubble",
+            "ruins",
+            "sad"
+        ],
+        "data": "C:/Users/Grey/Downloads/tmp5wuf50ta.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:52.186553"
+    },
+    {
+        "ID": 12,
+        "title": "Another sad boy",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "anime",
+            "lonely",
+            "rubble",
+            "ruins",
+            "sad"
+        ],
+        "data": "C:/Users/Grey/Downloads/00276-3281161863-loneliness, s___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:32:58.087448"
+    },
+    {
+        "ID": 13,
+        "title": "Yandere",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "blood",
+            "blood_on_clothes",
+            "yandere"
+        ],
+        "data": "C:/Users/Grey/Downloads/00268-3561708564-yandere girl____.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:33:31.261384"
+    },
+    {
+        "ID": 14,
+        "title": "spidey",
+        "creator": "Grey",
+        "tags": [
+            "cat",
+            "spider-man"
+        ],
+        "data": "C:/Users/Grey/Downloads/1817190_screenshots_20221208230613_1.jpg",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:33:51.676487"
+    },
+    {
+        "ID": 15,
+        "title": "spidey",
+        "creator": "Grey",
+        "tags": [
+            "cat",
+            "spider-man"
+        ],
+        "data": "C:/Users/Grey/Downloads/SPIDEY CAT.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:34:00.093882"
+    },
+    {
+        "ID": 16,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00004-2851025900-Yuno Gasai as___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:00.420756"
+    },
+    {
+        "ID": 17,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00005-3342339069-((Yuno Gasai)___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:06.632038"
+    },
+    {
+        "ID": 18,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00006-2760346173-Yuno Gasai fr___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:09.157623"
+    },
+    {
+        "ID": 19,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00007-69-Alien Girl, Blood, ya___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:11.721969"
+    },
+    {
+        "ID": 20,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00008-2117004646-Alien Girl, B___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:14.134653"
+    },
+    {
+        "ID": 21,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00017-1651930051-1girl,robot g___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:18.949164"
+    },
+    {
+        "ID": 22,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "2girls",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00013-3445523557-hornet from h___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:29.096326"
+    },
+    {
+        "ID": 24,
+        "title": "Yandere girl",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/Yandere/00263-1833960877-stalker girl,___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:43:51.906301"
+    },
+    {
+        "ID": 25,
+        "title": "Destroyed CIty",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "rubble",
+            "ruins",
+            "scenery"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/00275-3382481705-scenery, shib___.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:44:37.056021"
+    },
+    {
+        "ID": 26,
+        "title": "Destroyed CIty",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "rubble",
+            "ruins",
+            "scenery"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/tmp0_sn44xe.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:44:40.677456"
+    },
+    {
+        "ID": 27,
+        "title": "Destroyed CIty",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "rubble",
+            "ruins",
+            "scenery"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/tmpl1mzj018.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:44:43.631195"
+    },
+    {
+        "ID": 28,
+        "title": "Destroyed CIty",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "scenery"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/tmpu_enrzrr.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:44:52.555784"
+    },
+    {
+        "ID": 29,
+        "title": "Destroyed CIty",
+        "creator": "Grey",
+        "tags": [
+            "anime",
+            "scenery"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/tmpy9cxpox_.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:44:55.361024"
+    },
+    {
+        "ID": 30,
+        "title": "DDIM",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/DDIM.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:46:17.221996"
+    },
+    {
+        "ID": 31,
+        "title": "DPM Adaptive",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/DPM adaptive.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 01:46:24.921270"
+    },
+    {
+        "ID": 32,
+        "title": "DPM Fast",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/DPM fast.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 03:29:26.850380"
+    },
+    {
+        "ID": 33,
+        "title": "DPM2 Karras",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/DPM2 Karras.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 03:32:44.941712"
+    },
+    {
+        "ID": 35,
+        "title": "DPM2",
+        "creator": "Grey",
+        "tags": [
+            "1girl",
+            "anime",
+            "yandere"
+        ],
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/DPM2.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 04:16:35.367013"
     }
 ]

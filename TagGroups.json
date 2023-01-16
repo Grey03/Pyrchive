@@ -1,24 +1,13 @@
 [
     {
-        "name": "The Boys",
+        "name": "Favorites",
         "tags": [
-            "christian",
-            "cameron",
-            "grey",
-            "ian"
+            "yandere",
+            "miata",
+            "mazda"
         ],
         "description": "",
-        "color": "teal"
-    },
-    {
-        "name": "The Seasons",
-        "tags": [
-            "summer",
-            "winter",
-            "autumn",
-            "spring"
-        ],
-        "description": "",
-        "color": "green"
+        "color": "hotpink"
     }
+
 ]

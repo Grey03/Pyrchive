@@ -72,37 +72,43 @@ class ArchiveManager:
             #return json.dumps(dictToBytes, indent=4)
             #return json.dumps(dictionary, sort_keys=True, indent=4)
 
-    def filterFiles(self, filterList, start, requestedFileCount):
+    def filterFiles(self, filterList, start, requestedFileCount): 
+        if requestedFileCount < 0:
+            requestedFileCount = len(self.archiveList)            
+        
         filterList = [*set(filterList)]
         try:
             filterList.remove("")
         except:
             pass
         finalFiles = []
-        for file in self.archiveList:
-            if file.ID < start: pass
+        for i in range(start, len(self.archiveList)):
+            file = self.archiveList[i]
             if ArchiveManager.ArchiveEntry.filter(file, filterList):
                 finalFiles.append(file.ID)
                 if len(finalFiles) == requestedFileCount:
                     return finalFiles
         return finalFiles
-    def add_Entry(self, entry, *position):
+    def add_Entry(self, entry):
         if entry.ID == -1:
             entry.ID = self.get_ID()
-        if position == int:
-            try:
-                self.archiveList.pop(position)
-            except:
-                pass
-            self.archiveList.insert(position, entry)
-        else:
-            try:
-                self.archiveList.pop(entry.ID)
-            except:
-                pass
-            self.archiveList.insert(entry.ID, entry)
+        try:
+            self.archiveList[entry.ID] = entry
+        except:
+            self.archiveList.append(entry)
     def get_ID(self):
-        return (len(self.archiveList))
+        for i in range(len(self.archiveList)):
+            if i != self.archiveList[i].ID:
+                return i
+        return len(self.archiveList)
+    def delete_entry(self, fileID):
+        for i in range(len(self.archiveList)):
+            if self.archiveList[i].ID == fileID:
+                self.archiveList.pop(i)
+                return True
+        return False
+
+
     def get_file(self, fileID):
         return self.archiveList[fileID]
     def add_TagGroup(self, TagGroup):
