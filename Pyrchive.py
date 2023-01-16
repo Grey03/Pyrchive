@@ -93,7 +93,7 @@ class ArchiveManager:
         if entry.ID == -1:
             entry.ID = self.get_ID()
         try:
-            self.archiveList[entry.ID] = entry
+            self.archiveList.insert(entry.ID,entry)
         except:
             self.archiveList.append(entry)
     def get_ID(self):

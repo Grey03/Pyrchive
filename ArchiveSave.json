@@ -12,8 +12,8 @@
             "sad"
         ],
         "data": "C:/Users/Grey/Downloads/00005.png",
-        "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:27:34.500852"
+        "misc_notes": "\n\n\n",
+        "upload_date": "2023-01-16 16:10:53.991024"
     },
     {
         "ID": 1,
@@ -313,71 +313,77 @@
         "upload_date": "2023-01-16 01:43:29.096326"
     },
     {
-        "ID": 24,
-        "title": "Yandere girl",
+        "ID": 23,
+        "title": "Another anime",
         "creator": "Grey",
         "tags": [
             "1girl",
-            "anime",
+            "ai",
             "yandere"
         ],
-        "data": "G:/_AI Art/Stable Diffusion/Yandere/00263-1833960877-stalker girl,___.png",
+        "data": "G:/_AI Art/Stable Diffusion/AI Comparison/Sampling Methods Test/Heun.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:43:51.906301"
+        "upload_date": "2023-01-16 16:13:58.544872"
+    },
+    {
+        "ID": 24,
+        "title": "TrollFace",
+        "creator": "Grey",
+        "tags": [
+            "1boy",
+            "meme"
+        ],
+        "data": "C:/Users/Grey/Downloads/Trollface_non-free.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 17:19:34.444300"
     },
     {
         "ID": 25,
-        "title": "Destroyed CIty",
-        "creator": "Grey",
+        "title": "Troll Face",
+        "creator": "unknown",
         "tags": [
-            "anime",
-            "rubble",
-            "ruins",
-            "scenery"
+            "1boy",
+            "meme"
         ],
-        "data": "G:/_AI Art/Stable Diffusion/00275-3382481705-scenery, shib___.png",
+        "data": "C:/Users/Grey/Downloads/Trollface_non-free.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:44:37.056021"
+        "upload_date": "2023-01-16 17:20:41.281377"
     },
     {
         "ID": 26,
-        "title": "Destroyed CIty",
-        "creator": "Grey",
+        "title": "Troll Face",
+        "creator": "unknown",
         "tags": [
-            "anime",
-            "rubble",
-            "ruins",
-            "scenery"
+            "1boy",
+            "meme"
         ],
-        "data": "G:/_AI Art/Stable Diffusion/tmp0_sn44xe.png",
+        "data": "C:/Users/Grey/Downloads/Trollface_non-free.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:44:40.677456"
+        "upload_date": "2023-01-16 17:21:35.912449"
     },
     {
         "ID": 27,
-        "title": "Destroyed CIty",
-        "creator": "Grey",
+        "title": "AnotherTroll",
+        "creator": "unknown",
         "tags": [
-            "anime",
-            "rubble",
-            "ruins",
-            "scenery"
+            "1boy",
+            "meme"
         ],
-        "data": "G:/_AI Art/Stable Diffusion/tmpl1mzj018.png",
+        "data": "C:/Users/Grey/Downloads/Trollface_non-free.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:44:43.631195"
+        "upload_date": "2023-01-16 17:24:09.097298"
     },
     {
         "ID": 28,
-        "title": "Destroyed CIty",
-        "creator": "Grey",
+        "title": "Grey",
+        "creator": "unknown",
         "tags": [
-            "anime",
-            "scenery"
+            "1boy",
+            "meme"
         ],
-        "data": "G:/_AI Art/Stable Diffusion/tmpu_enrzrr.png",
+        "data": "C:/Users/Grey/Downloads/Trollface_non-free.png",
         "misc_notes": "\n",
-        "upload_date": "2023-01-16 01:44:52.555784"
+        "upload_date": "2023-01-16 17:30:27.948199"
     },
     {
         "ID": 29,

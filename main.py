@@ -15,7 +15,7 @@ class App(customtkinter.CTk):
 
 
         self.title("Tarchive")
-        self.geometry(f"{1080}x{800}")
+        self.geometry(f"{1135}x{925}")
         
         self.Archive = ArchiveManager()
         self.pageIndex = 0
@@ -67,7 +67,7 @@ class App(customtkinter.CTk):
         self.currentPageLabel.grid(row=0, column=1)
         self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next", command=lambda: self.nextPage())
         self.pageRight.grid(row=0, column=2)
-        self.pageButtonFrame.pack(fill="both")
+        self.pageButtonFrame.pack()
     def uploadWindow(self):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
@@ -379,29 +379,32 @@ class App(customtkinter.CTk):
         #WORK ON THIS GET IT GOOD, MAYBE USE ARRAYS IN FRAMES?!
         for widgets in self.imageFrame.winfo_children():
             widgets.destroy()
-        y = 0
-        x=0
-        images = {}
-        for i in (fileIDs):
-            Archive = self.Archive.archiveList
-            imageTitle = Archive[i].title
-            imageTitle =  (imageTitle[0:30])
-            imageName =(f"{imageTitle} | {Archive[i].ID}")
+        frameWidth = (math.ceil(len(fileIDs)/6))
+        frames = {}
+        for frameCount in range(frameWidth):
+            frames[frameCount] = customtkinter.CTkFrame(self.imageFrame, fg_color="transparent",height=175)
+            frames[frameCount].pack()
+            images ={}
+            for id in range(frameCount*6, (frameCount+1)*6):
+                fileID = fileIDs[id]
+                file = self.Archive.archiveList[int(fileID)]
 
-            images[i] = customtkinter.CTkButton(master=self.imageFrame, text=imageName, width=100, height=100, command=lambda e=i: self.fileWindow(Archive[e].ID))
-            #If images are on randomly some buttons don't have images and videos do not appear, we trie .endswith which then causes EVERY SINGLE ONE TO NOT WORK
-            #if file.data.endswith(".mp4") or file.data.endswith(".avi") or file.data.endswith(".mov"):
-            #    continue
-            #else:
-            #    theImage = customtkinter.CTkImage(dark_image=Image.open(r"{}".format(file.data)), size=(75,75))
-            #    images[i].configure(image=theImage)
-            images[i].grid(row=y, column=x, padx=10, pady=10)
-            #images[i].grid_propagate(False)
+                if (len(file.title) > 12): formatedTitle = (f"{file.title[0:12]}... | {file.ID}")
+                else: formatedTitle = (f"{file.title[0:15]} | {file.ID}")
 
-            x+=1
-            if x >= 6:
-                x = 0
-                y+=1
+                images[fileID] = customtkinter.CTkButton(master=frames[frameCount], text=formatedTitle, font=("Roboto", 16), width=150, height=150, command=lambda e=fileID: self.fileWindow(self.Archive.archiveList[e].ID))
+                images[fileID].grid(row=0, column=id, padx=5, pady=5)
+            
+
+        
+        """
+            images = {}
+            for n in range(5):
+                Archive = self.Archive.archiveList
+                imageName =(f"{Archive[i].title[0:30]} | {Archive[i].ID}")
+
+                #images[i] = customtkinter.CTkButton(master=self.imageFrame, text=imageName, width=100, height=100, command=lambda e=i: self.fileWindow(Archive[e].ID))
+        """
     def openImage(self, fileID):
         os.startfile(self.Archive.archiveList[fileID].data)
     def tag_click(self, tag):
@@ -432,18 +435,14 @@ class App(customtkinter.CTk):
         except:
             pass
     def previousPage(self):
-        print (self.pageIndex)
         if self.pageIndex > 0:
             self.pageIndex -= 1
             self.reloadpage(self.pageIndex * 30)
-        print (self.pageIndex)
     def nextPage(self):
-        print (self.pageIndex)
         pagetotal = math.ceil(len(self.Archive.filterFiles(filterList=self.get_search(), start=self.pageIndex, requestedFileCount=-1))/30)
         if self.pageIndex + 1 < pagetotal:
             self.pageIndex += 1
             self.reloadpage(self.pageIndex * 30)
-        print (self.pageIndex)
             
 
 
