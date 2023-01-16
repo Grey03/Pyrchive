@@ -1,8 +1,7 @@
-#from archivebase import DataBaseEntry
 import customtkinter, os, math, random
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
-from PIL import Image
+#from PIL import Image
 
 
 customtkinter.set_appearance_mode("System")
@@ -27,8 +26,8 @@ class App(customtkinter.CTk):
         self.settingsButton.pack(side="left", padx=5,pady=5)
         self.uploadButton=customtkinter.CTkButton(self.optionButtonsFrame,text="Upload", command=lambda : self.uploadWindow())
         self.uploadButton.pack(side="left", padx=5,pady=5)
-        self.savedsearchesButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Saved Searches")
-        self.savedsearchesButton.pack(side="left", padx=5,pady=5)
+        self.savedSearchesDropdown=customtkinter.CTkOptionMenu(self.optionButtonsFrame, values=["Saved Searches: "], command=lambda event: self.saved_search_click(event))
+        self.savedSearchesDropdown.pack(side="left", padx=5,pady=5)
         self.randomButton=customtkinter.CTkButton(self.optionButtonsFrame, text= "Random", command= lambda : self.random_tag())
         self.randomButton.pack(side="left",padx=5,pady=5)
         self.refreshButton=customtkinter.CTkButton(self.optionButtonsFrame, text=r"↻", width=10, height=10, command= lambda : self.reloadpage(self.pageIndex * 30))
@@ -39,8 +38,8 @@ class App(customtkinter.CTk):
 
         #Search Frame
         self.searchFrame = customtkinter.CTkFrame(self)
-        self.favoriteButton = customtkinter.CTkButton(self.searchFrame, text="Save",width=50)
-        self.favoriteButton.pack(side="left")
+        self.saveButton = customtkinter.CTkButton(self.searchFrame, text="Save",width=50, command = lambda : self.save_search_click())
+        self.saveButton.pack(side="left")
         self.searchBar= customtkinter.CTkEntry(self.searchFrame,placeholder_text="Search")
         self.searchBar.bind("<Return>", command=lambda a : self.search_click(a))
         self.searchBar.pack(padx=5,side="left", fill="x",expand=True)
@@ -393,6 +392,8 @@ class App(customtkinter.CTk):
                 else: formatedTitle = (f"{file.title[0:15]} | {file.ID}")
 
                 images[fileID] = customtkinter.CTkButton(master=frames[frameCount], text=formatedTitle, font=("Roboto", 16), width=150, height=150, command=lambda e=fileID: self.fileWindow(self.Archive.archiveList[e].ID))
+                #icon = customtkinter.CTkImage(dark_image=Image.open(file.data), size=(50,50))
+                #images[fileID].configure(image=icon)
                 images[fileID].grid(row=0, column=id, padx=5, pady=5)
             
 
@@ -408,25 +409,41 @@ class App(customtkinter.CTk):
     def openImage(self, fileID):
         os.startfile(self.Archive.archiveList[fileID].data)
     def tag_click(self, tag):
-        self.searchBar.delete(0, "end")
-        self.searchBar.insert("end", tag)
+        self.searchBar.insert("end", " " + tag)
         self.search_click()
     def search_click(self, *args):
         self.reloadpage(0)
     def get_search(self):
         return self.searchBar.get().split(" ")
+    def save_search_click(self):
+        #when you click save not the drop down
+        newSave = ([*set(self.searchBar.get().split(" "))])
+        try: newSave.remove("")
+        except: pass
+        self.Archive.savedSearches.append(newSave)
+        self.Archive.saveSavesToJson()
+        self.reloadpage(0)
+    def saved_search_click(self, search):
+        #when you click the drop down not the save
+        self.searchBar.delete(0, "end")
+        self.searchBar.insert("end", search)
+        self.search_click()
     def random_tag(self):
         self.searchBar.delete(0, "end")
         randomItem =random.choice(self.Archive.archiveList)
         randomTag =random.choice(randomItem.tags)
         self.searchBar.insert("end", randomTag)
-        self.get_search()
         self.search_click()
     def reloadpage(self, startFrom):
         self.fileCountLabel.configure(text=f"Total File Count: {len(self.Archive.archiveList)}")
 
         pagetotal = math.ceil(len(self.Archive.filterFiles(filterList=self.get_search(), start=self.pageIndex, requestedFileCount=-1))/30)
-        self.currentPageLabel.configure(text=f"Page: {self.pageIndex+1} of {pagetotal}")
+        self.currentPageLabel.configure(text=f" Page: {self.pageIndex+1} of {pagetotal} ")
+        saves = self.Archive.savedSearches
+        finalSaveList=[]
+        for save in saves:
+            finalSaveList.append(" ".join(save))
+        self.savedSearchesDropdown.configure(values=finalSaveList)
 
         try:
             currentfiles = (self.Archive.filterFiles(filterList=self.get_search(), start=startFrom, requestedFileCount=30))
@@ -450,6 +467,7 @@ class App(customtkinter.CTk):
 app=App()
 app.Archive.loadArchiveFromJson()
 app.Archive.loadTagGroupsFromJson()
+app.Archive.loadSavesFromJson()
 App.reloadpage(app, 0)
 
 

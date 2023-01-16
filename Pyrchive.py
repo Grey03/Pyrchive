@@ -5,6 +5,7 @@ class ArchiveManager:
     def __init__(self):
         self.archiveList = []
         self.tagGroupList = []
+        self.savedSearches = []
     class TagGroup:
         def __init__(self):
             self.name = ""
@@ -188,6 +189,16 @@ class ArchiveManager:
         json_string = json.dumps([ob.__dict__() for ob in self.tagGroupList], indent=4, ensure_ascii=False)
         with open(fileLocation + '\TagGroups.json', 'w') as f:
             f.write(json_string)
+            f.close()
+    def loadSavesFromJson(self):
+        fileLocation = str(Path.cwd())
+        with open(fileLocation + '\SavedSearches.json', 'r') as f:
+            data = json.load(f)
+            self.savedSearches = data
+    def saveSavesToJson(self):
+        fileLocation = str(Path.cwd())
+        with open(fileLocation + '\SavedSearches.json', 'w') as f:
+            f.write(json.dumps(self.savedSearches, indent=4, ensure_ascii=False))
             f.close()
                 
                 
