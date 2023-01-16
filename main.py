@@ -1,6 +1,7 @@
 import customtkinter, os, math, random
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
+from tktooltip import ToolTip
 #from PIL import Image
 
 
@@ -332,6 +333,31 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Settings")
+
+        settingsLabel = customtkinter.CTkLabel(window, text="Settings", font=("Roboto", 24, "bold"))
+        settingsLabel.grid(row=0, column=0, sticky="w", padx=5, pady=5)
+
+        openFile = customtkinter.CTkCheckBox(window, text="Open Files Immediately")
+        openFile.grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        ToolTip(openFile, msg="Opens the file immediatly when clicking a file in the browser")
+
+        openMenu = customtkinter.CTkCheckBox(window, text="Open Files' Menu")
+        openMenu.grid(row=2, column=0, sticky="w", padx=5, pady=5)
+        ToolTip(openMenu, msg="Opens the file's menu when clicking a file in the browser")
+
+        nonLocalFiles = customtkinter.CTkCheckBox(window, text="Non-local Files")
+        nonLocalFiles.grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        ToolTip(nonLocalFiles, msg="Uses file locations that are not based on the file folder")
+
+
+        tagGroupEditorButton = customtkinter.CTkButton(window, text="Tag Group Editor")
+        tagGroupEditorButton.grid(row=4, column=0, sticky="w", padx=5, pady=5)
+
+        savedSearchEditorButton = customtkinter.CTkButton(window, text="Saved Search Editor")
+        savedSearchEditorButton.grid(row=4, column=1, sticky="w", padx=5, pady=5)
+
+
+
         
         window.mainloop()
     #42 tags fit
@@ -461,14 +487,10 @@ class App(customtkinter.CTk):
             self.pageIndex += 1
             self.reloadpage(self.pageIndex * 30)
             
-
-
-
 app=App()
 app.Archive.loadArchiveFromJson()
 app.Archive.loadTagGroupsFromJson()
 app.Archive.loadSavesFromJson()
 App.reloadpage(app, 0)
-
 
 app.mainloop()

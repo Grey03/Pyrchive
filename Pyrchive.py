@@ -6,6 +6,7 @@ class ArchiveManager:
         self.archiveList = []
         self.tagGroupList = []
         self.savedSearches = []
+        #self.LocalFiles = True
     class TagGroup:
         def __init__(self):
             self.name = ""
