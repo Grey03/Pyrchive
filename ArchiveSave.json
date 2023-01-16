@@ -12,5 +12,16 @@
         "data": "C:/Users/Grey/Downloads/00005.png",
         "misc_notes": "\n",
         "upload_date": "2023-01-16 00:18:48.438074"
+    },
+    {
+        "ID": 1,
+        "title": "Video Test",
+        "creator": "Grey",
+        "tags": [
+            "cat"
+        ],
+        "data": "G:/Memes/Normal Junk/Videos/Really Good/wholesome/Cats/3HrRcBBiB5.mp4",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 00:21:35.238892"
     }
 ]

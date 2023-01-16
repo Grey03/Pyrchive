@@ -140,7 +140,7 @@ class App(customtkinter.CTk):
         file = self.Archive.archiveList[fileID]
 
         if os.path.exists(file.data):
-            os.system(file.data)
+            os.system('"' + file.data + '"')
         else:
             messagebox.showerror("Error", f"Error opening file {file.data}, file may not exist or has been deleted/moved.")
 
@@ -183,16 +183,16 @@ class App(customtkinter.CTk):
 
 
         def import_data(mainWindow):
-            titleBox.insert("end", newEntry.title)
+            titleBox.insert("end", file.title)
             titleBox.configure(state="readonly")
-            creatorBox.insert("end", newEntry.creator)
+            creatorBox.insert("end", file.creator)
             creatorBox.configure(state="readonly")
-            tags = ", ".join(str(e) for e in newEntry.tags)
+            tags = ", ".join(str(e) for e in file.tags)
             tagsEntry.insert("end", tags)
             tagsEntry.configure(state="disabled")
-            notesEntry.insert("end", newEntry.misc_notes)
+            notesEntry.insert("end", file.misc_notes)
             notesEntry.configure(state="disabled")
-            IDEntry.insert("end", newEntry.ID)
+            IDEntry.insert("end", file.ID)
             IDEntry.configure(state="readonly")
 
 
