@@ -31,7 +31,7 @@ class ArchiveManager:
         def addTag(self, tags):
             if type(tags) != list:
                 tags = [tags]
-            if type(tags) == list:
+            if  len(tags) > 0:
                 for tag in tags:
                     if str(tag) not in self.tags:
                         self.tags.append(str(tag).lower())
@@ -87,6 +87,8 @@ class ArchiveManager:
                     return finalFiles
         return finalFiles
     def add_Entry(self, entry, *position):
+        if entry.ID == -1:
+            entry.ID = self.get_ID()
         if position == int:
             try:
                 self.archiveList.pop(position)
@@ -140,20 +142,23 @@ class ArchiveManager:
         print (self.archiveList[0].tags)
     def loadArchiveFromJson(self):
         fileLocation = str(Path.cwd())
-        with open(fileLocation + '\ArchiveSave.json', 'r') as f:
-            data = json.load(f)
-            for item in data:
-                loadedFile = ArchiveManager.ArchiveEntry()
-                loadedFile.ID = item['ID']
-                loadedFile.title = item['title']
-                loadedFile.creator = item['creator']
-                loadedFile.addTag(item['tags'])
-                loadedFile.data = r"{}".format(item['data'])
-                loadedFile.misc_notes = item['misc_notes']
-                loadedFile.upload_date = item['upload_date']
-                self.archiveList.append(loadedFile)
-            #self.tagGroupList = data['tagGroupList']
-            f.close
+        try:
+            with open(fileLocation + '\ArchiveSave.json', 'r') as f:
+                data = json.load(f)
+                for item in data:
+                    loadedFile = ArchiveManager.ArchiveEntry()
+                    loadedFile.ID = item['ID']
+                    loadedFile.title = item['title']
+                    loadedFile.creator = item['creator']
+                    loadedFile.addTag(item['tags'])
+                    loadedFile.data = r"{}".format(item['data'])
+                    loadedFile.misc_notes = item['misc_notes']
+                    loadedFile.upload_date = item['upload_date']
+                    self.archiveList.append(loadedFile)
+                #self.tagGroupList = data['tagGroupList']
+                f.close
+        except:
+            pass
     def saveArchiveToJson(self):
         fileLocation = str(Path.cwd())
         json_string = json.dumps([ob.__dict__() for ob in self.archiveList], indent=4, ensure_ascii=False)

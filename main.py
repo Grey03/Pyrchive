@@ -1,11 +1,14 @@
 #from archivebase import DataBaseEntry
 import customtkinter, os, random
 from Pyrchive import ArchiveManager
+from tkinter import filedialog, messagebox
+
+
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
 
-class App(customtkinter.CTk):
+class App(customtkinter.CTk):         
     def __init__(self):
         super().__init__()
 
@@ -22,6 +25,7 @@ class App(customtkinter.CTk):
         self.settingsButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Settings")
         self.settingsButton.pack(side="left", padx=5,pady=5)
         self.uploadButton=customtkinter.CTkButton(self.optionButtonsFrame,text="Upload")
+        self.uploadButton.bind("<Button-1>", command=self.uploadWindow)
         self.uploadButton.pack(side="left", padx=5,pady=5)
         self.savedsearchesButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Saved Searches")
         self.savedsearchesButton.pack(side="left", padx=5,pady=5)
@@ -59,9 +63,145 @@ class App(customtkinter.CTk):
         self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next")
         self.pageRight.pack(side="right")
         self.pageButtonFrame.pack(fill="both")
+    def uploadWindow(self, event):
+        window = customtkinter.CTkToplevel(self)
+        window.resizable(False,False)
+        window.title("Upload File")
+
+        global newData
+        newData = ""
+
+        def update_selected_file(file):
+            global newData
+            newData = file
+
+        def select_file():
+             update_selected_file(filedialog.askopenfilename(filetypes=[("All Files", "*.*")],))
+
+        def uploadEntry(self, title, creator, tags, notes):
+            global newData
+            if (len(tags.get("0.0", "end").split(" "))) <= 0:
+                return messagebox.showerror("Please enter at least one tag")
+            if title.get() == "": return messagebox.showerror("Error", "Title cannot be empty")
+            if creator.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
+            if os.path.exists(newData) != True: return messagebox.showerror("Error", "File does not exist")
+            newEntry = ArchiveManager.ArchiveEntry()
+            newEntry.title = title.get()
+            newEntry.creator = creator.get()
+            tags = tags.get("0.0", "end").split(" ")
+            tags[len(tags)-1] = tags[len(tags)-1].replace("\n", "")
+            newEntry.addTag(tags)
+            newEntry.misc_notes = notes.get("0.0", "end")
+            newEntry.data = newData
+
+            self.Archive.add_Entry(newEntry)
+            self.Archive.saveArchiveToJson()
+
+            #window.destroy()
+
+            
+
+        
+
+
+        titleLabel = customtkinter.CTkLabel(window, text="Title:")
+        titleBox = customtkinter.CTkEntry(master=window, placeholder_text="Title")
+        creatorLabel = customtkinter.CTkLabel(window, text="Creator:")
+        creatorBox = customtkinter.CTkEntry(master=window, placeholder_text="Creator")
+        tagsLabel = customtkinter.CTkLabel(master=window, text="Tags")
+        tagsEntry = customtkinter.CTkTextbox(master=window)
+        openFileDialog = customtkinter.CTkButton(master=window, text="Upload File", command=select_file)
+        notesLabel = customtkinter.CTkLabel(master=window, text="Notes")
+        notesEntry = customtkinter.CTkTextbox(master=window)
+
+        saveButton = customtkinter.CTkButton(master=window, text="Save", command=lambda: uploadEntry(self=self,title=titleBox, creator=creatorBox, tags=tagsEntry, notes=notesEntry,))
+
+        exitButton = customtkinter.CTkButton(master=window, text="Exit")
+        
+        titleLabel.grid(row=0, column=0, sticky="w", padx=5,pady=5)
+        titleBox.grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        creatorLabel.grid(row=2, column=0, sticky="w", padx=5, pady=5)
+        creatorBox.grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        tagsLabel.grid(row=4, column=0, sticky="w", padx=5, pady=5)
+        tagsEntry.grid(row=5, column=0, sticky="w", padx=5, pady=5)
+        notesLabel.grid(row=4, column=1, sticky="w", padx=5, pady=5)
+        notesEntry.grid(row=5, column=1, sticky="w", padx=5, pady=5)
+
+        openFileDialog.grid(row=1, column=1, sticky="w", padx=5, pady=5)
+        saveButton.grid(row=2, column=1, sticky="w", padx=5, pady=5)
+        exitButton.grid(row=3, column=1, sticky="w", padx=5, pady=5)
+
+        window.mainloop()
+    def fileWindow(self, fileID,):
+        window = customtkinter.CTkToplevel(self)
+        window.resizable(False,False)
+        window.title("Upload File")
+
+        file = self.Archive.archiveList[fileID]
+
+        if os.path.exists(file.data):
+            os.system(file.data)
+        else:
+            messagebox.showerror("Error", f"Error opening file {file.data}, file may not exist or has been deleted/moved.")
+
+        titleLabel = customtkinter.CTkLabel(window, text="Title:")
+        titleBox = customtkinter.CTkEntry(master=window, placeholder_text="Title")
+        creatorLabel = customtkinter.CTkLabel(window, text="Creator:")
+        creatorBox = customtkinter.CTkEntry(master=window, placeholder_text="Creator")
+        tagsLabel = customtkinter.CTkLabel(master=window, text="Tags")
+        tagsEntry = customtkinter.CTkTextbox(master=window)
+        notesLabel = customtkinter.CTkLabel(master=window, text="Notes")
+        notesEntry = customtkinter.CTkTextbox(master=window)
+
+        IDLabel = customtkinter.CTkLabel(master=window, text="ID:")
+        IDEntry = customtkinter.CTkEntry(master=window, placeholder_text="ID")
+
+        def edit():
+            print ("Edit")
+            window.quit()
+            return
+
+        editButton = customtkinter.CTkButton(master=window, text="Edit", command=edit)
+        #editButton.bind("<Button-1>", edit)
 
 
 
+        
+        titleLabel.grid(row=0, column=0, sticky="w", padx=5,pady=5)
+        titleBox.grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        creatorLabel.grid(row=2, column=0, sticky="w", padx=5, pady=5)
+        creatorBox.grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        tagsLabel.grid(row=4, column=0, sticky="w", padx=5, pady=5)
+        tagsEntry.grid(row=5, column=0, sticky="w", padx=5, pady=5)
+        notesLabel.grid(row=4, column=1, sticky="w", padx=5, pady=5)
+        notesEntry.grid(row=5, column=1, sticky="w", padx=5, pady=5)
+
+        IDLabel.grid(row=1, column=1, sticky="w", padx=5, pady=5)
+        IDEntry.grid(row=2, column=1, sticky="w", padx=5, pady=5)
+        editButton.grid(row=3, column=1, sticky="w", padx=5, pady=5)
+
+
+
+        def import_data(mainWindow):
+            titleBox.insert("end", newEntry.title)
+            titleBox.configure(state="readonly")
+            creatorBox.insert("end", newEntry.creator)
+            creatorBox.configure(state="readonly")
+            tags = ", ".join(str(e) for e in newEntry.tags)
+            tagsEntry.insert("end", tags)
+            tagsEntry.configure(state="disabled")
+            notesEntry.insert("end", newEntry.misc_notes)
+            notesEntry.configure(state="disabled")
+            IDEntry.insert("end", newEntry.ID)
+            IDEntry.configure(state="readonly")
+
+
+        import_data(window)
+
+        window.mainloop()
+
+
+        
     #42 tags fit
     def refreshTags(self, archive, tagsToShow, maxTags):
         for widgets in self.tagList.winfo_children():
@@ -109,16 +249,14 @@ class App(customtkinter.CTk):
         x=0
         images = {}
         for i in range(len(fileIDs)):
-            images[i] = customtkinter.CTkButton(master=self.imageFrame, text=str(fileIDs[i]), width=100, height=100, command=lambda e = i: self.openImage(e))
+            images[i] = customtkinter.CTkButton(master=self.imageFrame, text=str(self.Archive.archiveList[fileIDs[i]].title), width=100, height=100, command=lambda e = i: self.fileWindow(e))
             images[i].grid(row=y, column=x, padx=10, pady=10)
             x+=1
             if x >= 6:
                 x = 0
                 y+=1
-
     def openImage(self, fileID):
         os.startfile(self.Archive.archiveList[fileID].data)
-  
     def tag_click(self, tag):
         self.searchBar.insert("end", tag+" ")
     def search_click(self):
@@ -152,37 +290,6 @@ class App(customtkinter.CTk):
 
         #for tag in tagsToShow:
 
-"""
-app = App()
-the_archive = ArchiveManager()
-#tags=["tag1","tag2","tag3","tag4","tag5","tag6","tag7"]
-for i in range(1000):
-    tempfile = ArchiveManager.ArchiveEntry()
-    id = len(the_archive.archiveList)    
-    tempfile.ID = id
-    tempfile.title = "title " + str(id)
-    tempfile.creator = "creator" + str(id)
-    tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
-    tempfile.addTag(random.choice(["grey","ian","cameron","christian"]))
-    tempfile.addTag(random.randint(2006,2023))
-    tempfile.addTag(random.choice(["summer","autumn","winter","spring"]))
-    tempfile.data = "data" + str(id)
-    tempfile.misc_notes = "misc_notes" + str(id)
-
-    the_archive.archiveList.append(tempfile)
-
-tempTagGroup = ArchiveManager.TagGroup()
-tempTagGroup.name = "The Boys"
-tempTagGroup.color = "teal"
-tempTagGroup.tags = ["christian","cameron","grey","ian"]
-
-the_archive.tagGroupList.append(tempTagGroup)
-
-
-app.refreshTags(the_archive, app.averageTags(the_archive.archiveList, 42), 42)
-app.mainloop()
-
-"""
 
 app=App()
 app.Archive.loadArchiveFromJson()
