@@ -2,6 +2,7 @@ import customtkinter, os, math, random
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
+from pathlib import Path
 #from PIL import Image
 
 
@@ -334,27 +335,53 @@ class App(customtkinter.CTk):
         window.resizable(False,False)
         window.title("Settings")
 
+        def openFileChange(self, switch):
+            self.Archive.openFilesImmediately = bool(switch.get())
+            self.Archive.saveSettingsToJson()
+        def openMenuChange(self, switch):
+            self.Archive.openMenuImmediately = bool(switch.get())
+            self.Archive.saveSettingsToJson()
+        def localFileChange(self, switch):
+            self.Archive.localFiles = bool(switch.get())
+            self.Archive.saveSettingsToJson()
         settingsLabel = customtkinter.CTkLabel(window, text="Settings", font=("Roboto", 24, "bold"))
         settingsLabel.grid(row=0, column=0, sticky="w", padx=5, pady=5)
 
-        openFile = customtkinter.CTkCheckBox(window, text="Open Files Immediately")
+        openFile = customtkinter.CTkCheckBox(window, text="Open Files Immediately", command=lambda : openFileChange(self, openFile))
         openFile.grid(row=1, column=0, sticky="w", padx=5, pady=5)
         ToolTip(openFile, msg="Opens the file immediatly when clicking a file in the browser")
 
-        openMenu = customtkinter.CTkCheckBox(window, text="Open Files' Menu")
+        openMenu = customtkinter.CTkCheckBox(window, text="Open Files' Menu", command=lambda : openMenuChange(self, openMenu))
         openMenu.grid(row=2, column=0, sticky="w", padx=5, pady=5)
         ToolTip(openMenu, msg="Opens the file's menu when clicking a file in the browser")
 
-        nonLocalFiles = customtkinter.CTkCheckBox(window, text="Non-local Files")
-        nonLocalFiles.grid(row=3, column=0, sticky="w", padx=5, pady=5)
-        ToolTip(nonLocalFiles, msg="Uses file locations that are not based on the file folder")
+        localFiles = customtkinter.CTkCheckBox(window, text="Local Files", command=lambda : localFileChange(self, localFiles))
+        localFiles.grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        ToolTip(localFiles, msg="Uses file locations that are  based on the file folder within Tagchive")
+
+        def openLocalFile():
+            os.startfile(str(Path.cwd())+"/localFiles")
+
+        localFileButton = customtkinter.CTkButton(window, text="Local File", command=lambda : openLocalFile())
+        localFileButton.grid(row=4, column=0, sticky="w", padx=5, pady=5)
 
 
         tagGroupEditorButton = customtkinter.CTkButton(window, text="Tag Group Editor")
-        tagGroupEditorButton.grid(row=4, column=0, sticky="w", padx=5, pady=5)
+        tagGroupEditorButton.grid(row=5, column=0, sticky="w", padx=5, pady=5)
 
         savedSearchEditorButton = customtkinter.CTkButton(window, text="Saved Search Editor")
-        savedSearchEditorButton.grid(row=4, column=1, sticky="w", padx=5, pady=5)
+        savedSearchEditorButton.grid(row=5, column=1, sticky="w", padx=5, pady=5)
+
+        def loadSettings(self):
+            self.Archive.loadSettingsFromJson()
+            def setSwitch(switch, state:bool):
+                if state: switch.select()
+                else: switch.deselect()
+            setSwitch(openFile, self.Archive.openFilesImmediately)
+            setSwitch(openMenu, self.Archive.openMenuImmediately)
+            setSwitch(localFiles, self.Archive.localFiles)
+
+        loadSettings(self)
 
 
 
@@ -417,7 +444,7 @@ class App(customtkinter.CTk):
                 if (len(file.title) > 12): formatedTitle = (f"{file.title[0:12]}... | {file.ID}")
                 else: formatedTitle = (f"{file.title[0:15]} | {file.ID}")
 
-                images[fileID] = customtkinter.CTkButton(master=frames[frameCount], text=formatedTitle, font=("Roboto", 16), width=150, height=150, command=lambda e=fileID: self.fileWindow(self.Archive.archiveList[e].ID))
+                images[fileID] = customtkinter.CTkButton(master=frames[frameCount], text=formatedTitle, font=("Roboto", 16), width=150, height=150, command=lambda e=fileID: self.openFile(self.Archive.archiveList[e].ID))
                 #icon = customtkinter.CTkImage(dark_image=Image.open(file.data), size=(50,50))
                 #images[fileID].configure(image=icon)
                 images[fileID].grid(row=0, column=id, padx=5, pady=5)
@@ -432,8 +459,12 @@ class App(customtkinter.CTk):
 
                 #images[i] = customtkinter.CTkButton(master=self.imageFrame, text=imageName, width=100, height=100, command=lambda e=i: self.fileWindow(Archive[e].ID))
         """
-    def openImage(self, fileID):
-        os.startfile(self.Archive.archiveList[fileID].data)
+    def openFile(self, fileID):
+        if self.Archive.openFilesImmediately:
+            os.startfile(self.Archive.archiveList[fileID].data)
+        if self.Archive.openMenuImmediately:
+            self.fileWindow(fileID)
+        
     def tag_click(self, tag):
         self.searchBar.insert("end", " " + tag)
         self.search_click()
@@ -488,9 +519,7 @@ class App(customtkinter.CTk):
             self.reloadpage(self.pageIndex * 30)
             
 app=App()
-app.Archive.loadArchiveFromJson()
-app.Archive.loadTagGroupsFromJson()
-app.Archive.loadSavesFromJson()
+app.Archive.loadAll()
 App.reloadpage(app, 0)
 
 app.mainloop()

@@ -6,7 +6,9 @@ class ArchiveManager:
         self.archiveList = []
         self.tagGroupList = []
         self.savedSearches = []
-        #self.LocalFiles = True
+        self.openFilesImmediately = True
+        self.openMenuImmediately = True
+        self.localFiles = True
     class TagGroup:
         def __init__(self):
             self.name = ""
@@ -198,11 +200,35 @@ class ArchiveManager:
             self.savedSearches = data
     def saveSavesToJson(self):
         fileLocation = str(Path.cwd())
-        with open(fileLocation + '\SavedSearches.json', 'w') as f:
+        with open(fileLocation + '\ArchiveSettings.json', 'w') as f:
             f.write(json.dumps(self.savedSearches, indent=4, ensure_ascii=False))
             f.close()
-                
-                
+    def loadSettingsFromJson(self):
+        fileLocation = str(Path.cwd())
+        with open(fileLocation + '\ArchiveSettings.json', 'r') as f:
+            data = json.load(f)
+            self.openFilesImmediately = data['openFilesImmediately']
+            self.openMenuImmediately = data['openMenuImmediately']
+            self.localFiles = data['localFiles']
+            f.close    
+    def saveSettingsToJson(self):
+        fileLocation = str(Path.cwd())
+        settings = {"openFilesImmediately": self.openFilesImmediately,
+                    "openMenuImmediately": self.openMenuImmediately,
+                    "localFiles": self.localFiles}
+        with open(fileLocation + '\ArchiveSettings.json', 'w') as f:
+            f.write(json.dumps(settings, indent=4, ensure_ascii=False))
+            f.close()
+    def loadAll(self):
+        self.loadArchiveFromJson()
+        self.loadTagGroupsFromJson()
+        self.loadSavesFromJson()
+        self.loadSettingsFromJson()
+    def saveAll(self):
+        self.saveArchiveToJson()
+        self.saveTagGroupsToJson()
+        self.saveSavesToJson()
+        self.saveSettingsToJson()
 
 
 #Archive = ArchiveManager()
