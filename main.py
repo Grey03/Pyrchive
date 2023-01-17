@@ -147,8 +147,38 @@ class App(customtkinter.CTk):
         descriptionTextBox.grid(row=3, column=1, padx=5, pady=5)
 
         mainFrame.pack()
-
         saveButton.pack()
+
+        def saveGroup():
+            print ("saving")
+
+        def loadGroup(TagGroupName):
+            tagGroup = self.Archive.get_TagGroup(TagGroupName)
+
+            tagGroupNameEntry.configure(state="normal")
+            tagGroupNameEntry.delete("0", "end")
+            tagGroupNameEntry.insert("0", tagGroup.name)
+            tagGroupNameEntry.configure(state="readonly")
+
+            colorEntry.configure(state="normal")
+            colorEntry.delete("0", "end")
+            colorEntry.insert("0", tagGroup.color)
+            colorEntry.configure(state="readonly")
+
+            tagsTextBox.configure(state="normal")
+            tagsTextBox.delete("0.0", "end")
+            tagsTextBox.insert("0.0", " ".join(tagGroup.tags))
+            tagsTextBox.configure(state="readonly")
+
+            descriptionTextBox.configure(state="normal")
+            descriptionTextBox.delete("0.0", "end")
+            descriptionTextBox.insert("0.0", tagGroup.description)
+            descriptionTextBox.configure(state="readonly")
+
+
+
+            
+            
         
 
 

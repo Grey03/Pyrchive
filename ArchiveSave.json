@@ -543,5 +543,18 @@
         "data": "C:\\Users\\Grey\\Documents\\GitHub\\Tagchive/localFiles/tmpnhizonj8.png",
         "misc_notes": "\n",
         "upload_date": "2023-01-16 21:01:34.065562"
+    },
+    {
+        "ID": 42,
+        "title": "Local File Test",
+        "creator": "",
+        "tags": [
+            "1girl",
+            "test",
+            "yandere"
+        ],
+        "data": "C:\\Users\\Grey\\Documents\\GitHub\\Tagchive/localFiles/00268-3561708564-yandere girl____.png",
+        "misc_notes": "\n",
+        "upload_date": "2023-01-16 22:46:49.656046"
     }
 ]

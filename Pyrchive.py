@@ -139,6 +139,11 @@ class ArchiveManager:
                 self.tagGroupList.pop(group.name)
         self.tagGroupList.append(TagGroup)
         self.tagGroupList.sort()
+    def get_TagGroup(self, name):
+        for group in self.tagGroupList:
+            if name == group.name:
+                return group
+        return None
     def archiveTest(self, fileCount):
         for i in range(fileCount):
             tempfile = ArchiveManager.ArchiveEntry()
