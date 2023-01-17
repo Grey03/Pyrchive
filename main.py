@@ -1,4 +1,4 @@
-import customtkinter, os, math, random
+import customtkinter, os, math, random, shutil
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
@@ -30,6 +30,8 @@ class App(customtkinter.CTk):
         self.uploadButton.pack(side="left", padx=5,pady=5)
         self.savedSearchesDropdown=customtkinter.CTkOptionMenu(self.optionButtonsFrame, values=["Saved Searches: "], command=lambda event: self.saved_search_click(event))
         self.savedSearchesDropdown.pack(side="left", padx=5,pady=5)
+        self.showAllTagsButton=customtkinter.CTkButton(self.optionButtonsFrame,text="Show All Tags", command=lambda : self.showTagsList())
+        self.showAllTagsButton.pack(side="left", padx=5,pady=5)
         self.randomButton=customtkinter.CTkButton(self.optionButtonsFrame, text= "Random", command= lambda : self.random_tag())
         self.randomButton.pack(side="left",padx=5,pady=5)
         self.refreshButton=customtkinter.CTkButton(self.optionButtonsFrame, text=r"↻", width=10, height=10, command= lambda : self.reloadpage(self.pageIndex * 30))
@@ -69,6 +71,88 @@ class App(customtkinter.CTk):
         self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next", command=lambda: self.nextPage())
         self.pageRight.grid(row=0, column=2)
         self.pageButtonFrame.pack()
+    def showTagsList(self):
+        window = customtkinter.CTkToplevel(self)
+        window.geometry("600x400")
+        window.resizable(False,False)
+        window.title("Tags List")
+
+        mainList = customtkinter.CTkTextbox(window, state="normal", font=("Roboto", 24, "bold"), width=window.winfo_width(), height=window.winfo_height())
+        tags = self.Archive.get_all_tags()
+        mainList.insert("end", "\n".join(tags))
+        mainList.configure(state="disabled")
+        mainList.pack(padx=5, pady=5)
+
+        window.mainloop()
+    def savedSearchEditor(self):
+        window = customtkinter.CTkToplevel(self)
+        window.resizable(False,False)
+        window.title("Saved Search Editor")
+
+        def deleteSearch(listID):
+            self.Archive.savedSearches.pop(listID)
+            self.Archive.saveSavesToJson()
+            refreshWindow()
+            self.reloadpage(0)
+
+        def refreshWindow():
+            for children in window.winfo_children():
+                children.destroy()
+            self.Archive.loadTagGroupsFromJson()
+            searchFrame = {}
+            for i in range(len(self.Archive.savedSearches)):
+                savedSearch = self.Archive.savedSearches[i]
+
+                searchFrame[i] = customtkinter.CTkFrame(window)
+                EntryBox = customtkinter.CTkEntry(searchFrame[i], width=500)
+                EntryBox.insert("end", str(" ".join(savedSearch)))
+                EntryBox.configure(state="readonly")
+                EntryBox.pack(side="left")
+                DeleteButton = customtkinter.CTkButton(searchFrame[i], text="X", width=10, height=10, fg_color="red", hover_color="darkred",font=("Roboto", 12, "bold"),command=lambda : deleteSearch(i))
+                DeleteButton.pack(side="left")
+                searchFrame[i].pack()
+        
+        refreshWindow()
+        
+
+
+        window.mainloop()
+    def tagGroupEditor(self):
+        window = customtkinter.CTkToplevel(self)
+        window.resizable(False,False)
+        window.title("Tag Group Editor")
+
+        mainFrame = customtkinter.CTkFrame(window)
+
+        tagGroupDropdown = customtkinter.CTkComboBox(mainFrame, values=["Tag Groups"])
+        tagGroupNameEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Name")
+        #Make color list with all hexes
+        colorDropdown = customtkinter.CTkComboBox(mainFrame, values=["colorDropdown"])
+        colorEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Color Hex")
+        
+        tagsLabel = customtkinter.CTkLabel(mainFrame, text="Tags")
+        tagsTextBox = customtkinter.CTkTextbox(mainFrame)
+        descriptionLabel = customtkinter.CTkLabel(mainFrame, text="Description")
+        descriptionTextBox = customtkinter.CTkTextbox(mainFrame)
+
+        saveButton = customtkinter.CTkButton(window, text="Save")
+
+        tagGroupDropdown.grid(row=0, column=0, padx=5, pady=5)
+        tagGroupNameEntry.grid(row=0, column=1, padx=5, pady=5)
+        colorDropdown.grid(row=1, column=0, padx=5, pady=5)
+        colorEntry.grid(row=1, column=1, padx=5, pady=5)
+        tagsLabel.grid(row=2, column=0, padx=5, pady=5)
+        tagsTextBox.grid(row=3, column=0, padx=5, pady=5)
+        descriptionLabel.grid(row=2, column=1, padx=5, pady=5)
+        descriptionTextBox.grid(row=3, column=1, padx=5, pady=5)
+
+        mainFrame.pack()
+
+        saveButton.pack()
+        
+
+
+        window.mainloop()
     def uploadWindow(self):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
@@ -80,16 +164,27 @@ class App(customtkinter.CTk):
         def update_selected_file(file):
             global newData
             newData = file
-
-        def select_file():
-             update_selected_file(filedialog.askopenfilename(filetypes=[("All Files", "*.*")],))
-
+        def select_file(EntryBox):
+            update_selected_file(filedialog.askopenfilename(filetypes=[("All Files", "*.*")],))
+            global newData
+            EntryBox.configure(state="normal")
+            EntryBox.delete(0, "end")
+            EntryBox.insert(0, newData)
+            EntryBox.configure(state="readonly")
+        def copy_file_to_locals(filename):
+            if str(Path.cwd()) in filename.split("/"):
+                return filename
+            file = open(filename, "rb") 
+            thefilename=filename.split("/")[-1]
+            localFileFolder = open(str(Path.cwd()) + "/localFiles/"+ thefilename, "wb")
+            shutil.copyfileobj(file, localFileFolder)
+            return str(Path.cwd()) + "/localFiles/"+ thefilename
         def uploadEntry(self, title, creator, tags, notes):
             global newData
             if (len(tags.get("0.0", "end").split(" "))) <= 0:
                 return messagebox.showerror("Please enter at least one tag")
             if title.get() == "": return messagebox.showerror("Error", "Title cannot be empty")
-            if creator.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
+            #if creator.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
             if os.path.exists(newData) != True: return messagebox.showerror("Error", "File does not exist")
             newEntry = ArchiveManager.ArchiveEntry()
             newEntry.title = title.get()
@@ -98,6 +193,8 @@ class App(customtkinter.CTk):
             tags[len(tags)-1] = tags[len(tags)-1].replace("\n", "")
             newEntry.addTag(tags)
             newEntry.misc_notes = notes.get("0.0", "end")
+            if self.Archive.localFiles:
+                newData = copy_file_to_locals(newData)
             newEntry.data = newData
 
             self.Archive.add_Entry(newEntry)
@@ -105,26 +202,22 @@ class App(customtkinter.CTk):
             self.reloadpage(0)
 
             window.destroy()
+ 
+        mainBox = customtkinter.CTkFrame(window)
 
-            
-
-        
-
-
-        titleLabel = customtkinter.CTkLabel(window, text="Title:")
-        titleBox = customtkinter.CTkEntry(master=window, placeholder_text="Title")
-        creatorLabel = customtkinter.CTkLabel(window, text="Creator:")
-        creatorBox = customtkinter.CTkEntry(master=window, placeholder_text="Creator")
-        tagsLabel = customtkinter.CTkLabel(master=window, text="Tags")
-        tagsEntry = customtkinter.CTkTextbox(master=window)
-        openFileDialog = customtkinter.CTkButton(master=window, text="Upload File", command=select_file)
-        notesLabel = customtkinter.CTkLabel(master=window, text="Notes")
-        notesEntry = customtkinter.CTkTextbox(master=window)
-
-        saveButton = customtkinter.CTkButton(master=window, text="Save", command=lambda: uploadEntry(self=self,title=titleBox, creator=creatorBox, tags=tagsEntry, notes=notesEntry,))
+        titleLabel = customtkinter.CTkLabel(mainBox, text="Title:")
+        titleBox = customtkinter.CTkEntry(master=mainBox, placeholder_text="Title")
+        allTagsButton = customtkinter.CTkButton(mainBox, text="View All Tags", command=lambda : self.showTagsList())
+        creatorLabel = customtkinter.CTkLabel(mainBox, text="Creator:")
+        creatorBox = customtkinter.CTkEntry(master=mainBox, placeholder_text="Creator")
+        tagsLabel = customtkinter.CTkLabel(master=mainBox, text="Tags")
+        tagsEntry = customtkinter.CTkTextbox(master=mainBox)
+        notesLabel = customtkinter.CTkLabel(master=mainBox, text="Notes")
+        notesEntry = customtkinter.CTkTextbox(master=mainBox)
         
         titleLabel.grid(row=0, column=0, sticky="w", padx=5,pady=5)
         titleBox.grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        allTagsButton.grid(row=1, column=1, sticky="w", padx=5, pady=5)
         creatorLabel.grid(row=2, column=0, sticky="w", padx=5, pady=5)
         creatorBox.grid(row=3, column=0, sticky="w", padx=5, pady=5)
         tagsLabel.grid(row=4, column=0, sticky="w", padx=5, pady=5)
@@ -132,8 +225,18 @@ class App(customtkinter.CTk):
         notesLabel.grid(row=4, column=1, sticky="w", padx=5, pady=5)
         notesEntry.grid(row=5, column=1, sticky="w", padx=5, pady=5)
 
-        openFileDialog.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-        saveButton.grid(row=2, column=1, sticky="w", padx=5, pady=5)
+        mainBox.pack()
+
+        selectedFileEntry = customtkinter.CTkEntry(master=window, placeholder_text="Selected File: ", width=400)
+        selectedFileEntry.configure(state="readonly")
+        openFileDialog = customtkinter.CTkButton(master=window, text="Upload File", command=lambda : select_file(selectedFileEntry))
+        
+        saveButton = customtkinter.CTkButton(master=window, text="Save", command=lambda: uploadEntry(self=self,title=titleBox, creator=creatorBox, tags=tagsEntry, notes=notesEntry,))
+
+        openFileDialog.pack(padx=5, pady=5)
+        selectedFileEntry.pack(padx=5, pady=5)
+
+        saveButton.pack(padx=5, pady=5)
 
         window.mainloop()
     def fileWindow(self, fileID,):
@@ -250,8 +353,20 @@ class App(customtkinter.CTk):
     
         mainFrame.pack()
 
+        
+
         fileLocationLabel = customtkinter.CTkLabel(window, text="File Location:")
         fileLocationEntry = customtkinter.CTkEntry(window, placeholder_text="File Location: ", width=400)
+
+        def newLocation():
+            fileLocationEntry.configure(state="normal")
+            fileLocationEntry.delete("0", "end")
+            x = str(filedialog.askopenfilename(filetypes=[("All Files", "*.*")]))
+            fileLocationEntry.insert("end", x)
+            fileLocationEntry.configure(state="readonly")
+
+        fileLocationSelector = customtkinter.CTkButton(window, text="Browse to New File", command=lambda : newLocation())
+
 
         
 
@@ -271,8 +386,11 @@ class App(customtkinter.CTk):
             tags[len(tags)-1] = tags[len(tags)-1].replace("\n", "")
             newEntry.addTag(tags)
             newEntry.misc_notes = notesEntry.get("0.0", "end")
-            newEntry.data = fileLocationEntry.get()
-            self.Archive.add_Entry(newEntry)
+            newEntry.data = fileLocationEntry.get() 
+            print (fileLocationEntry.get())
+            if os.path.exists(fileLocationEntry.get()):
+                self.data = fileLocationEntry.get()
+            self.Archive.update_Entry(newEntry)
             self.Archive.saveArchiveToJson()
             self.reloadpage(0)
 
@@ -306,6 +424,7 @@ class App(customtkinter.CTk):
 
         fileLocationLabel.pack(padx=5, pady=5)
         fileLocationEntry.pack(padx=5, pady=5)
+        fileLocationSelector.pack(padx=5, pady=5)
         saveButton.pack(padx=5, pady=5)
         deleteButton.pack(padx=5, pady=5)
 
@@ -357,7 +476,7 @@ class App(customtkinter.CTk):
 
         localFiles = customtkinter.CTkCheckBox(window, text="Local Files", command=lambda : localFileChange(self, localFiles))
         localFiles.grid(row=3, column=0, sticky="w", padx=5, pady=5)
-        ToolTip(localFiles, msg="Uses file locations that are  based on the file folder within Tagchive")
+        ToolTip(localFiles, msg="When uploading a file, the file will be placed in the local files directory")
 
         def openLocalFile():
             os.startfile(str(Path.cwd())+"/localFiles")
@@ -366,10 +485,10 @@ class App(customtkinter.CTk):
         localFileButton.grid(row=4, column=0, sticky="w", padx=5, pady=5)
 
 
-        tagGroupEditorButton = customtkinter.CTkButton(window, text="Tag Group Editor")
+        tagGroupEditorButton = customtkinter.CTkButton(window, text="Tag Group Editor", command=lambda : self.tagGroupEditor())
         tagGroupEditorButton.grid(row=5, column=0, sticky="w", padx=5, pady=5)
 
-        savedSearchEditorButton = customtkinter.CTkButton(window, text="Saved Search Editor")
+        savedSearchEditorButton = customtkinter.CTkButton(window, text="Saved Search Editor", command=lambda : self.savedSearchEditor())
         savedSearchEditorButton.grid(row=5, column=1, sticky="w", padx=5, pady=5)
 
         def loadSettings(self):
@@ -464,7 +583,6 @@ class App(customtkinter.CTk):
             os.startfile(self.Archive.archiveList[fileID].data)
         if self.Archive.openMenuImmediately:
             self.fileWindow(fileID)
-        
     def tag_click(self, tag):
         self.searchBar.insert("end", " " + tag)
         self.search_click()

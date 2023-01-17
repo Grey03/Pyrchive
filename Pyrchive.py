@@ -93,6 +93,8 @@ class ArchiveManager:
                 if len(finalFiles) == requestedFileCount:
                     return finalFiles
         return finalFiles
+    def update_Entry(self, entry):
+        self.archiveList[entry.ID] = entry
     def add_Entry(self, entry):
         if entry.ID == -1:
             entry.ID = self.get_ID()
@@ -111,10 +113,16 @@ class ArchiveManager:
                 self.archiveList.pop(i)
                 return True
         return False
-
-
     def get_file(self, fileID):
         return self.archiveList[fileID]
+    def get_all_tags(self):
+        tagList = []
+        for entry in self.archiveList:
+            for tag in entry.tags:
+                if tag not in tagList:
+                    tagList.append(tag)
+                    tagList.sort()
+        return tagList
     def add_TagGroup(self, TagGroup):
         for group in self.tagGroupList:
             if TagGroup.name == group.name:
@@ -204,13 +212,16 @@ class ArchiveManager:
             f.write(json.dumps(self.savedSearches, indent=4, ensure_ascii=False))
             f.close()
     def loadSettingsFromJson(self):
-        fileLocation = str(Path.cwd())
-        with open(fileLocation + '\ArchiveSettings.json', 'r') as f:
-            data = json.load(f)
-            self.openFilesImmediately = data['openFilesImmediately']
-            self.openMenuImmediately = data['openMenuImmediately']
-            self.localFiles = data['localFiles']
-            f.close    
+        try:
+            fileLocation = str(Path.cwd())
+            with open(fileLocation + '\ArchiveSettings.json', 'r') as f:
+                data = json.load(f)
+                self.openFilesImmediately = data['openFilesImmediately']
+                self.openMenuImmediately = data['openMenuImmediately']
+                self.localFiles = data['localFiles']
+                f.close
+        except:
+            self.saveSavesToJson()
     def saveSettingsToJson(self):
         fileLocation = str(Path.cwd())
         settings = {"openFilesImmediately": self.openFilesImmediately,
