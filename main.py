@@ -1,10 +1,13 @@
-import customtkinter, os, math, random, shutil
+import customtkinter, os, math, random, shutil, json
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
 from pathlib import Path
 #from PIL import Image
 
+global colors
+colors = json.load(open(str(Path.cwd()) + "/colors.json"))
+colors = colors["DefaultColors"]
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -90,7 +93,7 @@ class App(customtkinter.CTk):
         window.title("Saved Search Editor")
 
         def deleteSearch(listID):
-            self.Archive.savedSearches.pop(listID)
+            self.Archive.savedSearches.pop(listID-1)
             self.Archive.saveSavesToJson()
             refreshWindow()
             self.reloadpage(0)
@@ -99,6 +102,7 @@ class App(customtkinter.CTk):
             for children in window.winfo_children():
                 children.destroy()
             self.Archive.loadTagGroupsFromJson()
+            self.Archive.loadSavesFromJson()
             searchFrame = {}
             for i in range(len(self.Archive.savedSearches)):
                 savedSearch = self.Archive.savedSearches[i]
@@ -118,24 +122,47 @@ class App(customtkinter.CTk):
 
         window.mainloop()
     def tagGroupEditor(self):
+        global colors
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Tag Group Editor")
 
         mainFrame = customtkinter.CTkFrame(window)
+        def createNewTagGroup():
+            tagGroup = self.Archive.TagGroup()
+            tagGroup.name="NewTagGroup"
+            tagGroup.color = colors["DarkGray"]
+            tagGroup.tags = []
+            tagGroup.description = ""
+            self.Archive.tagGroupList.append(tagGroup)
+            self.Archive.saveTagGroupsToJson()
+            self.reloadpage(0)
+            loadGroup()
 
-        tagGroupDropdown = customtkinter.CTkComboBox(mainFrame, values=["Tag Groups"])
+        def dropDownClick(dropdown, entry):
+            entry.configure(state="normal")
+            entry.delete(0,"end")
+            entry.insert("end", dropdown.get())
+            entry.configure(state="readonly")
         tagGroupNameEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Name")
+        tagGroupDropdown = customtkinter.CTkOptionMenu(mainFrame, values=["Tag Groups"], command=lambda e: dropDownClick(tagGroupDropdown, tagGroupNameEntry))
         #Make color list with all hexes
-        colorDropdown = customtkinter.CTkComboBox(mainFrame, values=["colorDropdown"])
-        colorEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Color Hex")
-        
+        def colorDropDownClick(dropdown, entry):
+            entry.configure(state="normal")
+            entry.delete(0,"end")
+            entry.insert("end", colors[dropdown.get()])
+            entry.configure(state="readonly")
+        colorEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Color ARGB: ")
+        colorDropdown = customtkinter.CTkOptionMenu(mainFrame, values=["colorDropdown"], command=lambda e: colorDropDownClick(colorDropdown, colorEntry))
+  
         tagsLabel = customtkinter.CTkLabel(mainFrame, text="Tags")
         tagsTextBox = customtkinter.CTkTextbox(mainFrame)
         descriptionLabel = customtkinter.CTkLabel(mainFrame, text="Description")
         descriptionTextBox = customtkinter.CTkTextbox(mainFrame)
 
         saveButton = customtkinter.CTkButton(window, text="Save")
+        createNewButton = customtkinter.CTkButton(window, text="Create New Tag Group", command=lambda: createNewTagGroup())
+
 
         tagGroupDropdown.grid(row=0, column=0, padx=5, pady=5)
         tagGroupNameEntry.grid(row=0, column=1, padx=5, pady=5)
@@ -147,23 +174,40 @@ class App(customtkinter.CTk):
         descriptionTextBox.grid(row=3, column=1, padx=5, pady=5)
 
         mainFrame.pack()
-        saveButton.pack()
+        saveButton.pack(padx=5, pady=5)
+        createNewButton.pack(padx= 5, pady=5)
 
         def saveGroup():
-            print ("saving")
+            self.Archive.saveTagGroupsToJson()
 
-        def loadGroup(TagGroupName):
-            tagGroup = self.Archive.get_TagGroup(TagGroupName)
+        def loadGroup(**TagGroupName):
+            global colors
+            ID = 0
+            for key, value in TagGroupName.items():
+                if key == "ID": ID = value
+            global colors
+
+            tagGroup = self.Archive.tagGroupList[ID]
+
+            tagNames=[tagName.name for tagName in self.Archive.tagGroupList]
+            tagGroupDropdown.configure(values=tagNames)
+            tagGroupDropdown.set(tagNames[ID])
+
+            dropDownClick(tagGroupDropdown, tagGroupNameEntry)
+            
+            colorList = list(colors.keys())
+            colorDropdown.configure(values= colorList)
+            colorDropdown.set(colorList[ID])
+
+            colorEntry.configure(state="normal")
+            colorEntry.delete(0,"end")
+            colorEntry.insert("end", tagGroup.color)
+            colorEntry.configure(state="readonly")
 
             tagGroupNameEntry.configure(state="normal")
             tagGroupNameEntry.delete("0", "end")
-            tagGroupNameEntry.insert("0", tagGroup.name)
+            tagGroupNameEntry.insert("0", tagNames[ID])
             tagGroupNameEntry.configure(state="readonly")
-
-            colorEntry.configure(state="normal")
-            colorEntry.delete("0", "end")
-            colorEntry.insert("0", tagGroup.color)
-            colorEntry.configure(state="readonly")
 
             tagsTextBox.configure(state="normal")
             tagsTextBox.delete("0.0", "end")
@@ -174,6 +218,13 @@ class App(customtkinter.CTk):
             descriptionTextBox.delete("0.0", "end")
             descriptionTextBox.insert("0.0", tagGroup.description)
             descriptionTextBox.configure(state="readonly")
+
+        
+        if len(self.Archive.tagGroupList) < 0:
+            loadGroup(0)
+        else:
+            createNewTagGroup()
+            
 
 
 
@@ -551,6 +602,9 @@ class App(customtkinter.CTk):
                 for tagGroup in archive.tagGroupList:
                     if str(tagname) in tagGroup.tags:
                         tagcolor = tagGroup.color
+                        if tagcolor.startswith("#"):
+                            tagcolor = tagcolor[3:]
+                            tagcolor = "#" + tagcolor
                 try:
                     widget[i]= customtkinter.CTkButton(master=self.tagList, text=(tagname + f"({tag[0]})"), font=("Roboto", 13, "underline"), text_color=tagcolor ,fg_color="transparent", height=0,corner_radius=0, command=lambda e = i: self.tag_click(tagsToShow[e][1]))
                     widget[i].pack(fill="x")

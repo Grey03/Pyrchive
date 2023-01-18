@@ -1,13 +1,5 @@
-[
-    [
-        "miata"
-    ],
-    [
-        "miata",
-        "yandere"
-    ],
-    [
-        "yandere",
-        "1girl"
-    ]
-]
+{
+    "openFilesImmediately": true,
+    "openMenuImmediately": true,
+    "localFiles": true
+}

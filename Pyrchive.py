@@ -166,7 +166,7 @@ class ArchiveManager:
     def loadArchiveFromJson(self):
         fileLocation = str(Path.cwd())
         try:
-            with open(fileLocation + '\ArchiveSave.json', 'r') as f:
+            with open(fileLocation + '\ArchiveEntries.json', 'r') as f:
                 data = json.load(f)
                 for item in data:
                     loadedFile = ArchiveManager.ArchiveEntry()
@@ -185,11 +185,12 @@ class ArchiveManager:
     def saveArchiveToJson(self):
         fileLocation = str(Path.cwd())
         json_string = json.dumps([ob.__dict__() for ob in self.archiveList], indent=4, ensure_ascii=False)
-        with open(fileLocation + '\ArchiveSave.json', 'w') as f:   
+        with open(fileLocation + '\ArchiveEntries.json', 'w') as f:   
             f.write(json_string)
             f.close()
     def loadTagGroupsFromJson(self):
         fileLocation = str(Path.cwd())
+        tempTagGroupList = []
         with open(fileLocation + '\TagGroups.json', 'r') as f:
             data = json.load(f)
             for item in data:
@@ -198,7 +199,8 @@ class ArchiveManager:
                 loadedTagGroup.tags = item['tags']
                 loadedTagGroup.description = item['description']
                 loadedTagGroup.color = item['color']
-                self.tagGroupList.append(loadedTagGroup)
+                tempTagGroupList.append(loadedTagGroup)
+            self.tagGroupList = tempTagGroupList
             f.close
     def saveTagGroupsToJson(self):
         fileLocation = str(Path.cwd())
@@ -213,8 +215,9 @@ class ArchiveManager:
             self.savedSearches = data
     def saveSavesToJson(self):
         fileLocation = str(Path.cwd())
-        with open(fileLocation + '\ArchiveSettings.json', 'w') as f:
-            f.write(json.dumps(self.savedSearches, indent=4, ensure_ascii=False))
+        json_string = json.dumps(self.savedSearches, indent=4, ensure_ascii=False)
+        with open(fileLocation + '\SavedSearches.json', 'w') as f:
+            f.write(json_string)
             f.close()
     def loadSettingsFromJson(self):
         try:

@@ -1,12 +1,27 @@
 [
     {
-        "name": "Favorites",
+        "name": "Miatas",
         "tags": [
-            "yandere",
             "miata",
             "mazda"
         ],
         "description": "",
+        "color": "#FFFF0000"
+    },
+    {
+        "name": "yandere",
+        "tags": [
+            "yandere",
+            "blood",
+            "blood_on_clothes"
+        ],
+        "description": "",
         "color": "hotpink"
+    },
+    {
+        "name": "NewTagGroup",
+        "tags": [],
+        "description": "",
+        "color": "#FFA9A9A9"
     }
 ]
