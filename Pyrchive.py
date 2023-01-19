@@ -23,6 +23,14 @@ class ArchiveManager:
             return {"name":self.name, "tags":self.tags, "description":self.description, "color":self.color}
         def toJSON(self):
             return json.dumps((self.__dict__()), ensure_ascii=False, indent=4)
+        def set_Tags(self, tags):
+            for tag in tags:
+                tag = tag.lower()
+                if tag.find("\n"):
+                    tag.replace("\n", "")
+
+            self.tags = [*set(tags)]
+
     class ArchiveEntry:
         def __init__(self):
             self.ID = -1

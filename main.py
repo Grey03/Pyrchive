@@ -129,7 +129,7 @@ class App(customtkinter.CTk):
 
         mainFrame = customtkinter.CTkFrame(window)
         def createNewTagGroup():
-            tagGroup = self.Archive.TagGroup()
+            tagGroup = ArchiveManager.TagGroup()
             tagGroup.name="NewTagGroup"
             tagGroup.color = colors["DarkGray"]
             tagGroup.tags = []
@@ -139,19 +139,21 @@ class App(customtkinter.CTk):
             self.reloadpage(0)
             loadGroup()
 
-        def dropDownClick(dropdown, entry):
-            entry.configure(state="normal")
+        def dropDownClick(dropdown, entry, **kwargs):
+            #This is kinda bad so i should fix this another time
+            refresh = False
+            for key, value in kwargs.items():
+                if key == "refresh": refresh = value
             entry.delete(0,"end")
             entry.insert("end", dropdown.get())
-            entry.configure(state="readonly")
+            if refresh:
+                loadGroup(Name = entry.get())
         tagGroupNameEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Name")
-        tagGroupDropdown = customtkinter.CTkOptionMenu(mainFrame, values=["Tag Groups"], command=lambda e: dropDownClick(tagGroupDropdown, tagGroupNameEntry))
+        tagGroupDropdown = customtkinter.CTkOptionMenu(mainFrame, values=["Tag Groups"], command=lambda e: dropDownClick(tagGroupDropdown, tagGroupNameEntry, refresh=True))
         #Make color list with all hexes
         def colorDropDownClick(dropdown, entry):
-            entry.configure(state="normal")
             entry.delete(0,"end")
             entry.insert("end", colors[dropdown.get()])
-            entry.configure(state="readonly")
         colorEntry = customtkinter.CTkEntry(mainFrame, placeholder_text="Color ARGB: ")
         colorDropdown = customtkinter.CTkOptionMenu(mainFrame, values=["colorDropdown"], command=lambda e: colorDropDownClick(colorDropdown, colorEntry))
   
@@ -160,7 +162,7 @@ class App(customtkinter.CTk):
         descriptionLabel = customtkinter.CTkLabel(mainFrame, text="Description")
         descriptionTextBox = customtkinter.CTkTextbox(mainFrame)
 
-        saveButton = customtkinter.CTkButton(window, text="Save")
+        saveButton = customtkinter.CTkButton(window, text="Save", command = lambda : saveGroup(tagGroupDropdown,tagGroupNameEntry))
         createNewButton = customtkinter.CTkButton(window, text="Create New Tag Group", command=lambda: createNewTagGroup())
 
 
@@ -177,15 +179,52 @@ class App(customtkinter.CTk):
         saveButton.pack(padx=5, pady=5)
         createNewButton.pack(padx= 5, pady=5)
 
-        def saveGroup():
+        def saveGroup(tagGroupDrop,tagGroupEntry):
+            file = ArchiveManager.TagGroup()
+            newFile = False
+            try:
+                for TagGroup in self.Archive.tagGroupList:
+                    if TagGroup.name == tagGroupDrop.get():
+                        file = TagGroup
+            except:
+                newFile= True
+                print ("Failed to find group making new group")
+            file.name = tagGroupEntry.get()
+            file.color = colorEntry.get()
+            tags =tagsTextBox.get("0.0", "end").split(" ")
+            file.tags = [*set(tags)]
+            file.set_Tags(tags)
+            if descriptionTextBox.get("0.0", "end").replace("\n","") == "":
+                file.description = ""
+            else:
+                file.description = descriptionTextBox.get("0.0", "end")
+            if newFile:
+                self.Archive.tagGroupList.append(file)
             self.Archive.saveTagGroupsToJson()
+            self.reloadpage(0)
+            window.destroy()
+
+        def colorFinder(hexColor):
+            for key, value in colors.items():
+                if value == hexColor:
+                    return str(key)
+            return "Custom Color"
 
         def loadGroup(**TagGroupName):
             global colors
             ID = 0
+            Name = ""
             for key, value in TagGroupName.items():
                 if key == "ID": ID = value
+                if key == "Name" : Name = value
             global colors
+
+            if Name != "":
+                count = 0
+                for TagGroup in self.Archive.tagGroupList:
+                    if TagGroup.name == Name:
+                        ID = count
+                    count+=1
 
             tagGroup = self.Archive.tagGroupList[ID]
 
@@ -197,41 +236,25 @@ class App(customtkinter.CTk):
             
             colorList = list(colors.keys())
             colorDropdown.configure(values= colorList)
-            colorDropdown.set(colorList[ID])
+            colorDropdown.set(colorFinder(tagGroup.color))
 
-            colorEntry.configure(state="normal")
             colorEntry.delete(0,"end")
             colorEntry.insert("end", tagGroup.color)
-            colorEntry.configure(state="readonly")
 
-            tagGroupNameEntry.configure(state="normal")
             tagGroupNameEntry.delete("0", "end")
             tagGroupNameEntry.insert("0", tagNames[ID])
-            tagGroupNameEntry.configure(state="readonly")
 
-            tagsTextBox.configure(state="normal")
             tagsTextBox.delete("0.0", "end")
             tagsTextBox.insert("0.0", " ".join(tagGroup.tags))
-            tagsTextBox.configure(state="readonly")
 
-            descriptionTextBox.configure(state="normal")
             descriptionTextBox.delete("0.0", "end")
             descriptionTextBox.insert("0.0", tagGroup.description)
-            descriptionTextBox.configure(state="readonly")
 
-        
-        if len(self.Archive.tagGroupList) < 0:
-            loadGroup(0)
+        self.Archive.loadTagGroupsFromJson()
+        if len(self.Archive.tagGroupList) > 0:
+            loadGroup(ID=0)
         else:
             createNewTagGroup()
-            
-
-
-
-            
-            
-        
-
 
         window.mainloop()
     def uploadWindow(self):
@@ -265,7 +288,6 @@ class App(customtkinter.CTk):
             if (len(tags.get("0.0", "end").split(" "))) <= 0:
                 return messagebox.showerror("Please enter at least one tag")
             if title.get() == "": return messagebox.showerror("Error", "Title cannot be empty")
-            #if creator.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
             if os.path.exists(newData) != True: return messagebox.showerror("Error", "File does not exist")
             newEntry = ArchiveManager.ArchiveEntry()
             newEntry.title = title.get()
@@ -330,6 +352,10 @@ class App(customtkinter.CTk):
         window.title("File " + str(fileID))
 
         def open():
+            if self.Archive.localFiles:
+                if  os.path.exists(str(Path.cwd()) + file.data):
+                    os.system('"' + str(Path.cwd()) + file.data + '"')
+                else: messagebox.showerror("Error", f"Error opening file {file.data}, file may not exist, has been deleted/moved, or may/may not require the local file setting")
             if os.path.exists(file.data):
                 os.system('"' + file.data + '"')
             else:
@@ -466,7 +492,10 @@ class App(customtkinter.CTk):
             tags = tagsEntry.get("0.0", "end").split(" ")
             tags[len(tags)-1] = tags[len(tags)-1].replace("\n", "")
             newEntry.addTag(tags)
-            newEntry.misc_notes = notesEntry.get("0.0", "end")
+            if newEntry.misc_notes.replace("\n","")=="":
+                newEntry.misc_notes = ""
+            else:
+                newEntry.misc_notes = notesEntry.get("0.0", "end")
             newEntry.data = fileLocationEntry.get() 
             print (fileLocationEntry.get())
             if os.path.exists(fileLocationEntry.get()):
@@ -719,7 +748,6 @@ class App(customtkinter.CTk):
         if self.pageIndex + 1 < pagetotal:
             self.pageIndex += 1
             self.reloadpage(self.pageIndex * 30)
-            
 app=App()
 app.Archive.loadAll()
 App.reloadpage(app, 0)
