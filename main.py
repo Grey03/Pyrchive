@@ -22,6 +22,7 @@ class App(customtkinter.CTk):
 
         self.title("Tarchive")
         self.geometry(f"{1135}x{925}")
+        self.iconbitmap(str(__location__) + "/icon.ico")
         
         self.Archive = ArchiveManager()
         self.pageIndex = 0
@@ -81,6 +82,7 @@ class App(customtkinter.CTk):
         window.geometry("600x400")
         window.resizable(False,False)
         window.title("Tags List")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         mainList = customtkinter.CTkTextbox(window, state="normal", font=("Roboto", 24, "bold"), width=window.winfo_width(), height=window.winfo_height())
         tags = self.Archive.get_all_tags()
@@ -93,6 +95,7 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Saved Search Editor")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         def deleteSearch(listID):
             self.Archive.savedSearches.pop(listID-1)
@@ -128,6 +131,7 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Tag Group Editor")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         mainFrame = customtkinter.CTkFrame(window)
         def createNewTagGroup():
@@ -263,6 +267,7 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Upload File")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         global newData
         newData = ""
@@ -347,11 +352,9 @@ class App(customtkinter.CTk):
     def fileWindow(self, fileID,):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
-        
-
         file = self.Archive.archiveList[fileID]
-
         window.title("File " + str(fileID))
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         def open():
             if self.Archive.localFiles:
@@ -441,6 +444,7 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Edit File")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         file = self.Archive.archiveList[fileID]
 
@@ -564,6 +568,7 @@ class App(customtkinter.CTk):
         window = customtkinter.CTkToplevel(self)
         window.resizable(False,False)
         window.title("Settings")
+        window.iconbitmap(str(__location__) + "/icon.ico")
 
         def openFileChange(self, switch):
             self.Archive.openFilesImmediately = bool(switch.get())
@@ -681,17 +686,6 @@ class App(customtkinter.CTk):
                 #icon = customtkinter.CTkImage(dark_image=Image.open(file.data), size=(50,50))
                 #images[fileID].configure(image=icon)
                 images[fileID].grid(row=0, column=id, padx=5, pady=5)
-            
-
-        
-        """
-            images = {}
-            for n in range(5):
-                Archive = self.Archive.archiveList
-                imageName =(f"{Archive[i].title[0:30]} | {Archive[i].ID}")
-
-                #images[i] = customtkinter.CTkButton(master=self.imageFrame, text=imageName, width=100, height=100, command=lambda e=i: self.fileWindow(Archive[e].ID))
-        """
     def openFile(self, fileID):
         if self.Archive.openFilesImmediately:
             os.startfile(self.Archive.archiveList[fileID].data)
