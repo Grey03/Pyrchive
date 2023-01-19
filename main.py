@@ -483,7 +483,6 @@ class App(customtkinter.CTk):
             if (len(tagsEntry.get("0.0", "end").split(" "))) <= 0:
                 return messagebox.showerror("Please enter at least one tag")
             if titleBox.get() == "": return messagebox.showerror("Error", "Title cannot be empty")
-            if creatorBox.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
             if os.path.exists(fileLocationEntry.get()) != True: return messagebox.showerror("Error", "File does not exist")
             newEntry = ArchiveManager.ArchiveEntry()
             newEntry.ID = int(IDEntry.get())
