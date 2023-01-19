@@ -2,11 +2,13 @@ import customtkinter, os, math, random, shutil, json
 from Pyrchive import ArchiveManager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
-from pathlib import Path
 #from PIL import Image
 
 global colors
-colors = json.load(open(str(Path.cwd()) + "/colors.json"))
+global __location__
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+colors = json.load(open(str(__location__) + "/colors.json"))
 colors = colors["DefaultColors"]
 
 customtkinter.set_appearance_mode("System")
@@ -276,13 +278,13 @@ class App(customtkinter.CTk):
             EntryBox.insert(0, newData)
             EntryBox.configure(state="readonly")
         def copy_file_to_locals(filename):
-            if str(Path.cwd()) in filename.split("/"):
+            if str(__location__) in filename.split("/"):
                 return filename
             file = open(filename, "rb") 
             thefilename=filename.split("/")[-1]
-            localFileFolder = open(str(Path.cwd()) + "/localFiles/"+ thefilename, "wb")
+            localFileFolder = open(str(__location__) + "/localFiles/"+ thefilename, "wb")
             shutil.copyfileobj(file, localFileFolder)
-            return str(Path.cwd()) + "/localFiles/"+ thefilename
+            return str(__location__) + "/localFiles/"+ thefilename
         def uploadEntry(self, title, creator, tags, notes):
             global newData
             if (len(tags.get("0.0", "end").split(" "))) <= 0:
@@ -353,8 +355,8 @@ class App(customtkinter.CTk):
 
         def open():
             if self.Archive.localFiles:
-                if  os.path.exists(str(Path.cwd()) + file.data):
-                    os.system('"' + str(Path.cwd()) + file.data + '"')
+                if  os.path.exists(str(__location__) + file.data):
+                    os.system('"' + str(__location__) + file.data + '"')
                 else: messagebox.showerror("Error", f"Error opening file {file.data}, file may not exist, has been deleted/moved, or may/may not require the local file setting")
             if os.path.exists(file.data):
                 os.system('"' + file.data + '"')
@@ -483,7 +485,6 @@ class App(customtkinter.CTk):
             if (len(tagsEntry.get("0.0", "end").split(" "))) <= 0:
                 return messagebox.showerror("Please enter at least one tag")
             if titleBox.get() == "": return messagebox.showerror("Error", "Title cannot be empty")
-            if creatorBox.get() == "": return messagebox.showerror("Error", "Creator cannot be empty")
             if os.path.exists(fileLocationEntry.get()) != True: return messagebox.showerror("Error", "File does not exist")
             newEntry = ArchiveManager.ArchiveEntry()
             newEntry.ID = int(IDEntry.get())
@@ -589,7 +590,7 @@ class App(customtkinter.CTk):
         ToolTip(localFiles, msg="When uploading a file, the file will be placed in the local files directory")
 
         def openLocalFile():
-            os.startfile(str(Path.cwd())+"/localFiles")
+            os.startfile(str(__location__)+"/localFiles")
 
         localFileButton = customtkinter.CTkButton(window, text="Local File", command=lambda : openLocalFile())
         localFileButton.grid(row=4, column=0, sticky="w", padx=5, pady=5)

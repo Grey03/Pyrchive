@@ -1,5 +1,7 @@
-import datetime,random,json
-from pathlib import Path
+import datetime,random,json, os
+global __location__
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 class ArchiveManager:
 
     def __init__(self):
@@ -172,7 +174,7 @@ class ArchiveManager:
         print (self.archiveList[0].title)
         print (self.archiveList[0].tags)
     def loadArchiveFromJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         try:
             with open(fileLocation + '\ArchiveEntries.json', 'r') as f:
                 data = json.load(f)
@@ -191,13 +193,13 @@ class ArchiveManager:
         except:
             pass
     def saveArchiveToJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         json_string = json.dumps([ob.__dict__() for ob in self.archiveList], indent=4, ensure_ascii=False)
         with open(fileLocation + '\ArchiveEntries.json', 'w') as f:   
             f.write(json_string)
             f.close()
     def loadTagGroupsFromJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         tempTagGroupList = []
         with open(fileLocation + '\TagGroups.json', 'r') as f:
             data = json.load(f)
@@ -211,25 +213,25 @@ class ArchiveManager:
             self.tagGroupList = tempTagGroupList
             f.close
     def saveTagGroupsToJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         json_string = json.dumps([ob.__dict__() for ob in self.tagGroupList], indent=4, ensure_ascii=False)
         with open(fileLocation + '\TagGroups.json', 'w') as f:
             f.write(json_string)
             f.close()
     def loadSavesFromJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         with open(fileLocation + '\SavedSearches.json', 'r') as f:
             data = json.load(f)
             self.savedSearches = data
     def saveSavesToJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         json_string = json.dumps(self.savedSearches, indent=4, ensure_ascii=False)
         with open(fileLocation + '\SavedSearches.json', 'w') as f:
             f.write(json_string)
             f.close()
     def loadSettingsFromJson(self):
         try:
-            fileLocation = str(Path.cwd())
+            fileLocation = str(__location__)
             with open(fileLocation + '\ArchiveSettings.json', 'r') as f:
                 data = json.load(f)
                 self.openFilesImmediately = data['openFilesImmediately']
@@ -239,7 +241,7 @@ class ArchiveManager:
         except:
             self.saveSavesToJson()
     def saveSettingsToJson(self):
-        fileLocation = str(Path.cwd())
+        fileLocation = str(__location__)
         settings = {"openFilesImmediately": self.openFilesImmediately,
                     "openMenuImmediately": self.openMenuImmediately,
                     "localFiles": self.localFiles}
