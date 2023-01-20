@@ -4,12 +4,9 @@ from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
 #from PIL import Image
 
-global colors
 global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-colors = json.load(open(str(__location__) + "/colors.json"))
-colors = colors["DefaultColors"]
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -19,7 +16,6 @@ class App(customtkinter.CTk):
         super().__init__()
         self.title("Tarchive")
         self.geometry(f"{1135}x{925}")
-        self.iconbitmap(str(__location__) + "/icon.ico")
         
         self.Archive = ArchiveManager()
         self.pageIndex = 0
@@ -62,18 +58,35 @@ class App(customtkinter.CTk):
         self.tagList = customtkinter.CTkFrame(self.tagFrame)
         self.tagList.pack(padx=5,pady=5, expand=True, fill="both")
         self.tagFrame.pack(side="left", fill="y")
-        self.imageFrame=customtkinter.CTkFrame(self.bottomFrame, fg_color="transparent")
-        self.imageFrame.pack(side="left",fill="both", expand=True)
+        self.entryFrame=customtkinter.CTkFrame(self.bottomFrame, fg_color="transparent")
+        self.entryFrame.pack(side="left",fill="both", expand=True)
         self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
 
-        self.pageButtonFrame = customtkinter.CTkFrame(self, fg_color="transparent")
-        self.pageLeft = customtkinter.CTkButton(self.pageButtonFrame, text="Previous")
-        self.pageLeft.grid(row=0, column=0)
-        self.currentPageLabel = customtkinter.CTkLabel(self.pageButtonFrame, text=f"Page: {self.pageIndex+1}")
-        self.currentPageLabel.grid(row=0, column=1)
-        self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next")
-        self.pageRight.grid(row=0, column=2)
-        self.pageButtonFrame.pack()
+        #Put the page buttons on the browse frame
+        #self.pageButtonFrame = customtkinter.CTkFrame(self, fg_color="transparent")
+        #self.pageLeft = customtkinter.CTkButton(self.pageButtonFrame, text="Previous")
+        #self.pageLeft.grid(row=0, column=0)
+        #self.currentPageLabel = customtkinter.CTkLabel(self.pageButtonFrame, text=f"Page: {self.pageIndex+1}")
+        #self.currentPageLabel.grid(row=0, column=1)
+        #self.pageRight = customtkinter.CTkButton(self.pageButtonFrame, text="Next")
+        #self.pageRight.grid(row=0, column=2)
+        #self.pageButtonFrame.pack()
+    def clearEntryFrame(self):
+        for child in self.entryFrame.winfo_children():
+            child.destroy()
+
+    def setBrowseEntries(self, **kwargs):
+        self.clearEntryFrame()
+        entryList = self.Archive.archiveList
+        for key, value in kwargs.items():
+            if key == "entryList" : entryList = value
+
+    def setViewEntry(self):
+        self.clearEntryFrame()
+        frame = customtkinter.CTkFrame(self.entryFrame, fg_color="red")
+        frame.pack(expand=True, fill="both")
+
+
 
 if __name__ == "__main__":
     app=App()
