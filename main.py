@@ -72,22 +72,17 @@ class App(customtkinter.CTk):
         #self.pageRight.grid(row=0, column=2)
         #self.pageButtonFrame.pack()
     def clearEntryFrame(self):
-        for child in self.entryFrame.winfo_children():
-            child.destroy()
+        print ("clearEntryFrame")
 
     def setBrowseEntries(self, **kwargs):
-        self.clearEntryFrame()
-        entryList = self.Archive.archiveList
-        for key, value in kwargs.items():
-            if key == "entryList" : entryList = value
+        print ("setBrowseEntries")
+
 
     def setViewEntry(self):
-        self.clearEntryFrame()
-        frame = customtkinter.CTkFrame(self.entryFrame, fg_color="red")
-        frame.pack(expand=True, fill="both")
-
+        print ("setViewEntry")
 
 
 if __name__ == "__main__":
     app=App()
     app.mainloop()
+

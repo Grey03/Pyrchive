@@ -1,13 +1,9 @@
-import datetime,json, os
-global __location__
+import datetime, json, os
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+jsonsLocation = __location__ + "/files/data"
 
 class ArchiveManager:
-
     def __init__(self):
-        self.archiveList = []
-        self.tagGroupList = []
-        self.savedSearches = []
         self.openFilesImmediately = True
         self.openMenuImmediately = True
         self.localFiles = True
@@ -47,15 +43,16 @@ class ArchiveManager:
                     if str(posTerm) not in self.tags:
                         return False
             return True
-        def __str__(self):
-            return json.dumps(self.__dict__(), indent=4)
-        def __dict__(self):
-            return {
-                "ID": self.ID,
-                "title": self.title,
-                "creator": self.creator,
-                "tags": self.tags,
-                "data": r"{}".format(self.data),
-                "misc_notes": self.misc_notes,
-                "upload_date": self.upload_date
-            }
+    def getEntryFromJson(fileID):
+        print (jsonsLocation + "/ArchiveEntries.json")
+        try:
+            with open(jsonsLocation + "/ArchiveEntries.json", "r") as jsonFile:
+                return json.load(jsonFile)
+        except:
+            return None
+    def saveEntryToJson(fildInfo):
+        print("Saving entry")
+        
+temp = ArchiveManager()
+
+print (ArchiveManager.getFileFromJson(9))
