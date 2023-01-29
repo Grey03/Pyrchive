@@ -1,8 +1,7 @@
-import customtkinter, os, math, random, shutil, json
+import customtkinter, os
 from pyrchive import archivemanager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
-#from PIL import Image
 
 global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -64,13 +63,6 @@ class App(customtkinter.CTk):
             self.entryFrame.pack(side="left",fill="both", expand=True)
             self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
         BottomFrame()
-        
-    def clearEntryFrame(self):
-        print ("clearEntryFrame")
-    def setBrowseEntries(self, **kwargs):
-        print ("setBrowseEntries")
-    def setViewEntry(self):
-        print ("setViewEntry")
 
 
 if __name__ == "__main__":
