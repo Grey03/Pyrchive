@@ -1,9 +1,17 @@
-import datetime, json, os, random
+import datetime, json, os, random, logging
+
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(filename="PyrchiveLogs.log", filemode="w",level=logging.INFO, format='%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+
 
 class archivemanager:
     def __init__(self):
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        self.archiveFilesDirectory = self.__location__ + "/pyrchiveFolders/archivedFiles/"
+        self.archiveJsonDirectory = self.__location__ + "/pyrchiveFolders/pyrchiveJsonData/"
         self.entriesList = []
+        logger.info("Archive manager initialized in {}".format(self.__location__))
     class taggroup:
         def __init__(self):
             #tag groups should be a grouping of tags that are similar to each other
@@ -11,6 +19,7 @@ class archivemanager:
             self.tags = []
             self.description = ""
             self.color = "cyan"
+            logger.info("Tag group initialized")
     class archiveentry:
         def __init__(self, **kwargs):
             #This is the basic entry, with all the attributes
@@ -26,12 +35,14 @@ class archivemanager:
                     setattr(self, key, value)
                 elif key == "tags":
                     self.setTags(value)
+            logger.info(f"New entry initialized with the ID of {self.ID}")
         def setTags(self, tags):
             if type(tags) != list: raise TypeError("Tags must be a list")
             for i in range(len(tags)):
-                tags[i]=tags[i].lower()
-                tags[i] = tags[i].replace("-", "")
+                tags[i] = tags[i].lower()
+                tags[i] = tags[i].replace("-", "_")
                 tags[i] = tags[i].replace("\n", "")
+                tags[i] = tags[i].replace(" ", "_")
             tags = ([*set(tags)])
             tags.sort()
             self.tags = tags
@@ -87,17 +98,24 @@ class archivemanager:
         self.saveEntries()
         self.loadEntries()
     def loadEntries(self):
+        logger.info("Loading entries from %s", self.archiveJsonDirectory + "ArchiveEntries.json")
         try:
-            with open(self.__location__ + "/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json", "r") as f:
+            with open(self.archiveJsonDirectory + "/ArchiveEntries.json", "r") as f:
                 temp = json.load(f)
                 self.entriesList = temp
                 return temp
         except:
+                logger.warning("Error loading entries from %s. Creating empty array", self.archiveJsonDirectory + "ArchiveEntries.json")
                 self.entriesList = []
     def saveEntries(self):
-        with open(self.__location__ + "/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json", "w") as f:
-            json.dump(self.entriesList, f, indent=4)
+        logger.info("Saving entries to %s", self.archiveJsonDirectory + "ArchiveEntries.json")
+        try:
+            with open(self.archiveJsonDirectory + "ArchiveEntries.json", "w") as f:
+                json.dump(self.entriesList, f, indent=4)
+        except Exception as inst:
+            logger.error("Failed to save archive. " + inst)
     def createTestEntry(self, **kwargs):
+        logger.debug("Creating test entry)")
         count = 1
         for key, value in kwargs.items():
             if key == "count": count = value
@@ -106,6 +124,7 @@ class archivemanager:
             tempFile = self.archiveentry(ID=self.getID(), title="title", tags=tags)
             print ((tempFile.__dict__()), end="\r")
             self.addEntry(tempFile.__dict__())
+        logger.debug("Test Entry Creation Complete")
 
 
             

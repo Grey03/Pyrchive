@@ -1,8 +1,16 @@
-import customtkinter, os, shutil
-from pyrchive import archivemanager
+import customtkinter
+import os
+import shutil
+import logging
+import time
+
+from Pyrchive import archivemanager
 from tkinter import filedialog, messagebox
 from tktooltip import ToolTip
 from PIL import Image, ImageTk
+
+
+logger = logging.getLogger(__name__)
 
 global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -21,7 +29,9 @@ class App(customtkinter.CTk):
         self.Archive = archivemanager()
         self.pageIndex = 0
 
-        def TopFrame(self):
+        logger.info("Tarchive App initialized")
+
+        def TopFrame(self:App):
             #Top Buttons Frame
             self.optionButtonsFrame=customtkinter.CTkFrame(self)
             #-+-+-+-+-+-
@@ -41,7 +51,7 @@ class App(customtkinter.CTk):
             self.fileCountLabel.pack(side="left",padx=5,pady=5)
             self.optionButtonsFrame.pack(padx=10, pady=5, fill="x")
         TopFrame(self)
-        def SearchFrame(self):
+        def SearchFrame(self:App):
             #Search Frame
             self.searchFrame = customtkinter.CTkFrame(self)
             self.saveButton = customtkinter.CTkButton(self.searchFrame, text="💾", font=("Roboto", 16, "bold"), width=30, height=30)
@@ -55,7 +65,7 @@ class App(customtkinter.CTk):
             self.searchButton.pack(side="left", padx=5, pady=5)
             self.searchFrame.pack(padx=10, pady=5,fill="x")
         SearchFrame(self)
-        def BottomFrame(self):
+        def BottomFrame(self:App):
             #Bottom Frame
             self.bottomFrame=customtkinter.CTkFrame(self, fg_color="transparent")
             self.tagFrame=customtkinter.CTkFrame(self.bottomFrame, width=200)
@@ -69,15 +79,17 @@ class App(customtkinter.CTk):
             self.bottomFrame.pack(fill="both",expand=True,padx=10,pady=5)
         BottomFrame(self)
 
-        def clearMainFrame(self):
-            for child in self.mainFrame.winfo_children():
+        logger.info(f"Started in {'%.2f' % (time.time() - fileStartTime)}s.")
+
+        def clearFrame(frame:customtkinter.CTkFrame):
+            for child in frame.winfo_children():
                 child.destroy()
         def entryBrowseScreen(self):
-            self.clearMainFrame()
+            self.mainFrame.clearFrame()
             print ("Browsing Entries")
         def entryViewScreen(self, entry):
-            self.clearMainFrame()
-            print ("Viewing an Entry")
+            self.mainFrame.clearFrame()
+            logger.info(f"Opening window for entry {entry.ID}")
 
             mediaWindow = customtkinter.CTkFrame(self.mainFrame)
             #run function to either display a video or an image
@@ -87,13 +99,13 @@ class App(customtkinter.CTk):
             infoFrame.pack(fill="both", expand=True, padx=10, pady=10)
 
             bottomButtonFrame = customtkinter.CTkFrame(self.mainFrame)
-            bottomButtonFrame.pack(fill="both", expand=True, padx=10, pady=10
+            bottomButtonFrame.pack(fill="both", expand=True, padx=10, pady=10)
 
 
 
 
 
-
+fileStartTime = time.time()
 if __name__ == "__main__":
     app=App()
     app.mainloop()
