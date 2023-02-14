@@ -12,115 +12,76 @@ class archivemanager:
         self.archiveJsonDirectory = self.__location__ + "/pyrchiveFolders/pyrchiveJsonData/"
         self.entriesList = []
         logger.info("Archive manager initialized in {}".format(self.__location__))
-    class taggroup:
-        def __init__(self):
-            #tag groups should be a grouping of tags that are similar to each other
-            self.name = ""
-            self.tags = []
-            self.description = ""
-            self.color = "cyan"
-            logger.info("Tag group initialized")
-    class archiveentry:
-        def __init__(self, archive, **kwargs):
-            #This is the basic entry, with all the attributes
-            self.ID = -1
-            self.title = ""
-            self.creator = "" 
-            self.tags = []
-            self.fileLocation = ""
-            self.notes = ""
-            self.uploadDate = (datetime.datetime.now().__str__())
-            for key, value in kwargs.items():
-                if hasattr(self, key) and key != "tags":
-                    setattr(self, key, value)
-                elif key == "tags":
-                    self.setTags(value)
-                if key == "dict":
-                    self.dictToArchiveEntry(value)
-            if self.ID == -1:
-                self.ID = archive.getID()
-            logger.info(f"New entry initialized with the ID of {self.ID}")
-        def setTags(self, tags):
-            if type(tags) != list: raise TypeError("Tags must be a list")
-            for i in range(len(tags)):
-                tags[i] = tags[i].lower()
-                tags[i] = tags[i].replace("-", "_")
-                tags[i] = tags[i].replace("\n", "")
-                tags[i] = tags[i].replace(" ", "_")
-            tags = ([*set(tags)])
-            tags.sort()
-            self.tags = tags
-            self.tags.sort()
-        def dictToArchiveEntry(self, dictionary):
-            for key, value in dictionary.items():
-                if hasattr(self, key):
-                    self.__setattr__(key, value)
-        def __str__(self):
-            #Returns a string representation of the dictionary of the object
-            return json.dumps(self.__dict__(), indent=4, sort_keys=True)
-        def __dict__(self):
-            #Should return a dictionary that represent the entry
-            return  {
-                    "ID": self.ID,
-                    "title": self.title,
-                    "creator": self.creator,
-                    "tags": self.tags,
-                    "fileLocation" : self.fileLocation,
-                    "notes": self.notes,
-                    "uploadDate": self.uploadDate
-                    }
-        def hasTags(self, filterList):
-            positiveList = []
-            negativeList = []
-            for filterWord in filterList:
-                if filterWord.startswith("-"):
-                    negativeList.append(filterWord.lower().replace("-", ""))
-                else:
-                    positiveList.append(filterWord.lower())
-            for negativeTerm in negativeList:
-                if negativeTerm in self.tags:
-                    return False
-            for positiveTag in positiveList:
-                if positiveTag not in self.tags:
-                    return False
-            return True
-    def entriesListToDictList(self):
-        return [entry.__dict__() for entry in self.entriesList]
-    def getID(self):
-        if len(self.entriesList) == 0:
-            return 0
-        for position, entry in enumerate(self.entriesList):
-            if position != entry.ID:
-                return position
-        return len(self.entriesList)
-    def modifyEntry(self, entryID, newData):
-        try: self.entriesList[entryID] = newData
-        except: return False
+
+    def createTagGroup(self, **kwargs):
+        tagGroup = {
+            "name": "",
+            "tags": [],
+            "description": "",
+            "color": "cyan"
+            }
+        
+        for key, value in kwargs.items():
+            if hasattr(tagGroup, key):
+                tagGroup.__setattr__(key, value)
+
+        return tagGroup
+    def createEntry(self, **kwargs):
+        entryDict = {
+            "title": "",
+            "creator": "",
+            "tags": [],
+            "fileLocation": "",
+            "notes": "",
+            "uploadDate": datetime.datetime.now().__str__()
+        }
+
+        for key, value in kwargs.items():
+            if hasattr(entryDict, key) and key != "uploadDate":
+                entryDict.__setattr__(key, value)
+
+        return entryDict
+    
+    def hasTags(filterList, entryTags):
+        posList = []
+        negList = []
+        for filterWord in filterList:
+            if filterWord.startswith("-"): negList.append(filterWord.lower().replace("-", ""))
+            else: posList.append(filterWord.lower())
+        for negTerm, in negList:
+            if negTerm in entryTags:
+                return False
+        for posTerm in posList:
+            if posTerm not in entryTags:
+                return False
+        return True
+    
+    def filterEntryList(self, filterList, entryCount):
+        finalentries = [entry for entry in self.entriesList if archivemanager.hasTags(filterList, entry["tags"])]
+        if entryCount != -1 and (len(finalentries) > entryCount):
+            return finalentries[0:entryCount]
+        return finalentries
+
     def addEntry(self, entry):
         try:
             self.entriesList.insert(entry["ID"], entry)
         except:
-            self.entriesList.append(entry)   
-    def refresh(self):
-        self.saveEntries()
-        self.loadEntries()
+            self.entriesList.append(entry)  
     def loadEntries(self):
         logger.info("Loading entries from %s", self.archiveJsonDirectory + "ArchiveEntries.json")
         try:
             with open(self.archiveJsonDirectory + "ArchiveEntries.json", "r") as f:
-                temp = json.load(f)
-                self.entriesList = [self.archiveentry(dict=entry) for entry in temp]
-                return temp
+                self.entriesList = json.load(f)
         except Exception as inst:
-                logger.warning("Error loading entries from %s. Creating empty array" + self.archiveJsonDirectory + "ArchiveEntries.json" + str(inst))
+                logger.warning("Error loading entries from ArchiveEntries.json: " + str(inst))
                 self.entriesList = []
     def saveEntries(self):
         logger.info("Saving entries to %s", self.archiveJsonDirectory + "ArchiveEntries.json")
         try:
             with open(self.archiveJsonDirectory + "ArchiveEntries.json", "w") as f:
-                json.dump(self.entriesListToDictList(), f, indent=4)
+                json.dump(self.entriesList, f, indent=4)
         except Exception as inst:
-            logger.error("Failed to save archive. " + str(inst))
+            logger.error("Failed to save archive: " + str(inst))
     def createTestEntry(self, **kwargs):
         logger.debug("Creating test entry")
         count = 1
@@ -142,5 +103,6 @@ class archivemanager:
 
 test = archivemanager()
 test.loadEntries()
-test.createTestEntry(count=100)
-test.saveEntries()
+x = (test.filterEntryList(["tag1"], -1))
+for entry in x:
+    print (entry["tags"])
