@@ -21,7 +21,7 @@ class archivemanager:
             self.color = "cyan"
             logger.info("Tag group initialized")
     class archiveentry:
-        def __init__(self, **kwargs):
+        def __init__(self, archive, **kwargs):
             #This is the basic entry, with all the attributes
             self.ID = -1
             self.title = ""
@@ -35,6 +35,10 @@ class archivemanager:
                     setattr(self, key, value)
                 elif key == "tags":
                     self.setTags(value)
+                if key == "dict":
+                    self.dictToArchiveEntry(value)
+            if self.ID == -1:
+                self.ID = archive.getID()
             logger.info(f"New entry initialized with the ID of {self.ID}")
         def setTags(self, tags):
             if type(tags) != list: raise TypeError("Tags must be a list")
@@ -49,7 +53,8 @@ class archivemanager:
             self.tags.sort()
         def dictToArchiveEntry(self, dictionary):
             for key, value in dictionary.items():
-                self.__dict__[key] = value
+                if hasattr(self, key):
+                    self.__setattr__(key, value)
         def __str__(self):
             #Returns a string representation of the dictionary of the object
             return json.dumps(self.__dict__(), indent=4, sort_keys=True)
@@ -79,11 +84,13 @@ class archivemanager:
                 if positiveTag not in self.tags:
                     return False
             return True
+    def entriesListToDictList(self):
+        return [entry.__dict__() for entry in self.entriesList]
     def getID(self):
         if len(self.entriesList) == 0:
             return 0
         for position, entry in enumerate(self.entriesList):
-            if position != entry["ID"]:
+            if position != entry.ID:
                 return position
         return len(self.entriesList)
     def modifyEntry(self, entryID, newData):
@@ -100,30 +107,30 @@ class archivemanager:
     def loadEntries(self):
         logger.info("Loading entries from %s", self.archiveJsonDirectory + "ArchiveEntries.json")
         try:
-            with open(self.archiveJsonDirectory + "/ArchiveEntries.json", "r") as f:
+            with open(self.archiveJsonDirectory + "ArchiveEntries.json", "r") as f:
                 temp = json.load(f)
-                self.entriesList = temp
+                self.entriesList = [self.archiveentry(dict=entry) for entry in temp]
                 return temp
-        except:
-                logger.warning("Error loading entries from %s. Creating empty array", self.archiveJsonDirectory + "ArchiveEntries.json")
+        except Exception as inst:
+                logger.warning("Error loading entries from %s. Creating empty array" + self.archiveJsonDirectory + "ArchiveEntries.json" + str(inst))
                 self.entriesList = []
     def saveEntries(self):
         logger.info("Saving entries to %s", self.archiveJsonDirectory + "ArchiveEntries.json")
         try:
             with open(self.archiveJsonDirectory + "ArchiveEntries.json", "w") as f:
-                json.dump(self.entriesList, f, indent=4)
+                json.dump(self.entriesListToDictList(), f, indent=4)
         except Exception as inst:
-            logger.error("Failed to save archive. " + inst)
+            logger.error("Failed to save archive. " + str(inst))
     def createTestEntry(self, **kwargs):
-        logger.debug("Creating test entry)")
+        logger.debug("Creating test entry")
         count = 1
         for key, value in kwargs.items():
             if key == "count": count = value
         for i in range(count):
             tags = [random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"]), random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"]), random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"])]
-            tempFile = self.archiveentry(ID=self.getID(), title="title", tags=tags)
-            print ((tempFile.__dict__()), end="\r")
-            self.addEntry(tempFile.__dict__())
+            tempFile = self.archiveentry(self, title="title", tags=tags)
+            logger.debug(tempFile.__dict__())
+            self.addEntry(tempFile)
         logger.debug("Test Entry Creation Complete")
 
 
@@ -135,5 +142,5 @@ class archivemanager:
 
 test = archivemanager()
 test.loadEntries()
+test.createTestEntry(count=100)
 test.saveEntries()
-

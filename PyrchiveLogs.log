@@ -1,6 +1,104 @@
-INFO:2023-02-09 15:54:01,674:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-INFO:2023-02-09 15:54:01,674:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-INFO:2023-02-09 15:54:01,675:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-INFO:2023-02-09 15:54:01,739:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-INFO:2023-02-09 15:54:01,739:__main__:Tarchive App initialized
-INFO:2023-02-09 15:54:01,941:__main__:Started in 0.26s.
+INFO:2023-02-14 09:52:08,913:__main__:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+INFO:2023-02-14 09:52:08,913:__main__:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+WARNING:2023-02-14 09:52:08,914:__main__:Error loading entries from %s. Creating empty arrayC:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.jsonExpecting value: line 2 column 5 (char 6)
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 0
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 1
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 2
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 3
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 4
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 5
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 6
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 7
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 8
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 9
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 10
+INFO:2023-02-14 09:52:08,914:__main__:New entry initialized with the ID of 11
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 12
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 13
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 14
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 15
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 16
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 17
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 18
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 19
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 20
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 21
+INFO:2023-02-14 09:52:08,915:__main__:New entry initialized with the ID of 22
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 23
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 24
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 25
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 26
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 27
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 28
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 29
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 30
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 31
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 32
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 33
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 34
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 35
+INFO:2023-02-14 09:52:08,916:__main__:New entry initialized with the ID of 36
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 37
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 38
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 39
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 40
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 41
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 42
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 43
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 44
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 45
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 46
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 47
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 48
+INFO:2023-02-14 09:52:08,917:__main__:New entry initialized with the ID of 49
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 50
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 51
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 52
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 53
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 54
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 55
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 56
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 57
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 58
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 59
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 60
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 61
+INFO:2023-02-14 09:52:08,918:__main__:New entry initialized with the ID of 62
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 63
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 64
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 65
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 66
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 67
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 68
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 69
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 70
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 71
+INFO:2023-02-14 09:52:08,920:__main__:New entry initialized with the ID of 72
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 73
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 74
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 75
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 76
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 77
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 78
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 79
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 80
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 81
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 82
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 83
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 84
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 85
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 86
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 87
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 88
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 89
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 90
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 91
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 92
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 93
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 94
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 95
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 96
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 97
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 98
+INFO:2023-02-14 09:52:08,921:__main__:New entry initialized with the ID of 99
+INFO:2023-02-14 09:52:08,922:__main__:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
