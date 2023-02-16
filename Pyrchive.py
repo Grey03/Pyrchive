@@ -32,6 +32,7 @@ class archivemanager:
         return tagGroup
     def createEntry(self, **kwargs):
         entryDict = {
+            "ID": len(self.entriesList),
             "title": "",
             "creator": "",
             "tags": [],
@@ -61,10 +62,13 @@ class archivemanager:
         return True
     
     def filterEntryList(self, filterList, entryCount):
-        finalentries = [entry for entry in self.entriesList if archivemanager.hasTags(filterList, entry["tags"])]
-        if entryCount != -1 and (len(finalentries) > entryCount):
-            return finalentries[0:entryCount]
-        return finalentries
+        if len(filterList) > 0:
+            finalentries = [entry for entry in self.entriesList if archivemanager.hasTags(filterList, entry["tags"])]
+            if entryCount != -1 and (len(finalentries) > entryCount):
+                return finalentries[0:entryCount]
+            return finalentries
+        else:
+            return self.entriesList[0:entryCount]
 
     def addEntry(self, entry):
         try:
@@ -72,21 +76,32 @@ class archivemanager:
         except:
             self.entriesList.append(entry)  
 
+    def loadAll(self):
+        self.loadEntries()
+        self.loadSettings()
+        self.loadTagGroups()
+        self.loadSavedSearches()
+    def saveAll(self):
+        self.saveEntries()
+        self.saveSettings()
+        self.saveTagGroups()
+        self.saveSavedSearches()
+
     def loadSettings(self):
         logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "ArchiveSettings.json")
-        try:
-            with open(self.archiveJsonDirectory + "ArchiveSettings.json", "r") as f:
-                return json.load(f)
-        except Exception as inst:
-                logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
-                self.tagGroupList = []
+        #try:
+        #    with open(self.archiveJsonDirectory + "ArchiveSettings.json", "r") as f:
+        #        return json.load(f)
+        #except Exception as inst:
+        #        logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
+        #        self.tagGroupList = []
     def saveSettings(self):
         logger.info("Saving Tag Groups to %s", self.archiveJsonDirectory + "ArchiveSettings.json")
-        try:
-            with open(self.archiveJsonDirectory + "TagGroups.json", "w") as f:
-                json.dump(self.tagGroupList, f, indent=4)
-        except Exception as inst: 
-            logger.error("Failed to save settings: " + str(inst))
+        #try:
+        #    with open(self.archiveJsonDirectory + "TagGroups.json", "w") as f:
+        #        json.dump(self.tagGroupList, f, indent=4)
+        #except Exception as inst: 
+        #    logger.error("Failed to save settings: " + str(inst))
 
     def loadTagGroups(self):
         logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "TagGroups.json")
@@ -94,7 +109,7 @@ class archivemanager:
             with open(self.archiveJsonDirectory + "TagGroups.json", "r") as f:
                 self.tagGroupList = json.load(f)
         except Exception as inst:
-                logger.warning("Error loading tagGroups from ArchiveEntries.json: " + str(inst))
+                logger.warning("Error loading tagGroups from SavedSearches.json: " + str(inst))
                 self.tagGroupList = []
     def saveTagGroups(self):
         logger.info("Saving Tag Groups to %s", self.archiveJsonDirectory + "TagGroups.json")
@@ -103,6 +118,22 @@ class archivemanager:
                 json.dump(self.tagGroupList, f, indent=4)
         except Exception as inst: 
             logger.error("Failed to save tag groups: " + str(inst))
+
+    def loadSavedSearches(self):
+        logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "SavedSearches.json")
+        try:
+            with open(self.archiveJsonDirectory + "SavedSearches.json", "r") as f:
+                self.savedSearches = json.load(f)
+        except Exception as inst:
+                logger.warning("Error loading saved searches from SavedSearches.json: " + str(inst))
+                self.savedSearches = []
+    def saveSavedSearches(self):
+        logger.info("Saving Tag Groups to %s", self.archiveJsonDirectory + "SavedSearches.json")
+        try:
+            with open(self.archiveJsonDirectory + "SavedSearches.json", "w") as f:
+                json.dump(self.savedSearches, f, indent=4)
+        except Exception as inst: 
+            logger.error("Failed to save savedSearches: " + str(inst))
 
     def loadEntries(self):
         logger.info("Loading entries from %s", self.archiveJsonDirectory + "ArchiveEntries.json")
@@ -138,7 +169,7 @@ class archivemanager:
 
 
 
-test = archivemanager()
+"""test = archivemanager()
 test.loadEntries()
 test.loadTagGroups()
-print (test.tagGroupList)
+print (test.tagGroupList)"""
