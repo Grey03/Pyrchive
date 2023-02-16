@@ -1,2 +1,3 @@
-INFO:2023-02-14 10:33:00,162:__main__:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-INFO:2023-02-14 10:33:00,162:__main__:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+INFO:2023-02-14 11:26:42,906:__main__:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+INFO:2023-02-14 11:26:42,907:__main__:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+INFO:2023-02-14 11:26:42,908:__main__:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/TagGroups.json
