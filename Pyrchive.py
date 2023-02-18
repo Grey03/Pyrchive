@@ -74,7 +74,15 @@ class archivemanager:
         try:
             self.entriesList.insert(entry["ID"], entry)
         except:
-            self.entriesList.append(entry)  
+            self.entriesList.append(entry)
+
+    def getAllTags(self):
+        allTags = []
+        for entry in self.entriesList:
+            for tag in entry["tags"]:
+                if tag not in allTags:
+                    allTags.append(tag)
+        return allTags
 
     def loadAll(self):
         self.loadEntries()
