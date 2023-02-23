@@ -271,6 +271,17 @@ class App(customtkinter.CTk):
                 logger.warn("User did not enter a valid number")
         else:
             logger.warn("User did not enter a number")
+
+    def safeOpen(self, filelocation):
+        try:
+            os.startfile(filelocation)
+        except: 
+            try:
+                os.startfile(__location__ + "/" + filelocation)
+            except:
+                messagebox.showerror("File Not Found", f"File {filelocation} not found.")
+                logger.warning(f"File {filelocation} not found.")
+
             
     def entryViewScreen(self, entry, button):
         App.clearFrame(self.mainFrame)
@@ -296,7 +307,7 @@ class App(customtkinter.CTk):
             image = image.resize(newSize)
 
         ctkImage = customtkinter.CTkImage(dark_image=image, size=image.size)
-        ctkImageButton = customtkinter.CTkButton(mediaWindow, image=ctkImage, text="", width=image.size[0], height=image.size[1], hover=False, fg_color="transparent", command=lambda : os.startfile(fileLocation))
+        ctkImageButton = customtkinter.CTkButton(mediaWindow, image=ctkImage, text="", width=image.size[0], height=image.size[1], hover=False, fg_color="transparent", command=lambda : self.safeOpen(fileLocation))
         ctkImageButton.pack()
         #run function to either display a video or an image
         mediaWindow.pack(fill="both", expand=True, padx=5, pady=0)
