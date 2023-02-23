@@ -86,7 +86,8 @@ class App(customtkinter.CTk):
         self.Archive = archivemanager()
         self.Archive.loadAll()
 
-        self.pageIndex = 1
+        self.pageIndex = 0
+        self.currentEntryBrowseCount = 0
         self.filecount = len(self.Archive.entriesList)
 
         logger.info("Tarchive App initialized")
@@ -127,7 +128,7 @@ class App(customtkinter.CTk):
         self.tagFrame=customtkinter.CTkFrame(self.bottomFrame, width=200)
         self.tagLabel=customtkinter.CTkLabel(self.tagFrame, text="Tags", font=("Roboto", 13, "bold"))
         self.tagLabel.pack(padx=5,pady=0)
-        self.tagListFrame = customtkinter.CTkFrame(self.tagFrame)
+        self.tagListFrame = customtkinter.CTkFrame(self.tagFrame,fg_color="transparent")
         self.tagListFrame.pack(padx=5,pady=5, expand=True, fill="both")
         self.tagFrame.pack(side="left", fill="y")
         self.mainFrame=customtkinter.CTkFrame(self.bottomFrame, fg_color="transparent")
@@ -162,6 +163,7 @@ class App(customtkinter.CTk):
         else:
             searchList = []
         x = self.Archive.filterEntryList(searchList, -1)
+        self.currentEntryBrowseCount = len(x)
         App.entryBrowseScreen(self, x)
 
     def clearFrame(self):
@@ -175,16 +177,17 @@ class App(customtkinter.CTk):
                 messagebox.ERROR(message)
                 logger.error(message)
 
-    def entryBrowseScreen(self, entries, **kwargs):
-        start = 0
-        for key,value in kwargs.items():
-            if key == "start": start = value
+    def entryBrowseScreen(self, entries):
         maxWidth = 6
         maxHeight = 8
+        #Dont forget to update max image in the page forward
         maxImages = maxWidth * maxHeight
+
+        start = maxImages * (self.pageIndex)
+
         totalentries = len(entries)
         if len(entries) >= maxImages:
-            entries = entries[start:maxImages]
+            entries = entries[start:start + maxImages]
         else:
             entries = entries[start:len(entries)-1]
         logger.info(f"Entering Browse Screen with {len(entries)} entries on screen.")
@@ -195,7 +198,7 @@ class App(customtkinter.CTk):
         browseScreen.rowconfigure(tupleWidth, weight=1)
         browseScreen.columnconfigure(tupleHeight,weight=1)
         #browseScreen.grid(row=0, column=0, columnspan=3, sticky="nsew")
-        browseScreen.pack(side="top", fill="both", expand="true")
+        browseScreen.pack(side="top", fill="both", expand="true", padx=5)
         buttons = {}
         images = {}
         allTags = []
@@ -230,30 +233,44 @@ class App(customtkinter.CTk):
         self.tagListDisplay(allTags)
 
         pagesFrame = customtkinter.CTkFrame(self.mainFrame)
-        backArrow = customtkinter.CTkButton(pagesFrame, width=30, height=30, text="⬅️")
+        backArrow = customtkinter.CTkButton(pagesFrame, width=30, height=30, text="⬅️", command = lambda : self.browseBack())
         backArrow.pack(side="left", padx=5, pady=5)
 
-        currentPageEntry = customtkinter.CTkEntry(pagesFrame, placeholder_text=self.pageIndex, width=30, height=30)
-        currentPageEntry.bind("<Return>", lambda e: self.pageSelect(e))
+        currentPageEntry = customtkinter.CTkEntry(pagesFrame, placeholder_text=self.pageIndex + 1, width=30, height=30)
+        currentPageEntry.bind("<Return>", lambda e: self.pageSelect(currentPageEntry.get()))
         currentPageEntry.pack(side="left", padx=5, pady=5)
 
         ofPageLabel = customtkinter.CTkLabel(pagesFrame, text=f"of {math.ceil(totalentries / maxImages)}")
         ofPageLabel.pack(side="left", padx=5, pady=5)
 
-        forwardArrow = customtkinter.CTkButton(pagesFrame, width=30, height=30, text="➡️")
+        forwardArrow = customtkinter.CTkButton(pagesFrame, width=30, height=30, text="➡️", command = lambda: self.browseForward())
         forwardArrow.pack(side="left", padx=5, pady=5)
 
         #pagesFrame.grid(row=1, column=1, sticky="ew")
         pagesFrame.pack(padx=5, pady=5)
-
-        
-    def browseBack():
-        print ("Back")
-    def browseForward():
-        print ("Forward")
-    def pageSelect(*args):
-        print ("Going to page")
-        print (args)
+     
+    def browseBack(self):
+        if self.pageIndex > 0:
+            self.pageIndex -= 1
+            self.search()
+    def browseForward(self):
+        #Dont forget to update this when updating max images above
+        maxImagesPerPage = 48
+        if self.pageIndex < math.ceil(self.currentEntryBrowseCount / maxImagesPerPage):
+            self.pageIndex +=1
+            self.search()
+    def pageSelect(self, text, *args):
+        logger.info("Going to page " + text)
+        if(text.isdigit()):
+            maxImagesPerPage = 48
+            totalPages = math.ceil(self.currentEntryBrowseCount / maxImagesPerPage)
+            if int(text) <= totalPages and int(text) > 0:
+                self.pageIndex = int(text) - 1
+                self.search()
+            else:
+                logger.warn("User did not enter a valid number")
+        else:
+            logger.warn("User did not enter a number")
             
     def entryViewScreen(self, entry, button):
         App.clearFrame(self.mainFrame)
@@ -263,10 +280,11 @@ class App(customtkinter.CTk):
         defaultImage = (f"{str(__location__)}/pyrchiveFolders/Tagchivelogo.png")
         fileLocation = entry.get("fileLocation", defaultImage)
 
+
         if not os.path.exists(fileLocation):
             fileLocation = defaultImage
-        maxImageX = self.winfo_screenwidth() - 200
-        maxImageY = 9999
+        maxImageX = self.winfo_screenwidth() - 50
+        maxImageY = 999999999
         try:
             image = Image.open(fileLocation)
         except Exception as inst:
@@ -286,7 +304,7 @@ class App(customtkinter.CTk):
         ctkImageButton = customtkinter.CTkButton(mediaWindow, image=ctkImage, text="", width=image.size[0], height=image.size[1], hover=False, fg_color="transparent", command=lambda : os.startfile(fileLocation))
         ctkImageButton.pack()
         #run function to either display a video or an image
-        mediaWindow.pack(fill="both", expand=True, padx=10, pady=10)
+        mediaWindow.pack(fill="both", expand=True, padx=5, pady=0)
 
         infoFrame = customtkinter.CTkFrame(self.mainFrame)
         ID = customtkinter.CTkLabel(infoFrame, text="ID: " + str(entry.get("ID", "Invalid ID")))
@@ -298,10 +316,11 @@ class App(customtkinter.CTk):
         creator = customtkinter.CTkEntry(infoFrame, placeholder_text="Creator: " + entry.get("creator", "Invalid Creator"))
         creator.insert("end", entry.get("creator", "Invalid Creator"))
         creator.grid(row=2,column=0, sticky="w")
-        infoFrame.pack(fill="both", expand=True, padx=10, pady=10)
+        infoFrame.pack(padx=5, pady=5)
 
         bottomButtonFrame = customtkinter.CTkFrame(self.mainFrame)
-        bottomButtonFrame.pack(fill="both", expand=True, padx=10, pady=10)
+        bottomButtonFrame.pack(padx=5, pady=5)
+        self.tagListDisplay(entry.get("tags", ["NO", "TAGS", "FOUND"]))
 
     def tagListDisplay(self, tags):
         logging.info("Loading tag list...")
@@ -314,17 +333,18 @@ class App(customtkinter.CTk):
             tagButtonsList[tag] = customtkinter.CTkFrame(self.tagListFrame)
             tagName = tag.split(" ")
 
-            tagButton = customtkinter.CTkButton(tagButtonsList[tag], fg_color="transparent", text=tag, command=lambda e=tagName: self.autoSearch(e[len(e)-1]))
-            addButton = customtkinter.CTkButton(tagButtonsList[tag], fg_color="transparent", text="+", width=30, height=30, command=lambda e=tagName: self.addTagToSearch(e[len(e)-1]))
-            removebutton = customtkinter.CTkButton(tagButtonsList[tag], fg_color="transparent",text="-", width=30, height=30, command=lambda e=tagName: self.removeTagFromSearch(e[len(e)-1]))
+            tagButton = customtkinter.CTkButton(tagButtonsList[tag], text=tag, command=lambda e=tagName: self.autoSearch(e[len(e)-1]))
+            addButton = customtkinter.CTkButton(tagButtonsList[tag], text="+", width=30, height=30, command=lambda e=tagName: self.addTagToSearch(e[len(e)-1]))
+            removebutton = customtkinter.CTkButton(tagButtonsList[tag], text="-", width=30, height=30, command=lambda e=tagName: self.removeTagFromSearch(e[len(e)-1]))
 
-            tagButton.pack(side="left")
-            addButton.pack(side="left")
-            removebutton.pack(side="left")
+            tagButton.pack(side="left", padx=1, pady=1)
+            addButton.pack(side="left", padx=1, pady=1)
+            removebutton.pack(side="left", padx=1, pady=1)
             tagButtonsList[tag].pack()
 
     def addTagToSearch(self, newTag):
         searchBar = self.searchBar.get()
+        searchBar = searchBar.replace((" -" + newTag),"")
         if newTag not in searchBar.split():
             if len(searchBar) > 0:
                 searchBar = searchBar + " "
@@ -332,7 +352,12 @@ class App(customtkinter.CTk):
         self.fillSearch(searchBar)
 
     def removeTagFromSearch(self, targetTag):
-        searchBar = self.searchBar.get().replace(targetTag, "")
+        splitSearch = self.searchBar.get().split(" ")
+        if targetTag in splitSearch and "-" + targetTag not in splitSearch:
+            searchBar = self.searchBar.get().replace(targetTag, "")
+        else:
+            searchBar = self.searchBar.get() + (" -"+targetTag)
+
         self.fillSearch(searchBar)
 
     def saveSearch(self):

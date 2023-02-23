@@ -84,12 +84,12 @@ class archivemanager:
     def loadAll(self):
         self.loadEntries()
         self.loadSettings()
-        self.loadTagGroups()
+        #self.loadTagGroups()
         self.loadSavedSearches()
     def saveAll(self):
         self.saveEntries()
         self.saveSettings()
-        self.saveTagGroups()
+        #self.saveTagGroups()
         self.saveSavedSearches()
 
     def loadSettings(self):
