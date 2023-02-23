@@ -1,14 +1,14 @@
-INFO:2023-02-18 08:19:49,662:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-INFO:2023-02-18 08:19:49,662:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-INFO:2023-02-18 08:19:49,672:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-INFO:2023-02-18 08:19:49,673:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/TagGroups.json
-INFO:2023-02-18 08:19:49,674:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
-INFO:2023-02-18 08:19:49,674:__main__:Tarchive App initialized
-INFO:2023-02-18 08:19:49,960:__main__:Started in 0.39s.
-INFO:2023-02-18 08:19:49,960:__main__:Entering Browse Screen with 99 entries on screen.
-INFO:2023-02-18 08:19:50,081:root:Loading tag list...
-INFO:2023-02-18 08:19:51,668:__main__:Opening window for entry 0
-INFO:2023-02-18 08:20:02,531:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-INFO:2023-02-18 08:20:02,542:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-INFO:2023-02-18 08:20:02,542:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/TagGroups.json
-INFO:2023-02-18 08:20:02,544:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-23 08:55:44,110:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+2023-02-23 08:55:44,110:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-23 08:55:44,121:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-23 08:55:44,121:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/TagGroups.json
+2023-02-23 08:55:44,127:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-23 08:55:44,133:INFO:__main__:Tarchive App initialized
+2023-02-23 08:55:44,420:INFO:__main__:Started in 0.40s.
+2023-02-23 08:55:44,421:INFO:__main__:Entering Browse Screen with 48 entries on screen.
+2023-02-23 08:55:44,563:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/De way.mp4'
+2023-02-23 08:55:45,168:INFO:root:Loading tag list...
+2023-02-23 08:55:53,391:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-23 08:55:53,401:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-23 08:55:53,402:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/TagGroups.json
+2023-02-23 08:55:53,403:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json

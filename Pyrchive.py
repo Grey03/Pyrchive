@@ -2,7 +2,7 @@ import datetime, json, os, random, logging
 
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename="PyrchiveLogs.log", filemode="w",level=logging.INFO, format='%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+logging.basicConfig(filename="PyrchiveLogs.log", filemode="w",level=logging.INFO, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 
 class archivemanager:
@@ -48,12 +48,9 @@ class archivemanager:
         return entryDict
     
     def hasTags(filterList, entryTags):
-        posList = []
-        negList = []
-        for filterWord in filterList:
-            if filterWord.startswith("-"): negList.append(filterWord.lower().replace("-", ""))
-            else: posList.append(filterWord.lower())
-        for negTerm, in negList:
+        posList = [word.lower() for word in filterList if not word.startswith("-")]
+        negList = [word.lower().replace("-", "") for word in filterList if word.startswith("-")]
+        for negTerm in negList:
             if negTerm in entryTags:
                 return False
         for posTerm in posList:
