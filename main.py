@@ -284,21 +284,16 @@ class App(customtkinter.CTk):
         if not os.path.exists(fileLocation):
             fileLocation = defaultImage
         maxImageX = self.winfo_screenwidth() - 50
-        maxImageY = 999999999
         try:
             image = Image.open(fileLocation)
         except Exception as inst:
             image = Image.open(defaultImage)
             logger.warning("Error openining image: " + str(inst))
-
-        largestSide = max(image.size)
         resizeScale = 1
-        if largestSide == image.size[0] and largestSide > maxImageX:
-            resizeScale = (math.floor(largestSide/maxImageX))
-        elif largestSide == image.size[1] and largestSide > maxImageY:
-            resizeScale = (math.floor(largestSide/maxImageY))
-        newSize = (math.floor(image.size[0]/resizeScale), math.floor(image.size[1]/resizeScale))
-        image = image.resize(newSize)
+        if image.size[0] > maxImageX:
+            resizeScale = (math.floor(image.size[0]/maxImageX))
+            newSize = (math.floor(image.size[0]/resizeScale), math.floor(image.size[1]/resizeScale))
+            image = image.resize(newSize)
 
         ctkImage = customtkinter.CTkImage(dark_image=image, size=image.size)
         ctkImageButton = customtkinter.CTkButton(mediaWindow, image=ctkImage, text="", width=image.size[0], height=image.size[1], hover=False, fg_color="transparent", command=lambda : os.startfile(fileLocation))
@@ -325,7 +320,7 @@ class App(customtkinter.CTk):
     def tagListDisplay(self, tags):
         logging.info("Loading tag list...")
         App.clearFrame(self.tagListFrame)
-        finalTags = ["(" + str(tags.count(tag)) + ") " + (str(tag)) for tag in tags]
+        finalTags = ["(" + str(self.Archive.getAllTagsData()[tag]) + ") " + (str(tag)) for tag in tags]
         finalTags = [*set(finalTags)]
         finalTags.sort(reverse=True)
         tagButtonsList = {}
@@ -334,6 +329,7 @@ class App(customtkinter.CTk):
             tagName = tag.split(" ")
 
             tagButton = customtkinter.CTkButton(tagButtonsList[tag], text=tag, command=lambda e=tagName: self.autoSearch(e[len(e)-1]))
+            tagButton.tip = CreateToolTip(tagButton, text=tag.split(" ")[1])
             addButton = customtkinter.CTkButton(tagButtonsList[tag], text="+", width=30, height=30, command=lambda e=tagName: self.addTagToSearch(e[len(e)-1]))
             removebutton = customtkinter.CTkButton(tagButtonsList[tag], text="-", width=30, height=30, command=lambda e=tagName: self.removeTagFromSearch(e[len(e)-1]))
 

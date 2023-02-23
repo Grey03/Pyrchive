@@ -80,6 +80,21 @@ class archivemanager:
                 if tag not in allTags:
                     allTags.append(tag)
         return allTags
+    
+    def getAllTagsData(self):
+        everyTag = []
+        for entry in self.entriesList:
+            everyTag.extend(entry.get("tags", ["Test"]))
+
+        finalDict = []
+        for tagName in self.getAllTags():
+            finalDict.append((tagName, everyTag.count(tagName)))
+        finalDict = dict(finalDict)
+        return finalDict
+
+
+        print (everyTag)
+
 
     def loadAll(self):
         self.loadEntries()

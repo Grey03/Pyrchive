@@ -1,14 +1,12 @@
-2023-02-23 10:23:30,258:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-2023-02-23 10:23:30,258:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-23 10:23:30,262:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-02-23 10:23:30,262:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
-2023-02-23 10:23:30,262:INFO:__main__:Tarchive App initialized
-2023-02-23 10:23:30,451:INFO:__main__:Started in 0.25s.
-2023-02-23 10:23:30,451:INFO:__main__:Entering Browse Screen with 48 entries on screen.
-2023-02-23 10:23:30,509:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/De way.mp4'
-2023-02-23 10:23:30,916:INFO:root:Loading tag list...
-2023-02-23 10:23:35,227:INFO:__main__:Opening window for entry 0
-2023-02-23 10:23:35,252:INFO:root:Loading tag list...
-2023-02-23 10:23:42,514:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-23 10:23:42,516:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-02-23 10:23:42,516:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-23 11:13:56,665:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+2023-02-23 11:13:56,665:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-23 11:13:56,665:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-23 11:13:56,665:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-23 11:13:56,666:INFO:__main__:Tarchive App initialized
+2023-02-23 11:13:56,860:INFO:__main__:Started in 0.25s.
+2023-02-23 11:13:56,860:INFO:__main__:Entering Browse Screen with 48 entries on screen.
+2023-02-23 11:13:56,925:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/De way.mp4'
+2023-02-23 11:13:57,336:INFO:root:Loading tag list...
+2023-02-23 11:14:00,998:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-23 11:14:01,001:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-23 11:14:01,001:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
