@@ -1,4 +1,4 @@
-import datetime, json, os, random, logging
+import datetime, json, os, random, logging, time
 
 logger = logging.getLogger(__name__)
 
@@ -93,19 +93,20 @@ class archivemanager:
         return finalDict
 
 
-        print (everyTag)
-
-
     def loadAll(self):
+        startTime = time.time()
         self.loadEntries()
         self.loadSettings()
         #self.loadTagGroups()
         self.loadSavedSearches()
+        logger.debug("Archive manager loaded in {} seconds".format(round(time.time() - startTime)))
     def saveAll(self):
+        startTime = time.time()
         self.saveEntries()
         self.saveSettings()
         #self.saveTagGroups()
         self.saveSavedSearches()
+        logger.debug("Archive manager saved in {} seconds".format(round(time.time() - startTime)))
 
     def loadSettings(self):
         logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "ArchiveSettings.json")
@@ -177,7 +178,7 @@ class archivemanager:
             if key == "count": count = value
         for i in range(count):
             tags = [random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"]), random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"]), random.choice(["tag1", "tag2", "tag3", "tag4", "tag5"])]
-            tempFile = self.archiveentry(self, title="title", tags=tags)
+            tempFile = self.createEntry(title="title", tags=tags)
             logger.debug(tempFile.__dict__())
             self.addEntry(tempFile)
         logger.debug("Test Entry Creation Complete")
