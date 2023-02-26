@@ -352,13 +352,13 @@ class App(customtkinter.CTk):
         tagsBox = customtkinter.CTkTextbox(infoFrame, height=100, wrap="word")
         tagsBox.insert("end", " ".join(entry.get("tags", "Invalid Tags")))
         tagsLabel.grid(row=5, column=0, sticky="w")
-        tagsBox.grid(row=5, column=0, sticky="ew", columnspan=4, padx=1)
+        tagsBox.grid(row=6, column=0, sticky="ew", columnspan=4, padx=1)
 
         descriptionLabel = customtkinter.CTkLabel(infoFrame, text="Description: ")
         descriptionBox = customtkinter.CTkTextbox(infoFrame, height=100, wrap="word")
         descriptionBox.insert("end", " ".join(entry.get("notes", "Invalid Description")))
         descriptionLabel.grid(row=0, column=2, sticky="w")
-        descriptionBox.grid(row=1, column=2, sticky="ew", rowspan=4, padx=1)
+        descriptionBox.grid(row=1, column=2, sticky="ew", rowspan=5, padx=1)
 
         
 
@@ -381,7 +381,7 @@ class App(customtkinter.CTk):
         def save():
             
             saveToLocal = self.Archive.copyToLocal
-            if saveToLocal and ogLocation != locationText.cget("text"):
+            if saveToLocal and locationText.cget("text").find(__location__) == -1:
                 moveToLocal()
                 location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
             else:
@@ -405,7 +405,7 @@ class App(customtkinter.CTk):
                 self.Archive.entriesList.append(saveData)
 
             self.Archive.saveEntries()
-            self.entryViewScreen(entry)
+            self.search()
 
         def newFile(*args):
             try:
@@ -418,7 +418,8 @@ class App(customtkinter.CTk):
 
         def deleteEntry(entry):
             if messagebox.askyesno("Delete Entry", "Are you sure you want to delete this entry?"):
-                if entry["fileLocation"].find(__location__) == -1:
+                fixedLocation = (__location__.replace("\\", "/"))
+                if entry["fileLocation"].find(fixedLocation) != -1:
                     try:
                         os.remove(entry["fileLocation"])
                     except Exception as inst:
@@ -440,7 +441,7 @@ class App(customtkinter.CTk):
         deleteButton = customtkinter.CTkButton(buttonFrame, text="Delete", fg_color="red", hover_color="darkred",command = lambda : deleteEntry(entry))
         deleteButton.pack(side="left", expand=True, fill="x", padx=5)
         
-        buttonFrame.grid(row=6, column=1, padx=5, pady=5, sticky="ew")
+        buttonFrame.grid(row=7, column=1, padx=5, pady=5, sticky="ew")
 
         self.tagListDisplay(entry.get("tags", ["NO", "TAGS", "FOUND"]))
 

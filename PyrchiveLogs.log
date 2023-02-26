@@ -1,33 +1,27 @@
-2023-02-25 23:58:31,357:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-2023-02-25 23:58:31,357:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:58:31,361:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-02-25 23:58:31,364:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
-2023-02-25 23:58:31,364:INFO:__main__:Tarchive App initialized
-2023-02-25 23:58:31,627:INFO:__main__:Started in 0.35s.
-2023-02-25 23:58:31,628:INFO:__main__:Entering Browse Screen with 1 entries on screen.
-2023-02-25 23:58:31,659:INFO:root:Loading tag list...
-2023-02-25 23:58:31,682:INFO:__main__:Entering Browse Screen with 1 entries on screen.
-2023-02-25 23:58:31,707:INFO:root:Loading tag list...
-2023-02-25 23:58:33,791:INFO:__main__:Opening window for entry 0
-2023-02-25 23:58:33,866:INFO:root:Loading tag list...
-2023-02-25 23:58:41,062:INFO:__main__:Saving entry C:/Users/Grey/Documents/GitHub/Tagchive/pyrchiveFolders/archivedFiles/00001-anything-v4.5yandere_girl,_covered_in_blood,_sitting_in_corner,_crying.png
-2023-02-25 23:58:41,062:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:58:41,091:INFO:__main__:Opening window for entry 0
-2023-02-25 23:58:41,161:INFO:root:Loading tag list...
-2023-02-25 23:58:42,367:INFO:__main__:Saving entry C:/Users/Grey/Downloads/00005-anything-v4.5yandere_girl,_blood,_tilting_head,_innocent_expression,_glowing_eyes,_covered_in_blood,_cowboy_shot,_hallway,_apartment.png
-2023-02-25 23:58:42,367:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:58:42,392:INFO:__main__:Opening window for entry 0
-2023-02-25 23:58:42,503:INFO:root:Loading tag list...
-2023-02-25 23:58:47,207:INFO:__main__:Saving entry C:/Users/Grey/Downloads/00005-anything-v4.5yandere_girl,_blood,_tilting_head,_innocent_expression,_glowing_eyes,_covered_in_blood,_cowboy_shot,_hallway,_apartment.png
-2023-02-25 23:58:47,207:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:58:47,233:INFO:__main__:Opening window for entry 0
-2023-02-25 23:58:47,332:INFO:root:Loading tag list...
-2023-02-25 23:59:03,229:INFO:__main__:Saving entry C:/Users/Grey/Downloads/00005-anything-v4.5yandere_girl,_blood,_tilting_head,_innocent_expression,_glowing_eyes,_covered_in_blood,_cowboy_shot,_hallway,_apartment.png
-2023-02-25 23:59:03,229:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:59:03,256:INFO:__main__:Opening window for entry 0
-2023-02-25 23:59:03,354:INFO:root:Loading tag list...
-2023-02-25 23:59:04,409:INFO:__main__:Entering Browse Screen with 1 entries on screen.
-2023-02-25 23:59:04,451:INFO:root:Loading tag list...
-2023-02-25 23:59:08,083:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-02-25 23:59:08,083:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-02-25 23:59:08,084:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-26 00:21:48,529:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+2023-02-26 00:21:48,529:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-26 00:21:48,534:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-26 00:21:48,535:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-02-26 00:21:48,535:INFO:__main__:Pyrchive App initialized
+2023-02-26 00:21:48,790:INFO:__main__:Started in 0.33s.
+2023-02-26 00:21:48,790:INFO:__main__:Entering Browse Screen with 2 entries on screen.
+2023-02-26 00:21:48,904:INFO:root:Loading tag list...
+2023-02-26 00:21:48,926:INFO:__main__:Entering Browse Screen with 2 entries on screen.
+2023-02-26 00:21:49,033:INFO:root:Loading tag list...
+2023-02-26 00:21:49,728:INFO:__main__:Opening window for entry 1
+2023-02-26 00:21:49,950:INFO:root:Loading tag list...
+2023-02-26 00:21:52,555:INFO:__main__:Entering Browse Screen with 2 entries on screen.
+2023-02-26 00:21:52,676:INFO:root:Loading tag list...
+2023-02-26 00:21:53,085:INFO:__main__:Opening window for entry 0
+2023-02-26 00:21:53,157:INFO:root:Loading tag list...
+2023-02-26 00:21:54,532:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-26 00:21:54,533:INFO:__main__:Entering Browse Screen with 1 entries on screen.
+2023-02-26 00:21:54,663:INFO:root:Loading tag list...
+2023-02-26 00:21:56,579:INFO:__main__:Opening window for entry 1
+2023-02-26 00:21:56,802:INFO:root:Loading tag list...
+2023-02-26 00:21:58,178:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-26 00:21:58,178:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-02-26 00:21:58,210:INFO:root:Loading tag list...
+2023-02-26 00:21:59,336:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-02-26 00:21:59,336:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-02-26 00:21:59,337:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
