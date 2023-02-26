@@ -379,9 +379,8 @@ class App(customtkinter.CTk):
                 return None
             
         def save():
-            
             saveToLocal = self.Archive.copyToLocal
-            if saveToLocal and locationText.cget("text").find(__location__) == -1:
+            if saveToLocal and locationText.cget("text").find(__location__.replace("\\","/")) == -1:
                 moveToLocal()
                 location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
             else:
