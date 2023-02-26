@@ -79,7 +79,7 @@ class CreateToolTip(object):
 class App(customtkinter.CTk):         
     def __init__(self):
         super().__init__()
-        self.title("Tarchive")
+        self.title("Pyrchive")
         #self.geometry(f"{1135}x{925}")
         self.minsize(1280, 700)
         self.iconbitmap(__location__ + "/pyrchiveFolders/icon.ico")
@@ -91,7 +91,7 @@ class App(customtkinter.CTk):
         self.currentEntryBrowseCount = 0
         self.filecount = len(self.Archive.entriesList)
 
-        logger.info("Tarchive App initialized")
+        logger.info("Pyrchive App initialized")
 
         #Top Buttons Frame
         self.optionButtonsFrame=customtkinter.CTkFrame(self)
@@ -381,7 +381,7 @@ class App(customtkinter.CTk):
         def save():
             
             saveToLocal = self.Archive.copyToLocal
-            if saveToLocal:
+            if saveToLocal and ogLocation != locationText.cget("text"):
                 moveToLocal()
                 location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
             else:
