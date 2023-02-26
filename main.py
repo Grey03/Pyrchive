@@ -82,6 +82,7 @@ class App(customtkinter.CTk):
         self.title("Tarchive")
         #self.geometry(f"{1135}x{925}")
         self.minsize(1280, 700)
+        self.iconbitmap(__location__ + "/pyrchiveFolders/icon.ico")
 
         self.Archive = archivemanager()
         self.Archive.loadAll()
@@ -229,7 +230,7 @@ class App(customtkinter.CTk):
             images[ID] = customtkinter.CTkImage(dark_image=image, size=image.size)
             buttons[ID] = customtkinter.CTkButton(browseScreen, width=image.size[0],height=image.size[1], image=images[ID], text="" ,fg_color="transparent", command = lambda e=ID: self.entryViewScreen(entries[e]))
             buttons[ID].tip = CreateToolTip(buttons[ID], f"{entry.get('ID', 'Invalid ID')}: {entry.get('title', 'Invalid Title')}")
-            buttons[ID].grid(row=math.floor(ID/maxWidth), column=ID%maxWidth, padx=5, pady=5, sticky="nsew")
+            buttons[ID].grid(row=math.floor(ID/maxWidth), column=ID%maxWidth, padx=5, pady=5)
             allTags.extend(entry.get("tags",""))
         self.tagListDisplay(allTags)
 
