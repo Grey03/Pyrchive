@@ -379,13 +379,15 @@ class App(customtkinter.CTk):
                 return None
             
         def save():
+            
             saveToLocal = self.Archive.copyToLocal
-            if saveToLocal and os.path.exists(__location__ + "/pyrchiveFolders/archivedFiles/" + str(os.path.basename(locationText.cget("text"))) == False):
+            if saveToLocal:
                 moveToLocal()
                 location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
             else:
                 location = locationText.cget("text")
 
+            logger.info("Saving entry " + location)
 
             saveData = {
                 "ID": entry["ID"],

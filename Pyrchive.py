@@ -58,11 +58,16 @@ class archivemanager:
     
     def deleteEntry(self, entryID):
         try:
-            self.entriesList.pop(entryID)
+            if entryID < len(self.entriesList) and entryID == self.entriesList[entryID]["ID"]:
+                self.entriesList.pop(entryID)
+            else:
+                for id, entry in enumerate(self.entriesList):
+                    if entry["ID"] == entryID:
+                        self.entriesList.pop(id)
+                        break
         except Exception as e:
             logger.error(e)
 
-    
     def hasTags(filterList, entryTags):
         posList = [word.lower() for word in filterList if not word.startswith("-")]
         negList = [word.lower().replace("-", "") for word in filterList if word.startswith("-")]
@@ -84,10 +89,15 @@ class archivemanager:
             return self.entriesList[0:entryCount]
 
     def addEntry(self, entry):
-        try:
-            self.entriesList.insert(entry["ID"], entry)
-        except:
-            self.entriesList.append(entry)
+            if len(self.entriesList) >= entry["ID"] and self.entriesList[entry["ID"]]["ID"] == entry["ID"]:
+                self.entriesList[entry["ID"]] = entry
+            else:
+                try:
+                    self.entriesList.insert(entry["ID"], entry)
+                except:
+                    self.entriesList.append(entry)
+            #logger.error("Something went wrong while adding an entry to the archive manager: " + str(e))
+            
 
     def getAllTags(self):
         allTags = []
