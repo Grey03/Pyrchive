@@ -10,12 +10,21 @@ class archivemanager:
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.archiveFilesDirectory = self.__location__ + "/pyrchiveFolders/archivedFiles/"
         self.archiveJsonDirectory = self.__location__ + "/pyrchiveFolders/pyrchiveJsonData/"
+
         self.entriesList = []
         self.tagGroupList = []
         self.savedSearches = []
 
+        self.copyToLocal = True
+
         #Settings
         logger.info("Archive manager initialized in {}".format(self.__location__))
+
+    def getID(self):
+        for id, entry in enumerate(self.entriesList):
+            if entry["ID"] != id:
+                return id
+        return len(self.entriesList)
 
     def createTagGroup(self, **kwargs):
         tagGroup = {
@@ -32,7 +41,7 @@ class archivemanager:
         return tagGroup
     def createEntry(self, **kwargs):
         entryDict = {
-            "ID": len(self.entriesList),
+            "ID": self.getID(),
             "title": "",
             "creator": "",
             "tags": [],
@@ -46,6 +55,13 @@ class archivemanager:
                 entryDict.__setattr__(key, value)
 
         return entryDict
+    
+    def deleteEntry(self, entryID):
+        try:
+            self.entriesList.pop(entryID)
+        except Exception as e:
+            logger.error(e)
+
     
     def hasTags(filterList, entryTags):
         posList = [word.lower() for word in filterList if not word.startswith("-")]
@@ -110,19 +126,22 @@ class archivemanager:
 
     def loadSettings(self):
         logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "ArchiveSettings.json")
-        #try:
-        #    with open(self.archiveJsonDirectory + "ArchiveSettings.json", "r") as f:
-        #        return json.load(f)
-        #except Exception as inst:
-        #        logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
-        #        self.tagGroupList = []
+        try:
+            with open(self.archiveJsonDirectory + "ArchiveSettings.json", "r") as f:
+                settings = json.load(f)
+            self.copyToLocal = settings["copyToLocal"]
+        except Exception as inst:
+                logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
     def saveSettings(self):
         logger.info("Saving Tag Groups to %s", self.archiveJsonDirectory + "ArchiveSettings.json")
-        #try:
-        #    with open(self.archiveJsonDirectory + "TagGroups.json", "w") as f:
-        #        json.dump(self.tagGroupList, f, indent=4)
-        #except Exception as inst: 
-        #    logger.error("Failed to save settings: " + str(inst))
+        try:
+            with open(self.archiveJsonDirectory + "ArchiveSettings.json", "w") as f:
+                settings = {
+                    "copyToLocal": self.copyToLocal
+                }
+                json.dump(settings, f, indent=4)
+        except Exception as inst: 
+            logger.error("Failed to save settings: " + str(inst))
 
     def loadTagGroups(self):
         logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "TagGroups.json")

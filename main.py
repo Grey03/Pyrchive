@@ -17,7 +17,7 @@ global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 customtkinter.set_appearance_mode("dark")
-customtkinter.set_default_color_theme("green")
+customtkinter.set_default_color_theme("blue")
 
 class CreateToolTip(object):
     """
@@ -95,7 +95,7 @@ class App(customtkinter.CTk):
         #Top Buttons Frame
         self.optionButtonsFrame=customtkinter.CTkFrame(self)
         #-+-+-+-+-+-
-        self.settingsButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Settings")
+        self.settingsButton=customtkinter.CTkButton(self.optionButtonsFrame, text="Settings", command=lambda: self.settingsScreen())
         self.settingsButton.pack(side="left", padx=5,pady=5)
         self.uploadButton=customtkinter.CTkButton(self.optionButtonsFrame,text="Upload", command= lambda: self.uploadEntry())
         self.uploadButton.pack(side="left", padx=5,pady=5)
@@ -141,6 +141,7 @@ class App(customtkinter.CTk):
 
     def clearSearch(self):
         self.searchBar.delete("0","end")
+        self.search()
     def fillSearch(self, fillWords):
         self.clearSearch()
         self.searchBar.insert("end", fillWords)
@@ -186,12 +187,10 @@ class App(customtkinter.CTk):
 
         start = maxImages * (self.pageIndex)
         totalentries = len(entries)
-        print (totalentries)
         if len(entries) >= maxImages:
             entries = entries[start:start + maxImages]
         else:
             entries = entries[start:len(entries)+1]
-        print (len(entries))
         logger.info(f"Entering Browse Screen with {len(entries)} entries on screen.")
         App.clearFrame(self.mainFrame)
         browseScreen = customtkinter.CTkScrollableFrame(self.mainFrame)
@@ -364,42 +363,45 @@ class App(customtkinter.CTk):
 
         infoFrame.pack(padx=5, pady=5, side="left")
 
-        bottomButtonFrame = customtkinter.CTkFrame(self.mainFrame)
+        def moveToLocal():
+            try:
+                os.remove(__location__ + "/pyrchiveFolders/archivedFiles/" + str(os.path.basename(ogLocation)))
+            except:
+                pass
+            try:
+                messagebox.showinfo("Please Wait", "Copying file to localFiles...")
+                shutil.copy(locationText.cget("text"), __location__ + "/pyrchiveFolders/archivedFiles/" )
+                messagebox.showinfo("File Copied", f"File {locationText.cget('text')} copied to {__location__}/pyrchiveFolders/archivedFiles/")
+            except Exception as inst:
+                logger.error(f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
+                messagebox.showerror("Error", f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
+                return None
+            
+        def save():
+            saveToLocal = self.Archive.copyToLocal
+            if saveToLocal and os.path.exists(__location__ + "/pyrchiveFolders/archivedFiles/" + str(os.path.basename(locationText.cget("text"))) == False):
+                moveToLocal()
+                location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
+            else:
+                location = locationText.cget("text")
 
-        def getData():
-            if locationText.cget("text") != ogLocation:
-                try:
-                    os.remove(ogLocation)
-                except:
-                    try:
-                        os.remove(__location__ + "/" + ogLocation)
-                    except Exception as inst:
-                        logger.warning(f"Could not remove file {ogLocation}: {inst}")
-                        pass
-                try:
-                    shutil.copy(locationText.cget("text"), __location__ + "/pyrchiveFolders/archivedFiles/" )
-                    messagebox.showinfo("File Copied", f"File {locationText.cget('text')} copied to {__location__}/pyrchiveFolders/archivedFiles/")
-                except Exception as inst:
-                    logger.error(f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
-                    messagebox.showerror("Error", f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
-                    return None
 
             saveData = {
                 "ID": entry["ID"],
                 "title": title.get(),
                 "creator": creator.get(),
                 "tags": tagsBox.get("0.0", "end").replace("\n","").split(" "),
-                "fileLocation": __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text"))),
+                "fileLocation": location,
                 "notes": descriptionBox.get("0.0", "end").rsplit("\n",1)[0],
                 "uploadDate": entry.get("uploadDate", "Invalid Date")
             }
             try:
-                self.Archive.entriesList[entry.get("ID")] = saveData
+                self.Archive.addEntry(saveData)
             except:
                 logger.warning(f"Entry {entry.get('ID', 'Invalid ID')} not found in archive appending to archive")
                 self.Archive.entriesList.append(saveData)
 
-            self.Archive.saveAll()
+            self.Archive.saveEntries()
             self.entryViewScreen(entry)
 
         def newFile(*args):
@@ -411,11 +413,32 @@ class App(customtkinter.CTk):
                 fileLocation = x
                 locationText.configure(text=fileLocation)
 
-        
-        saveButton = customtkinter.CTkButton(bottomButtonFrame, text="Save", command = lambda: self.saveEntry(getData()))
-        saveButton.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
+        def deleteEntry(entry):
+            if messagebox.askyesno("Delete Entry", "Are you sure you want to delete this entry?"):
+                if entry["fileLocation"].find(__location__) == -1:
+                    try:
+                        os.remove(entry["fileLocation"])
+                    except Exception as inst:
+                        logger.warning(f"Could not remove file {entry['fileLocation']}: {inst}")
+                self.Archive.deleteEntry(entry.get("ID"))
+                self.Archive.saveEntries()
+                self.search()
 
-        bottomButtonFrame.pack(padx=5, pady=5)
+        buttonFrame = customtkinter.CTkFrame(infoFrame)
+
+        saveButton = customtkinter.CTkButton(buttonFrame, text="Save", command = lambda: save())
+        #saveButton.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+        saveButton.pack(side="left", expand=True, fill="x", padx=5)
+
+        backButton = customtkinter.CTkButton(buttonFrame, text="Back", command = lambda: self.search())
+        #backButton.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
+        backButton.pack(side="left", expand=True, fill="x", padx=5)
+
+        deleteButton = customtkinter.CTkButton(buttonFrame, text="Delete", fg_color="red", hover_color="darkred",command = lambda : deleteEntry(entry))
+        deleteButton.pack(side="left", expand=True, fill="x", padx=5)
+        
+        buttonFrame.grid(row=6, column=1, padx=5, pady=5, sticky="ew")
+
         self.tagListDisplay(entry.get("tags", ["NO", "TAGS", "FOUND"]))
 
     def uploadEntry(self, *args):
@@ -431,8 +454,63 @@ class App(customtkinter.CTk):
         newEntry["fileLocation"] = entryFileLocation
         self.entryViewScreen(newEntry)
 
-    def saveEntry(self, newEntryDict):
-        print(newEntryDict)
+    def settingsScreen(self):
+        App.clearFrame(self.mainFrame)
+        logger.info(f"Opening window for settings")
+
+        buttonsFrame = customtkinter.CTkFrame(self.mainFrame)
+
+        generalSettingsButton = customtkinter.CTkButton(buttonsFrame, text="General Settings", font=("Calibri", 30, "bold"), command= lambda: self.generalSettingsScreen())
+        generalSettingsButton.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+        savedSearchesEditor = customtkinter.CTkButton(buttonsFrame, text="Saved Search Settings", font=("Calibri", 30, "bold"), command= lambda: self.savedSearchesEditorScreen())
+        savedSearchesEditor.grid(row=0, column=1, padx=10, pady=10, sticky="nswe")
+
+        buttonsFrame.pack(padx=5, pady=5, expand=True)
+
+    def generalSettingsScreen(self):
+        App.clearFrame(self.mainFrame)
+
+        copyToLocalSwitch = customtkinter.CTkSwitch(self.mainFrame, text="Copy to files to local folder")
+        copyToLocalSwitch.tip = CreateToolTip(copyToLocalSwitch, text="Copies files from their location on your computer to the local folder. This is so if the file is moved, it will not disrupt the archiver.")
+        if (self.Archive.copyToLocal):
+            copyToLocalSwitch.select()
+        else:
+            copyToLocalSwitch.deselect()
+        copyToLocalSwitch.grid(row=0, column=0, padx=5, pady=5, sticky="nswe")
+
+        def saveSettings():
+            self.Archive.copyToLocal = bool(copyToLocalSwitch.get())
+            self.Archive.saveSettings()
+
+        saveButton = customtkinter.CTkButton(self.mainFrame, text="Save", command = lambda: saveSettings())
+        saveButton.grid(row=1, column=0, padx=5, pady=5, sticky="nswe")
+
+    def deleteSavedSearch(self, ID, buttonFRAME):
+        if messagebox.askyesno("Delete Saved Search", f"Are you sure you want to delete {ID}?"):
+            try:
+                self.Archive.savedSearches.remove(ID)
+                self.savedSearchesDropdown.configure(values=self.Archive.savedSearches)
+                buttonFRAME.destroy()
+            except Exception as inst:
+                messagebox.showerror("Error", f"Could not delete saved search {ID}: {inst}")
+
+    def savedSearchesEditorScreen(self):
+        App.clearFrame(self.mainFrame)
+
+        allSearches = customtkinter.CTkScrollableFrame(self.mainFrame)
+
+        pairings = {}
+        for id, savedSearch in enumerate(self.Archive.savedSearches):
+            pairings[id] = customtkinter.CTkFrame(allSearches)
+            label = customtkinter.CTkLabel(pairings[id], text=savedSearch)
+            label.grid(row=id, column=1, sticky="w")
+            button = customtkinter.CTkButton(pairings[id], width=30, text="x", fg_color="red", hover_color="darkred", font=("Calibri", 20, "bold"), command=lambda e=savedSearch, id=id: self.deleteSavedSearch(e, pairings[id]))
+            button.grid(row=id, column=0, padx=10, pady=10, sticky="w")
+            pairings[id].pack(padx=5, pady=5, side="top", fill="x")
+
+        allSearches.pack(padx=5, pady=5, expand=True, fill="both")
+
 
     def tagListDisplay(self, tags):
         logging.info("Loading tag list...")
@@ -448,7 +526,10 @@ class App(customtkinter.CTk):
             tagButton = customtkinter.CTkButton(tagButtonsList[tag], text=tag, command=lambda e=tagName: self.autoSearch(e[len(e)-1]))
             tagButton.tip = CreateToolTip(tagButton, text=tag.split(" ")[1])
             addButton = customtkinter.CTkButton(tagButtonsList[tag], text="+", width=30, height=30, command=lambda e=tagName: self.addTagToSearch(e[len(e)-1]))
+            addButton.tip = CreateToolTip(addButton, text="Add tag to search")
+    
             removebutton = customtkinter.CTkButton(tagButtonsList[tag], text="-", width=30, height=30, command=lambda e=tagName: self.removeTagFromSearch(e[len(e)-1]))
+            removebutton.tip = CreateToolTip(removebutton, text="Remove tag from search")
 
             tagButton.pack(side="left", padx=1, pady=1)
             addButton.pack(side="left", padx=1, pady=1)

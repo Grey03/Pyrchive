@@ -1,5 +1,3 @@
 {
-    "openFilesImmediately": true,
-    "openMenuImmediately": true,
-    "localFiles": true
+    "copyToLocal": false
 }
