@@ -1,3 +1,4 @@
 {
-    "copyToLocal": true
+    "copyToLocal": true,
+    "removeOriginalFile": false
 }

@@ -16,6 +16,7 @@ class archivemanager:
         self.savedSearches = []
 
         self.copyToLocal = True
+        self.removeOriginalFile = False
 
         #Settings
         logger.info("Archive manager initialized in {}".format(self.__location__))
@@ -135,19 +136,21 @@ class archivemanager:
         logger.debug("Archive manager saved in {} seconds".format(round(time.time() - startTime)))
 
     def loadSettings(self):
-        logger.info("Loading Tag Groups from %s", self.archiveJsonDirectory + "ArchiveSettings.json")
+        logger.info("Loading settings from %s", self.archiveJsonDirectory + "ArchiveSettings.json")
         try:
             with open(self.archiveJsonDirectory + "ArchiveSettings.json", "r") as f:
                 settings = json.load(f)
             self.copyToLocal = settings["copyToLocal"]
+            self.removeOriginalFile = settings["removeOriginalFile"]
         except Exception as inst:
                 logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
     def saveSettings(self):
-        logger.info("Saving Tag Groups to %s", self.archiveJsonDirectory + "ArchiveSettings.json")
+        logger.info("Saving settings to %s", self.archiveJsonDirectory + "ArchiveSettings.json")
         try:
             with open(self.archiveJsonDirectory + "ArchiveSettings.json", "w") as f:
                 settings = {
-                    "copyToLocal": self.copyToLocal
+                    "copyToLocal": self.copyToLocal,
+                    "removeOriginalFile": self.removeOriginalFile
                 }
                 json.dump(settings, f, indent=4)
         except Exception as inst: 

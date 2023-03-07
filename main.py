@@ -286,7 +286,12 @@ class App(customtkinter.CTk):
                 logger.warning(f"File {filelocation} not found.")
 
             
-    def entryViewScreen(self, entry):
+    def entryViewScreen(self, entry, **kwargs):
+        newEntry = False
+        if kwargs.get("newEntry", False) != False:
+            #it just works..
+            newEntry = True
+            
         App.clearFrame(self.mainFrame)
         logger.info(f"Opening window for entry {entry.get('ID', 'Invalid ID')}")
 
@@ -367,12 +372,14 @@ class App(customtkinter.CTk):
         def moveToLocal():
             try:
                 os.remove(__location__ + "/pyrchiveFolders/archivedFiles/" + str(os.path.basename(ogLocation)))
+                logger.info(f"Removed {ogLocation}")
             except:
                 pass
             try:
                 messagebox.showinfo("Please Wait", "Copying file to localFiles...")
                 shutil.copy(locationText.cget("text"), __location__ + "/pyrchiveFolders/archivedFiles/" )
                 messagebox.showinfo("File Copied", f"File {locationText.cget('text')} copied to {__location__}/pyrchiveFolders/archivedFiles/")
+                logger.info(f"File {locationText.cget('text')} copied to {__location__}/pyrchiveFolders/archivedFiles/")
             except Exception as inst:
                 logger.error(f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
                 messagebox.showerror("Error", f"Could not copy file {locationText.cget('text')} to {__location__ + '/pyrchiveFolders/archivedFiles/'}: {inst}")
@@ -380,6 +387,7 @@ class App(customtkinter.CTk):
             
         def save():
             saveToLocal = self.Archive.copyToLocal
+            temp = locationText.cget("text")
             if saveToLocal and locationText.cget("text").find(__location__.replace("\\","/")) == -1:
                 moveToLocal()
                 location = __location__.replace("\\", "/") + "/pyrchiveFolders/archivedFiles/" +str(os.path.basename(locationText.cget("text")))
@@ -397,6 +405,11 @@ class App(customtkinter.CTk):
                 "notes": descriptionBox.get("0.0", "end").rsplit("\n",1)[0],
                 "uploadDate": entry.get("uploadDate", "Invalid Date")
             }
+            if newEntry == self.Archive.removeOriginalFile == self.Archive.copyToLocal:
+                try:
+                    os.remove(temp)
+                except Exception as inst:
+                    logger.error(f"Could not remove file {temp}: {inst}")
             try:
                 self.Archive.addEntry(saveData)
             except:
@@ -455,7 +468,7 @@ class App(customtkinter.CTk):
     def newEntryScreen(self, entryFileLocation):
         newEntry = self.Archive.createEntry()
         newEntry["fileLocation"] = entryFileLocation
-        self.entryViewScreen(newEntry)
+        self.entryViewScreen(newEntry, newEntry=True)
 
     def settingsScreen(self):
         App.clearFrame(self.mainFrame)
@@ -482,8 +495,17 @@ class App(customtkinter.CTk):
             copyToLocalSwitch.deselect()
         copyToLocalSwitch.grid(row=0, column=0, padx=5, pady=5, sticky="nswe")
 
+        removeOriginalFileSwitch = customtkinter.CTkSwitch(self.mainFrame, text="Remove original file once uploaded to archive")
+        removeOriginalFileSwitch.tip = CreateToolTip(removeOriginalFileSwitch, text="Removes the original file from its location on your computer. This is so if the file is moved instead of copied. This only happens when uploading.")
+        if (self.Archive.removeOriginalFile):
+            removeOriginalFileSwitch.select()
+        else:
+            removeOriginalFileSwitch.deselect()
+        removeOriginalFileSwitch.grid(row=0, column=1, padx=5, pady=5, sticky="nswe")
+
         def saveSettings():
             self.Archive.copyToLocal = bool(copyToLocalSwitch.get())
+            self.Archive.removeOriginalFile = bool(removeOriginalFileSwitch.get())
             self.Archive.saveSettings()
 
         saveButton = customtkinter.CTkButton(self.mainFrame, text="Save", command = lambda: saveSettings())
