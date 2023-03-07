@@ -29,3 +29,11 @@ At the top of your screen there is a dropdown with all saved searches
 # Tag groups
 Say you have a few related, users can place them into "groups" for the simple feature of coloring the tags in the tag list.
 This helps users easily spot tags that are related. You can create and manage them in the settings.
+
+#How to Update Versions
+##1. First go into the main folder
+##2. Find "pyrchiveFolders"
+##3. Move this folder somewhere you will remember
+##4. Download the newest version
+##5. Open the newest version's main folder
+##6. Delete the new versions "pyrchiveFolders" folder and paste in the old.
