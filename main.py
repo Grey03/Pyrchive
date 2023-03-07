@@ -361,7 +361,7 @@ class App(customtkinter.CTk):
 
         descriptionLabel = customtkinter.CTkLabel(infoFrame, text="Description: ")
         descriptionBox = customtkinter.CTkTextbox(infoFrame, height=100, wrap="word")
-        descriptionBox.insert("end", " ".join(entry.get("notes", "Invalid Description")))
+        descriptionBox.insert("end", (entry.get("notes", "Invalid Description")))
         descriptionLabel.grid(row=0, column=2, sticky="w")
         descriptionBox.grid(row=1, column=2, sticky="ew", rowspan=5, padx=1)
 
