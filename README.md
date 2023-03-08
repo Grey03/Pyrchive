@@ -3,6 +3,7 @@
 
 # Requirements
 customtkinter
+
 pillow
 
 # Adding Files
