@@ -73,6 +73,7 @@ class archivemanager:
     def hasTags(filterList, entryTags):
         posList = [word.lower() for word in filterList if not word.startswith("-")]
         negList = [word.lower().replace("-", "") for word in filterList if word.startswith("-")]
+        
         for negTerm in negList:
             if negTerm in entryTags:
                 return False
