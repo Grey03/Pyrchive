@@ -5,6 +5,7 @@ import logging
 import time
 import math
 import random
+import cv2
 
 from Pyrchive import archivemanager
 from tkinter import filedialog, messagebox
@@ -15,9 +16,22 @@ logger = logging.getLogger(__name__)
 
 global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+videoFiles = [".avi",".mp4",".mov",".wmv",".mov",".mpeg",".flv",".m4v"]
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
+
+def getVideoThumbnail(video_path):
+    defaultImagePath = (f"{str(__location__)}/pyrchiveFolders/Tagchivelogo.png")
+    try:
+        video_capture = cv2.VideoCapture(video_path)
+        video_capture.set(cv2.CAP_PROP_POS_FRAMES, 0) # change 50 to the desired frame number
+        ret, frame = video_capture.read()
+        image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    except Exception as inst:
+        image = Image.open(defaultImagePath)
+        logger.error(f"Failed to get video thumbnail: {str(inst)}")
+    return image
 
 class CreateToolTip(object):
     """
@@ -25,7 +39,7 @@ class CreateToolTip(object):
     Thanks to https://stackoverflow.com/a/36221216
     """
     def __init__(self, widget, text='widget info'):
-        self.waittime = 500     #miliseconds
+        self.waittime = 250     #miliseconds
         self.wraplength = 180   #pixels
         self.widget = widget
         self.text = text
@@ -181,6 +195,7 @@ class App(customtkinter.CTk):
 
     def entryBrowseScreen(self, entries):
         browseScreenStartTime = time.time()
+        entries.reverse()
         maxWidth = 6
         maxHeight = 8
         #Dont forget to update max image in the page forward
@@ -212,11 +227,14 @@ class App(customtkinter.CTk):
                 fileLocation = defaultImage
             maxImageX = 150
             maxImageY = 150
-            try:
-                image = Image.open(fileLocation)
-            except Exception as inst:
-                image = Image.open(defaultImage)
-                logger.warning("Error openining image: " + str(inst))
+            if os.path.splitext(fileLocation)[-1] in videoFiles:
+                image = getVideoThumbnail(fileLocation)
+            else:
+                try:
+                    image = Image.open(fileLocation)
+                except Exception as inst:
+                    image = Image.open(defaultImage)
+                    logger.warning("Error openining image: " + str(inst))
 
 
             largestSide = max(image.size)
@@ -229,7 +247,7 @@ class App(customtkinter.CTk):
 
             images[ID] = customtkinter.CTkImage(dark_image=image, size=image.size)
             buttons[ID] = customtkinter.CTkButton(browseScreen, width=image.size[0],height=image.size[1], image=images[ID], text="" ,fg_color="transparent", command = lambda e=ID: self.entryViewScreen(entries[e]))
-            buttons[ID].tip = CreateToolTip(buttons[ID], f"{entry.get('ID', 'Invalid ID')}: {entry.get('title', 'Invalid Title')}")
+            buttons[ID].tip = CreateToolTip(buttons[ID], f"{entry.get('title', 'Invalid Title')}: {', '.join(entry.get('tags', 'Invalid Tags'))}")
             buttons[ID].grid(row=math.floor(ID/maxWidth), column=ID%maxWidth, padx=5, pady=5)
             allTags.extend(entry.get("tags",""))
         self.tagListDisplay(allTags)
@@ -302,15 +320,17 @@ class App(customtkinter.CTk):
 
         if not os.path.exists(fileLocation):
             fileLocation = defaultImage
-        maxImageX = self.winfo_screenwidth() - 500
-        try:
-            image = Image.open(fileLocation)
-        except Exception as inst:
-            image = Image.open(defaultImage)
-            logger.warning("Error openining image: " + str(inst))
-        resizeScale = 1
-        if image.size[0] > maxImageX:
-            resizeScale = (math.floor(image.size[0]/maxImageX))
+        maxImageX = int(self.geometry().split("x")[0]) - 300
+        if os.path.splitext(fileLocation)[-1] in videoFiles:
+            image = getVideoThumbnail(fileLocation)
+        else:
+            try:
+                image = Image.open(fileLocation)
+            except Exception as inst:
+                image = Image.open(defaultImage)
+                logger.warning("Error openining image: " + str(inst))
+        if self.Archive.enlargeImages or image.size[0] > maxImageX:
+            resizeScale = ((image.size[0]/maxImageX))
             newSize = (math.floor(image.size[0]/resizeScale), math.floor(image.size[1]/resizeScale))
             image = image.resize(newSize)
 
@@ -320,9 +340,11 @@ class App(customtkinter.CTk):
         ctkImageButton = customtkinter.CTkButton(mediaWindow, image=ctkImage, text="", width=image.size[0], height=image.size[1], hover=False, fg_color="transparent", command=lambda : self.safeOpen(fileLocation))
         ctkImageButton.pack()
         #run function to either display a video or an image
-        mediaWindow.pack(fill="both", expand=True, padx=5, pady=0)
 
-        infoFrame = customtkinter.CTkFrame(self.mainFrame)
+        mediaWindow.pack(fill="both", expand=True, padx=5, pady=5)
+
+        infoFrame = customtkinter.CTkFrame(self.mainFrame, height=300)
+
         IDLabel = customtkinter.CTkLabel(infoFrame, text=f"ID:")
         ID = customtkinter.CTkLabel(infoFrame, text=str(entry.get("ID", "Invalid ID")))
         IDLabel.grid(row=0,column=0, sticky="w")
@@ -357,17 +379,17 @@ class App(customtkinter.CTk):
         tagsBox = customtkinter.CTkTextbox(infoFrame, height=100, wrap="word")
         tagsBox.insert("end", " ".join(entry.get("tags", "Invalid Tags")))
         tagsLabel.grid(row=5, column=0, sticky="w")
-        tagsBox.grid(row=6, column=0, sticky="ew", columnspan=4, padx=1)
+        tagsBox.grid(row=6, column=0, sticky="ew", columnspan=6, padx=1)
 
         descriptionLabel = customtkinter.CTkLabel(infoFrame, text="Description: ")
         descriptionBox = customtkinter.CTkTextbox(infoFrame, height=100, wrap="word")
         descriptionBox.insert("end", (entry.get("notes", "Invalid Description")))
         descriptionLabel.grid(row=0, column=2, sticky="w")
-        descriptionBox.grid(row=1, column=2, sticky="ew", rowspan=5, padx=1)
+        descriptionBox.grid(row=1, column=2, sticky="ew", rowspan=5, columnspan=3, padx=1)
 
         
 
-        infoFrame.pack(padx=5, pady=5, side="left")
+        infoFrame.pack(padx=5, pady=5, expand=False, fill="x")
 
         def moveToLocal():
             try:
@@ -446,7 +468,7 @@ class App(customtkinter.CTk):
         #saveButton.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
         saveButton.pack(side="left", expand=True, fill="x", padx=5)
 
-        backButton = customtkinter.CTkButton(buttonFrame, text="Back", command = lambda: self.search())
+        backButton = customtkinter.CTkButton(buttonFrame, text="Back", command = lambda: self.settingsScreen())
         #backButton.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
         backButton.pack(side="left", expand=True, fill="x", padx=5)
 
@@ -484,10 +506,16 @@ class App(customtkinter.CTk):
 
         buttonsFrame.pack(padx=5, pady=5, expand=True)
 
+        backButton = customtkinter.CTkButton(self.mainFrame, text="Back", command= lambda: self.search())
+        backButton.pack(pady=5, padx=5)
+
     def generalSettingsScreen(self):
         App.clearFrame(self.mainFrame)
 
-        copyToLocalSwitch = customtkinter.CTkSwitch(self.mainFrame, text="Copy to files to local folder")
+        settingsFrame = customtkinter.CTkFrame(self.mainFrame)
+
+        #---------Start of Settings-------
+        copyToLocalSwitch = customtkinter.CTkSwitch(settingsFrame, text="Copy to files to local folder")
         copyToLocalSwitch.tip = CreateToolTip(copyToLocalSwitch, text="Copies files from their location on your computer to the local folder. This is so if the file is moved, it will not disrupt the archiver.")
         if (self.Archive.copyToLocal):
             copyToLocalSwitch.select()
@@ -495,7 +523,7 @@ class App(customtkinter.CTk):
             copyToLocalSwitch.deselect()
         copyToLocalSwitch.grid(row=0, column=0, padx=5, pady=5, sticky="nswe")
 
-        removeOriginalFileSwitch = customtkinter.CTkSwitch(self.mainFrame, text="Remove original file once uploaded to archive")
+        removeOriginalFileSwitch = customtkinter.CTkSwitch(settingsFrame, text="Remove original file once uploaded to archive")
         removeOriginalFileSwitch.tip = CreateToolTip(removeOriginalFileSwitch, text="Removes the original file from its location on your computer. This is so if the file is moved instead of copied. This only happens when uploading.")
         if (self.Archive.removeOriginalFile):
             removeOriginalFileSwitch.select()
@@ -503,13 +531,32 @@ class App(customtkinter.CTk):
             removeOriginalFileSwitch.deselect()
         removeOriginalFileSwitch.grid(row=0, column=1, padx=5, pady=5, sticky="nswe")
 
+        scaleImagesSwitch = customtkinter.CTkSwitch(settingsFrame, text="Scale Images")
+        scaleImagesSwitch.tip = CreateToolTip(scaleImagesSwitch, text="When viewing an entry, the images will be upscaled to fit in the window.")
+        if (self.Archive.enlargeImages):
+            scaleImagesSwitch.select()
+        else:
+            scaleImagesSwitch.deselect()
+        scaleImagesSwitch.grid(row=0, column=2, padx=5, pady=5, sticky="nswe")
+
+        localFolderButton = customtkinter.CTkButton(settingsFrame, text="Local Folder", command= lambda: os.startfile(__location__ + "/pyrchiveFolders/archivedFiles/"))
+        localFolderButton.grid(row=1, column=0, padx=5, pady=5, sticky="nswe")
+
         def saveSettings():
             self.Archive.copyToLocal = bool(copyToLocalSwitch.get())
             self.Archive.removeOriginalFile = bool(removeOriginalFileSwitch.get())
+            self.Archive.enlargeImages = bool(scaleImagesSwitch.get())
             self.Archive.saveSettings()
 
+        #---------End of Settings-------
+
+        settingsFrame.pack(padx=5, pady=5, expand=True, fill="both")
+
         saveButton = customtkinter.CTkButton(self.mainFrame, text="Save", command = lambda: saveSettings())
-        saveButton.grid(row=1, column=0, padx=5, pady=5, sticky="nswe")
+        saveButton.pack(padx=5, pady=5)
+
+        backButton = customtkinter.CTkButton(self.mainFrame, text="Back", command = lambda: self.settingsScreen())
+        backButton.pack(padx=5, pady=5)
 
     def deleteSavedSearch(self, ID, buttonFRAME):
         if messagebox.askyesno("Delete Saved Search", f"Are you sure you want to delete {ID}?"):
@@ -525,6 +572,9 @@ class App(customtkinter.CTk):
 
         allSearches = customtkinter.CTkScrollableFrame(self.mainFrame)
 
+        if len(self.Archive.savedSearches) == 0:
+            DefaultText = customtkinter.CTkLabel(allSearches, text="No Saved Searches", font=("Calibri", 20, "bold")) 
+            DefaultText.grid(row=0, column=0, padx=5, pady=5, sticky="w")
         pairings = {}
         for id, savedSearch in enumerate(self.Archive.savedSearches):
             pairings[id] = customtkinter.CTkFrame(allSearches)
@@ -535,6 +585,9 @@ class App(customtkinter.CTk):
             pairings[id].pack(padx=5, pady=5, side="top", fill="x")
 
         allSearches.pack(padx=5, pady=5, expand=True, fill="both")
+
+        backButton = customtkinter.CTkButton(self.mainFrame, text="Back", command=lambda: self.settingsScreen())
+        backButton.pack(padx=5, pady=5)
 
 
     def tagListDisplay(self, tags):
@@ -563,19 +616,16 @@ class App(customtkinter.CTk):
 
     def addTagToSearch(self, newTag):
         searchBar = self.searchBar.get()
-        searchBar = searchBar.replace((" -" + newTag),"")
-        if newTag not in searchBar.split():
-            if len(searchBar) > 0:
-                searchBar = searchBar + " "
-            searchBar = searchBar + newTag
+        if searchBar.endswith(""):
+            searchBar = searchBar + " "
+        searchBar = searchBar + newTag
         self.fillSearch(searchBar)
 
     def removeTagFromSearch(self, targetTag):
-        splitSearch = self.searchBar.get().split(" ")
-        if targetTag in splitSearch and "-" + targetTag not in splitSearch:
-            searchBar = self.searchBar.get().replace(targetTag, "")
-        else:
-            searchBar = self.searchBar.get() + (" -"+targetTag)
+        searchBar = self.searchBar.get()
+        if searchBar.endswith(""):
+            searchBar = searchBar + " "
+        searchBar = searchBar + ("-"+targetTag)
 
         self.fillSearch(searchBar)
 

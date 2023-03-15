@@ -1,4 +1,5 @@
 {
     "copyToLocal": true,
-    "removeOriginalFile": false
+    "removeOriginalFile": false,
+    "enlargeImages": true
 }

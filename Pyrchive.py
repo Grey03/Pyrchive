@@ -17,6 +17,7 @@ class archivemanager:
 
         self.copyToLocal = True
         self.removeOriginalFile = False
+        self.enlargeImages = True
 
         #Settings
         logger.info("Archive manager initialized in {}".format(self.__location__))
@@ -142,6 +143,7 @@ class archivemanager:
                 settings = json.load(f)
             self.copyToLocal = settings["copyToLocal"]
             self.removeOriginalFile = settings["removeOriginalFile"]
+            self.enlargeImages = settings["enlargeImages"]
         except Exception as inst:
                 logger.warning("Error loading settings from ArchiveSettings.json: " + str(inst))
     def saveSettings(self):
@@ -150,7 +152,8 @@ class archivemanager:
             with open(self.archiveJsonDirectory + "ArchiveSettings.json", "w") as f:
                 settings = {
                     "copyToLocal": self.copyToLocal,
-                    "removeOriginalFile": self.removeOriginalFile
+                    "removeOriginalFile": self.removeOriginalFile,
+                    "enlargeImages": self.enlargeImages
                 }
                 json.dump(settings, f, indent=4)
         except Exception as inst: 

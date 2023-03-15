@@ -1,33 +1,24 @@
-2023-03-06 21:11:51,912:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-2023-03-06 21:11:51,913:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-06 21:11:51,913:INFO:Pyrchive:Loading settings from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-03-06 21:11:51,913:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
-2023-03-06 21:11:51,913:INFO:__main__:Pyrchive App initialized
-2023-03-06 21:11:52,183:INFO:__main__:Started in 0.34s.
-2023-03-06 21:11:52,183:INFO:__main__:Entering Browse Screen with 3 entries on screen.
-2023-03-06 21:11:52,306:INFO:root:Loading tag list...
-2023-03-06 21:11:52,335:INFO:__main__:Entering Browse Screen with 3 entries on screen.
-2023-03-06 21:11:52,451:INFO:root:Loading tag list...
-2023-03-06 21:11:54,326:INFO:__main__:Opening window for entry 2
-2023-03-06 21:11:54,383:INFO:root:Loading tag list...
-2023-03-06 21:11:56,219:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-06 21:11:56,220:INFO:__main__:Entering Browse Screen with 2 entries on screen.
-2023-03-06 21:11:56,335:INFO:root:Loading tag list...
-2023-03-06 21:12:01,646:INFO:__main__:Opening window for entry 2
-2023-03-06 21:12:01,763:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/2023-02-18 21-28-46 - Trim.mp4'
-2023-03-06 21:12:01,819:INFO:root:Loading tag list...
-2023-03-06 21:12:03,122:INFO:__main__:Saving entry C:/Users/Grey/Downloads/2023-02-18 21-28-46 - Trim.mp4
-2023-03-06 21:12:03,122:WARNING:__main__:Entry 2 not found in archive appending to archive
-2023-03-06 21:12:03,122:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-06 21:12:03,122:INFO:__main__:Entering Browse Screen with 3 entries on screen.
-2023-03-06 21:12:03,261:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/2023-02-18 21-28-46 - Trim.mp4'
-2023-03-06 21:12:03,273:INFO:root:Loading tag list...
-2023-03-06 21:12:04,432:INFO:__main__:Opening window for entry 2
-2023-03-06 21:12:04,435:WARNING:__main__:Error openining image: cannot identify image file 'C:/Users/Grey/Downloads/2023-02-18 21-28-46 - Trim.mp4'
-2023-03-06 21:12:04,490:INFO:root:Loading tag list...
-2023-03-06 21:12:23,914:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-06 21:12:23,915:INFO:__main__:Entering Browse Screen with 2 entries on screen.
-2023-03-06 21:12:24,034:INFO:root:Loading tag list...
-2023-03-06 21:12:31,837:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-06 21:12:31,837:INFO:Pyrchive:Saving settings to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-03-06 21:12:31,838:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-03-14 22:15:54,772:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+2023-03-14 22:15:54,772:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:15:54,772:INFO:Pyrchive:Loading settings from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-03-14 22:15:54,772:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-03-14 22:15:54,772:INFO:__main__:Pyrchive App initialized
+2023-03-14 22:15:55,032:INFO:__main__:Started in 0.33s.
+2023-03-14 22:15:55,033:INFO:__main__:Entering Browse Screen with 2 entries on screen.
+2023-03-14 22:15:55,103:INFO:root:Loading tag list...
+2023-03-14 22:15:55,125:INFO:__main__:Entering Browse Screen with 2 entries on screen.
+2023-03-14 22:15:55,180:INFO:root:Loading tag list...
+2023-03-14 22:15:58,047:INFO:__main__:Opening window for entry 1
+2023-03-14 22:15:58,169:INFO:root:Loading tag list...
+2023-03-14 22:15:59,447:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:15:59,448:INFO:__main__:Entering Browse Screen with 1 entries on screen.
+2023-03-14 22:15:59,484:INFO:root:Loading tag list...
+2023-03-14 22:16:00,127:INFO:__main__:Opening window for entry 0
+2023-03-14 22:16:00,219:INFO:root:Loading tag list...
+2023-03-14 22:16:01,745:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:16:01,745:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:16:01,768:INFO:root:Loading tag list...
+2023-03-14 22:16:03,479:INFO:__main__:Opening window for settings
+2023-03-14 22:16:06,441:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:16:06,441:INFO:Pyrchive:Saving settings to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-03-14 22:16:06,442:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
