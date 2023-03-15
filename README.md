@@ -4,6 +4,8 @@
 # Requirements
 customtkinter
 
+pillow
+
 # Adding Files
 This software is quite simple. First click upload at the top of the screen.
 
