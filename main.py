@@ -178,7 +178,7 @@ class App(customtkinter.CTk):
                 pass
         else:
             searchList = []
-        x = self.Archive.filterEntryList(searchList, 48)
+        x = self.Archive.filterEntryList(searchList, -1)
         self.currentEntryBrowseCount = len(x)
         App.entryBrowseScreen(self, x)
 

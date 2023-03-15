@@ -1,1 +1,1 @@
-Ignore me; For whatever reason, if this file is empty then it is not copied to the exe version automatically and causes errors. Have a good day!
+For whatever reason, if this file is empty then it is not copied to the exe version automatically and causes errors. Have a good day!
