@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 global __location__
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-videoFiles = [".avi",".mp4",".mov",".wmv",".mov",".mpeg",".flv",".m4v"]
+videoFiles = [".avi",".mp4",".mov",".wmv",".mov",".mpeg",".flv",".m4v", '.webm']
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
@@ -468,7 +468,7 @@ class App(customtkinter.CTk):
         #saveButton.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
         saveButton.pack(side="left", expand=True, fill="x", padx=5)
 
-        backButton = customtkinter.CTkButton(buttonFrame, text="Back", command = lambda: self.settingsScreen())
+        backButton = customtkinter.CTkButton(buttonFrame, text="Back", command = lambda: self.search())
         #backButton.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
         backButton.pack(side="left", expand=True, fill="x", padx=5)
 

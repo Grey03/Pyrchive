@@ -1,24 +1,37 @@
-2023-03-14 22:15:54,772:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
-2023-03-14 22:15:54,772:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-14 22:15:54,772:INFO:Pyrchive:Loading settings from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-03-14 22:15:54,772:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
-2023-03-14 22:15:54,772:INFO:__main__:Pyrchive App initialized
-2023-03-14 22:15:55,032:INFO:__main__:Started in 0.33s.
-2023-03-14 22:15:55,033:INFO:__main__:Entering Browse Screen with 2 entries on screen.
-2023-03-14 22:15:55,103:INFO:root:Loading tag list...
-2023-03-14 22:15:55,125:INFO:__main__:Entering Browse Screen with 2 entries on screen.
-2023-03-14 22:15:55,180:INFO:root:Loading tag list...
-2023-03-14 22:15:58,047:INFO:__main__:Opening window for entry 1
-2023-03-14 22:15:58,169:INFO:root:Loading tag list...
-2023-03-14 22:15:59,447:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-14 22:15:59,448:INFO:__main__:Entering Browse Screen with 1 entries on screen.
-2023-03-14 22:15:59,484:INFO:root:Loading tag list...
-2023-03-14 22:16:00,127:INFO:__main__:Opening window for entry 0
-2023-03-14 22:16:00,219:INFO:root:Loading tag list...
-2023-03-14 22:16:01,745:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-14 22:16:01,745:INFO:__main__:Entering Browse Screen with 0 entries on screen.
-2023-03-14 22:16:01,768:INFO:root:Loading tag list...
-2023-03-14 22:16:03,479:INFO:__main__:Opening window for settings
-2023-03-14 22:16:06,441:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
-2023-03-14 22:16:06,441:INFO:Pyrchive:Saving settings to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
-2023-03-14 22:16:06,442:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-03-14 22:44:19,349:INFO:Pyrchive:Archive manager initialized in C:\Users\Grey\Documents\GitHub\Tagchive
+2023-03-14 22:44:19,350:INFO:Pyrchive:Loading entries from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:44:19,350:INFO:Pyrchive:Loading settings from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-03-14 22:44:19,350:INFO:Pyrchive:Loading Tag Groups from C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
+2023-03-14 22:44:19,350:INFO:__main__:Pyrchive App initialized
+2023-03-14 22:44:19,610:INFO:__main__:Started in 0.33s.
+2023-03-14 22:44:19,611:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:44:19,612:INFO:root:Loading tag list...
+2023-03-14 22:44:19,628:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:44:19,638:INFO:root:Loading tag list...
+2023-03-14 22:44:20,575:INFO:__main__:Opening window for settings
+2023-03-14 22:44:22,941:INFO:__main__:Opening window for settings
+2023-03-14 22:44:23,844:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:44:23,851:INFO:root:Loading tag list...
+2023-03-14 22:44:45,768:INFO:__main__:Opening window for entry 0
+2023-03-14 22:44:45,848:INFO:root:Loading tag list...
+2023-03-14 22:44:50,878:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:44:50,902:INFO:root:Loading tag list...
+2023-03-14 22:44:55,615:INFO:__main__:Opening window for entry 0
+2023-03-14 22:44:55,725:INFO:root:Loading tag list...
+2023-03-14 22:44:59,632:INFO:__main__:Opening window for entry 0
+2023-03-14 22:44:59,705:INFO:root:Loading tag list...
+2023-03-14 22:45:02,705:INFO:__main__:Opening window for entry 0
+2023-03-14 22:45:02,797:INFO:root:Loading tag list...
+2023-03-14 22:45:06,158:INFO:__main__:Opening window for entry 0
+2023-03-14 22:45:06,238:INFO:root:Loading tag list...
+2023-03-14 22:45:11,096:INFO:__main__:Opening window for entry 0
+2023-03-14 22:45:11,189:INFO:root:Loading tag list...
+2023-03-14 22:45:15,142:INFO:__main__:Opening window for entry 0
+2023-03-14 22:45:15,264:INFO:root:Loading tag list...
+2023-03-14 22:45:22,072:INFO:__main__:Entering Browse Screen with 0 entries on screen.
+2023-03-14 22:45:22,097:INFO:root:Loading tag list...
+2023-03-14 22:45:25,581:INFO:__main__:Opening window for settings
+2023-03-14 22:45:27,424:INFO:__main__:Opening window for settings
+2023-03-14 22:45:33,291:INFO:Pyrchive:Saving entries to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveEntries.json
+2023-03-14 22:45:33,291:INFO:Pyrchive:Saving settings to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/ArchiveSettings.json
+2023-03-14 22:45:33,292:INFO:Pyrchive:Saving Tag Groups to C:\Users\Grey\Documents\GitHub\Tagchive/pyrchiveFolders/pyrchiveJsonData/SavedSearches.json
